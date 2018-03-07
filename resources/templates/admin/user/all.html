@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../static/bootstrap-4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../static/theme/cyborg/cyborg.min.css">
+    <link rel="stylesheet" href="../../../static/css/table-actions.css">
+    <link rel="shortcut icon" type="image/png" href="../../../static/images/music-hub-favicon.png"/>
+    <title>MusicHub</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="../../home/index.html">
+            <img src="../../../static/images/music-hub-favicon.png" alt="logo"> MusicHub</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+                aria-controls="navbarColor" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../../music/browse.html">
+                        <i class="fas fa-music"></i> Browse
+                        <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-chart-line"></i>
+                        Charts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../../home/about-us.html">
+                        <i class="fas fa-info"></i>
+                        About Us</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../../user/login.html">
+                        <i class="fas fa-user"></i> Login
+                        <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../../user/register.html">
+                        <i class="fas fa-user-plus"></i>
+                        Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="container mt-3">
+        <h4 class="mb-4">All Users</h4>
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-active">
+                <td>hristo90</td>
+                <td>hristo90@abv.bg</td>
+                <td>
+                    <a href="#" class="edit mr-2">Edit</a>
+                    <a href="#" class="delete mr-2">Delete</a>
+                    <a href="#" class="show">Show</a>
+                </td>
+            </tr>
+            <tr class="table-active">
+                <td>luko</td>
+                <td>luko@abv.bg</td>
+                <td>
+                    <a href="#" class="edit mr-2">Edit</a>
+                    <a href="#" class="delete mr-2">Delete</a>
+                    <a href="#" class="show">Show</a>
+                </td>
+            </tr>
+            <tr class="table-primary">
+                <td class="text-primary">thunder</td>
+                <td class="text-primary">thunder@gmail.com</td>
+                <td>
+                    <a href="#" class="edit mr-2">Edit</a>
+                    <a href="#" class="delete mr-2">Delete</a>
+                    <a href="#" class="show">Show</a>
+                </td>
+            </tr>
+            <tr class="table-active">
+                <td>baihoi</td>
+                <td>baihoi@abv.bg</td>
+                <td>
+                    <a href="#" class="edit mr-2">Edit</a>
+                    <a href="#" class="delete mr-2">Delete</a>
+                    <a href="#" class="show">Show</a>
+                </td>
+            </tr>
+            <tr class="table-active">
+                <td>hd123</td>
+                <td>test@abv.bg</td>
+                <td>
+                    <a href="#" class="edit mr-2">Edit</a>
+                    <a href="#" class="delete mr-2">Delete</a>
+                    <a href="#" class="show">Show</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</main>
+<script src="../../../static/jquery/jquery-3.3.1.min.js"></script>
+<script src="../../../static/bootstrap-4.0.0/js/bootstrap.min.js"></script>
+<script src="../../../static/font-awesome/fontawesome-all.min.js"></script>
+</body>
+</html>

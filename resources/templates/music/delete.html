@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/bootstrap-4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../static/theme/cyborg/cyborg.min.css">
+    <link rel="stylesheet" href="../../static/css/browse-music.css">
+    <link rel="shortcut icon" type="image/png" href="../../static/images/music-hub-favicon.png"/>
+    <title>MusicHub</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="../home/index.html">
+            <img src="../../static/images/music-hub-favicon.png" alt="logo"> MusicHub</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+                aria-controls="navbarColor" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="browse.html">
+                        <i class="fas fa-music"></i> Browse
+                        <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-chart-line"></i>
+                        Charts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-info"></i>
+                        About Us</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../user/login.html">
+                        <i class="fas fa-user"></i> Login
+                        <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../user/register.html">
+                        <i class="fas fa-user-plus"></i>
+                        Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="container mt-3">
+        <fieldset>
+            <legend>Delete Music</legend>
+            <form>
+                <div class="form-group">
+                    <label for="title">Song Title</label>
+                    <input type="text" class="form-control col-md-5"
+                           value="Song Title" id="title" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select class="form-control col-md-5" id="category" disabled>
+                        <option>Pop</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+</main>
+<script src="../../static/jquery/jquery-3.3.1.min.js"></script>
+<script src="../../static/bootstrap-4.0.0/js/bootstrap.min.js"></script>
+<script src="../../static/font-awesome/fontawesome-all.min.js"></script>
+</body>
+</html>
