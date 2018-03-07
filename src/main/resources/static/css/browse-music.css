@@ -1,0 +1,19 @@
+a.title {
+    text-decoration: none;
+    color: white;
+}
+
+a.title:hover {
+    color: lightgray;
+}
+
+a.author {
+    text-decoration: none;
+    color: lightgray;
+}
+
+a.author:hover {
+    color: white;
+}
+
+
