@@ -5,6 +5,7 @@ import com.softuni.musichub.category.model.bindingModel.AddCategory;
 import com.softuni.musichub.category.model.bindingModel.EditCategory;
 import com.softuni.musichub.category.model.view.CategoryView;
 import com.softuni.musichub.category.service.api.CategoryService;
+import com.softuni.musichub.category.staticData.CategoryConstants;
 import com.softuni.musichub.staticData.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,8 +26,6 @@ public class AdminController {
     private static final String ADD_CATEGORY_VIEW = "admin/category/add";
 
     private static final String ADD_CATEGORY = "addCategory";
-
-    private static final String CATEGORIES = "categories";
 
     private static final String CATEGORY = "category";
 
@@ -91,7 +90,7 @@ public class AdminController {
     @GetMapping("/categories/all")
     public ModelAndView getAllCategoriesPage(ModelAndView modelAndView) {
         List<CategoryView> categories = this.categoryService.findAll();
-        modelAndView.addObject(CATEGORIES, categories);
+        modelAndView.addObject(CategoryConstants.CATEGORIES, categories);
         modelAndView.addObject(Constants.TITLE, ALL_CATEGORIES_TITLE);
         modelAndView.addObject(Constants.VIEW, ALL_CATEGORIES_VIEW);
         modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);

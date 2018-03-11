@@ -11,4 +11,6 @@ public class CategoryConstants {
 
     public static final String CATEGORY_EXISTS_MESSAGE =
             "Category already exists";
+
+    public static final String CATEGORIES = "categories";
 }
