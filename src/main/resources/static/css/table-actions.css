@@ -1,4 +1,4 @@
-.edit, .delete, .show {
+.edit, .delete, .details {
     text-decoration: none;
 }
 
@@ -24,7 +24,7 @@
     text-decoration: underline;
 }
 
-.show:hover {
+.details:hover {
     color: deepskyblue;
     text-decoration: underline;
 }

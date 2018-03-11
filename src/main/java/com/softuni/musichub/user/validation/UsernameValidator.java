@@ -1,4 +1,4 @@
-package com.softuni.musichub.user.validations;
+package com.softuni.musichub.user.validation;
 
 import com.softuni.musichub.user.exception.UserNotFoundException;
 import com.softuni.musichub.user.model.viewModel.UserView;

@@ -1,8 +1,8 @@
 package com.softuni.musichub.user.model.bindingModel;
 
 import com.softuni.musichub.user.staticData.UserConstants;
-import com.softuni.musichub.user.validations.PasswordMatching;
-import com.softuni.musichub.user.validations.Username;
+import com.softuni.musichub.user.validation.PasswordMatching;
+import com.softuni.musichub.user.validation.Username;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
