@@ -1,7 +1,6 @@
 package com.softuni.musichub.category.service.impl;
 
 import com.softuni.musichub.category.entity.Category;
-import com.softuni.musichub.category.exception.CategoryNotFoundException;
 import com.softuni.musichub.category.model.bindingModel.AddCategory;
 import com.softuni.musichub.category.model.bindingModel.EditCategory;
 import com.softuni.musichub.category.model.view.CategoryView;
@@ -37,11 +36,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryView findByName(String categoryName)
-            throws CategoryNotFoundException {
+    public CategoryView findByName(String categoryName) {
         Category category = this.categoryRepository.findByName(categoryName);
         if (category == null) {
-            throw new CategoryNotFoundException();
+            return null;
         }
 
         CategoryView categoryView = this.mapperUtil.getModelMapper()
@@ -58,11 +56,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryView findById(Long categoryId) throws CategoryNotFoundException {
+    public CategoryView findById(Long categoryId) {
         Optional<Category> optionalCategory = this.categoryRepository
                 .findById(categoryId);
         if (!optionalCategory.isPresent()) {
-            throw new CategoryNotFoundException();
+            return null;
         }
 
         Category category = optionalCategory.get();
@@ -72,20 +70,20 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteById(Long categoryId) throws CategoryNotFoundException {
+    public void deleteById(Long categoryId) {
         boolean isCategoryExists = this.categoryRepository.existsById(categoryId);
         if (!isCategoryExists) {
-            throw new CategoryNotFoundException();
+            return;
         }
 
         this.categoryRepository.deleteById(categoryId);
     }
 
     @Override
-    public void edit(EditCategory editCategory, Long id) throws CategoryNotFoundException {
+    public void edit(EditCategory editCategory, Long id) {
         boolean isCategoryExists = this.categoryRepository.existsById(id);
         if (!isCategoryExists) {
-            throw new CategoryNotFoundException();
+            return;
         }
 
         Category category = this.mapperUtil.getModelMapper()

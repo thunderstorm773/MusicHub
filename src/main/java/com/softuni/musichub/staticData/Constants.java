@@ -12,4 +12,6 @@ public class Constants {
             "org.springframework.validation.BindingResult.";
 
     public static final String ERROR = "error";
+
+    public static final String SUCCESS = "success";
 }

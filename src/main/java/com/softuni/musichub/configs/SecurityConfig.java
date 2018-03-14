@@ -32,10 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/bootstrap-4.0.0.**", "/css/**",
                         "/font-awesome/**", "/images/**",
-                        "/jquery/**", "/theme/**").permitAll()
+                        "/jquery/**", "/theme/**", "/scripts/**").permitAll()
                 .antMatchers("/users/login", "/users/register").anonymous()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/music/**").authenticated()
+                .antMatchers("/songs/**").authenticated()
                 .and().exceptionHandling().accessDeniedPage("/")
                 .and().formLogin().defaultSuccessUrl("/").loginPage("/users/login")
                 .usernameParameter("username").passwordParameter("password")

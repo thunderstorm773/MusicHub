@@ -1,6 +1,5 @@
 package com.softuni.musichub.admin.controller;
 
-import com.softuni.musichub.category.exception.CategoryNotFoundException;
 import com.softuni.musichub.category.model.bindingModel.AddCategory;
 import com.softuni.musichub.category.model.bindingModel.EditCategory;
 import com.softuni.musichub.category.model.view.CategoryView;
@@ -50,11 +49,6 @@ public class AdminController {
         this.categoryService = categoryService;
     }
 
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public String handleCategoryNotFoundException() {
-        return "redirect:/admin/categories/all";
-    }
-
     @GetMapping("/categories/add")
     public ModelAndView getAddCategoryPage(ModelAndView modelAndView,
                                            Model model) {
@@ -101,6 +95,11 @@ public class AdminController {
     public ModelAndView getDeleteCategoryPage(ModelAndView modelAndView,
                                               @PathVariable Long id) {
         CategoryView category = this.categoryService.findById(id);
+        if (category == null) {
+            modelAndView.setViewName("redirect:/admin/categories/all");
+            return modelAndView;
+        }
+
         modelAndView.addObject(CATEGORY, category);
         modelAndView.addObject(Constants.TITLE, DELETE_CATEGORY_TITLE);
         modelAndView.addObject(Constants.VIEW, DELETE_CATEGORY_VIEW);
@@ -120,6 +119,11 @@ public class AdminController {
     public ModelAndView getEditCategoryPage(ModelAndView modelAndView,
                                             @PathVariable Long id) {
         CategoryView category = this.categoryService.findById(id);
+        if (category == null) {
+            modelAndView.setViewName("redirect:/admin/categories/all");
+            return modelAndView;
+        }
+
         modelAndView.addObject(EDIT_CATEGORY, category);
         modelAndView.addObject(Constants.TITLE, EDIT_CATEGORY_TITLE);
         modelAndView.addObject(Constants.VIEW, EDIT_CATEGORY_VIEW);
