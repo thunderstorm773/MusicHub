@@ -16,5 +16,4 @@ public class SongConstants {
 
     public static final String CATEGORY_EMPTY_MESSAGE =
             "Category cannot be empty";
-
 }

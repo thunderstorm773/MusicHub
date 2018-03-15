@@ -21,6 +21,8 @@ public class Song {
 
     private User uploader;
 
+    private String songPartialUrl;
+
     private Date uploadedOn;
 
     private Set<Tag> tags;
@@ -67,6 +69,15 @@ public class Song {
 
     public void setUploader(User uploader) {
         this.uploader = uploader;
+    }
+
+    @Column(name = "song_partial_url", nullable = false)
+    public String getSongPartialUrl() {
+        return songPartialUrl;
+    }
+
+    public void setSongPartialUrl(String songPartialUrl) {
+        this.songPartialUrl = songPartialUrl;
     }
 
     @Column(name = "uploaded_on", nullable = false, updatable = false)

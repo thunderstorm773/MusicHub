@@ -7,7 +7,6 @@ import com.softuni.musichub.song.model.bindingModel.UploadSong;
 import com.softuni.musichub.song.service.api.SongService;
 import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.entity.User;
-import com.softuni.musichub.utils.UploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -62,7 +62,7 @@ public class SongController {
                                    @Valid @ModelAttribute UploadSong uploadSong,
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes,
-                                   @AuthenticationPrincipal User user) {
+                                   @AuthenticationPrincipal User user) throws IOException {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(UPLOAD_SONG, uploadSong);
             String bindingResultKey = Constants.BINDING_RESULT_PACKAGE + UPLOAD_SONG;

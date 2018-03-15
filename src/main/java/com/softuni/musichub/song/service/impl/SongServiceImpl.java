@@ -12,11 +12,15 @@ import com.softuni.musichub.tag.model.bindingModel.AddTag;
 import com.softuni.musichub.tag.model.viewModel.TagView;
 import com.softuni.musichub.tag.service.api.TagService;
 import com.softuni.musichub.user.entity.User;
+import com.softuni.musichub.utils.CDNUtil;
 import com.softuni.musichub.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -31,14 +35,19 @@ public class SongServiceImpl implements SongService {
 
     private final MapperUtil mapperUtil;
 
+    private final CDNUtil cdnUtil;
+
     @Autowired
     public SongServiceImpl(SongRepository songRepository,
                            CategoryService categoryService,
-                           TagService tagService, MapperUtil mapperUtil) {
+                           TagService tagService,
+                           MapperUtil mapperUtil,
+                           CDNUtil cdnUtil) {
         this.songRepository = songRepository;
         this.categoryService = categoryService;
         this.tagService = tagService;
         this.mapperUtil = mapperUtil;
+        this.cdnUtil = cdnUtil;
     }
 
     private Set<Tag> getTags(String tagsAsString) {
@@ -63,7 +72,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public void upload(UploadSong uploadSong, User user) {
+    public void upload(UploadSong uploadSong, User user) throws IOException {
         Song song = this.mapperUtil.getModelMapper().map(uploadSong, Song.class);
         song.setId(null);
         Long categoryId = uploadSong.getCategoryId();
@@ -82,6 +91,11 @@ public class SongServiceImpl implements SongService {
         }
 
         song.setUploader(user);
+        MultipartFile songFile = uploadSong.getFile();
+        Map uploadResult = this.cdnUtil.upload(songFile, CDNUtil.VIDEO_RESOURCE_TYPE,
+                CDNUtil.SONGS_FOLDER);
+        String songPartialUrl = (String) uploadResult.get(CDNUtil.PUBLIC_ID_KEY);
+        song.setSongPartialUrl(songPartialUrl);
         this.songRepository.save(song);
     }
 }
