@@ -1,8 +1,8 @@
 <!--/*@thymesVar id="uploadSong" type="com.softuni.musichub.song.model.bindingModel.UploadSong"*/-->
 <div class="row justify-content-center">
-    <div class="alert alert-success alert-dismissible col-md-4"
-         th:if="${success} != null">
-        <th:block th:text="${success}">Message</th:block>
+    <div class="alert alert-primary alert-dismissible col-md-4"
+         th:if="${info} != null">
+        <th:block th:text="${info}">Message</th:block>
         <button type="button" class="close" data-dismiss="alert">&times;</button>
     </div>
 </div>

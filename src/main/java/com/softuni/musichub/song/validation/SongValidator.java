@@ -3,6 +3,7 @@ package com.softuni.musichub.song.validation;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Arrays;
 
 public class SongValidator implements ConstraintValidator<Song, MultipartFile>{
 
@@ -10,7 +11,7 @@ public class SongValidator implements ConstraintValidator<Song, MultipartFile>{
 
     private static final int BYTES_IN_MB = 1_048_576;
 
-    private final String MP3_CONTENT_TYPE = "audio/mp3";
+    private final String[] ALLOWED_CONTENT_TYPES = {"audio/mp3", "audio/mpeg"};
 
     @Override
     public boolean isValid(MultipartFile multipartFile, ConstraintValidatorContext constraintValidatorContext) {
@@ -24,7 +25,9 @@ public class SongValidator implements ConstraintValidator<Song, MultipartFile>{
         }
 
         String fileContentType = multipartFile.getContentType();
-        if (!fileContentType.equalsIgnoreCase(MP3_CONTENT_TYPE)) {
+        boolean isFileHasAllowedContentType = Arrays
+                .stream(ALLOWED_CONTENT_TYPES).anyMatch(t -> t.equals(fileContentType));
+        if (!isFileHasAllowedContentType) {
             return false;
         }
 

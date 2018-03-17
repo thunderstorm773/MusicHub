@@ -6,10 +6,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.File;
 
 public class UploadSong {
 
     private MultipartFile file;
+
+    private File persistedFile;
 
     private String title;
 
@@ -28,6 +31,17 @@ public class UploadSong {
 
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    // Get content of multipart file from here,
+    // because after request is finished, the content
+    // of multipart file will be destroyed
+    public File getPersistedFile() {
+        return persistedFile;
+    }
+
+    public void setPersistedFile(File persistedFile) {
+        this.persistedFile = persistedFile;
     }
 
     @NotBlank(message = SongConstants.TITLE_BLANK_MESSAGE)

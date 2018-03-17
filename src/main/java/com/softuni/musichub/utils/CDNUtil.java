@@ -2,21 +2,17 @@ package com.softuni.musichub.utils;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.softuni.musichub.staticData.Constants;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Component
-public final class CDNUtil {
+public class CDNUtil {
 
     private static final String TEMP_FOLDER_NAME = "temp";
-
-    private static final String TEMP_FOLDER_PATH =
-            Constants.ROOT_PATH + File.separator + TEMP_FOLDER_NAME;
 
     private static final String RESOURCE_TYPE_KEY = "resource_type";
 
@@ -64,27 +60,14 @@ public final class CDNUtil {
         this.cloudinary = new Cloudinary(configMap);
     }
 
-    private File transferToFile(MultipartFile multipartFile) throws IOException {
-        String fileLocation = TEMP_FOLDER_PATH +
-                File.separator + multipartFile.getOriginalFilename();
-        File file = new File(fileLocation);
-        file.createNewFile();
-        try (FileOutputStream fos = new FileOutputStream(file)){
-            fos.write(multipartFile.getBytes());
-        }
-
-        return file;
-    }
-
-    public Map upload(MultipartFile multipartFile, String resourceType,
-                      String folderToUpload) throws IOException {
-        File fileToUpload = this.transferToFile(multipartFile);
+    @Async
+    public CompletableFuture<Map> upload(File file, String resourceType,
+                                         String folderToUpload) throws IOException {
         Map fileConfig = ObjectUtils.asMap(
                 RESOURCE_TYPE_KEY, resourceType,
                 FOLDER_KEY, folderToUpload);
-        Map uploadResult = this.cloudinary.uploader().upload(fileToUpload, fileConfig);
-        fileToUpload.delete();
-        return uploadResult;
+        Map uploadResult = this.cloudinary.uploader().upload(file, fileConfig);
+        return CompletableFuture.completedFuture(uploadResult);
     }
 
     public String getResourceFullUrl(String partialUrl, String resourceType) {

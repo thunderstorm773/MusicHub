@@ -15,13 +15,16 @@ import com.softuni.musichub.user.entity.User;
 import com.softuni.musichub.utils.CDNUtil;
 import com.softuni.musichub.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @Transactional
@@ -71,6 +74,7 @@ public class SongServiceImpl implements SongService {
         return tags;
     }
 
+    @Async
     @Override
     public void upload(UploadSong uploadSong, User user) throws IOException {
         Song song = this.mapperUtil.getModelMapper().map(uploadSong, Song.class);
@@ -91,9 +95,20 @@ public class SongServiceImpl implements SongService {
         }
 
         song.setUploader(user);
-        MultipartFile songFile = uploadSong.getFile();
-        Map uploadResult = this.cdnUtil.upload(songFile, CDNUtil.VIDEO_RESOURCE_TYPE,
+        File songFile = uploadSong.getPersistedFile();
+        CompletableFuture<Map> taskResult = this.cdnUtil.upload(songFile, CDNUtil.VIDEO_RESOURCE_TYPE,
                 CDNUtil.SONGS_FOLDER);
+        CompletableFuture.anyOf(taskResult).join();
+        Map uploadResult;
+        try {
+            uploadResult = taskResult.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // Delete local file after it has been uploaded in CDN
+        songFile.delete();
         String songPartialUrl = (String) uploadResult.get(CDNUtil.PUBLIC_ID_KEY);
         song.setSongPartialUrl(songPartialUrl);
         this.songRepository.save(song);

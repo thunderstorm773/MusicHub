@@ -7,15 +7,18 @@ import com.softuni.musichub.song.model.bindingModel.UploadSong;
 import com.softuni.musichub.song.service.api.SongService;
 import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.entity.User;
+import com.softuni.musichub.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -29,17 +32,21 @@ public class SongController {
 
     private static final String UPLOAD_SONG = "uploadSong";
 
-    private static final String UPLOADED_SUCCESS = "Song successfully uploaded!";
+    private static final String UPLOAD_SONG_SOON = "Song will be uploaded soon!";
 
     private final CategoryService categoryService;
 
     private final SongService songService;
 
+    private final FileUtil fileUtil;
+
     @Autowired
     public SongController(CategoryService categoryService,
-                          SongService songService) {
+                          SongService songService,
+                          FileUtil fileUtil) {
         this.categoryService = categoryService;
         this.songService = songService;
+        this.fileUtil = fileUtil;
     }
 
     @GetMapping("/upload")
@@ -71,9 +78,19 @@ public class SongController {
             return modelAndView;
         }
 
+        MultipartFile songTempFile = uploadSong.getFile();
+        byte[] songTempFileBytes = songTempFile.getBytes();
+        String songTempFileName = songTempFile.getOriginalFilename();
+        // Create persisted file to upload in CDN after
+        // this request is finished
+        File songPersistedFile = this.fileUtil
+                .createFile(songTempFileBytes, songTempFileName);
+        uploadSong.setPersistedFile(songPersistedFile);
         this.songService.upload(uploadSong, user);
-        redirectAttributes.addFlashAttribute(Constants.SUCCESS, UPLOADED_SUCCESS);
+        redirectAttributes.addFlashAttribute(Constants.INFO, UPLOAD_SONG_SOON);
         modelAndView.setViewName("redirect:/songs/upload");
         return modelAndView;
     }
+
+
 }

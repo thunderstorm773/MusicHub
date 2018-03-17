@@ -6,7 +6,7 @@ $('#file').on('change', function (e) {
 
     const bytesInMB = 1048576;
     const maxSongSizeInMB = 10;
-    const mp3ContentType = 'audio/mp3';
+    const allowedContentTypes = ['audio/mp3', 'audio/mpeg'];
     const invalidFileFormatMsg = 'File format is not .mp3';
     const exceededMaxSizeMsg = 'File exceeded max allowed size(10MB)';
 
@@ -16,7 +16,7 @@ $('#file').on('change', function (e) {
     enableSubmitButtom();
     let invalidFeedback = $('<div class="invalid-feedback" style="display:block"></div>');
     let songFile = allFiles[0];
-    let songContentType = songFile.type.toLowerCase();
+    let songContentType = songFile.type;
     let songSizeInMB = songFile.size / bytesInMB;
     let errors = [];
     if (songSizeInMB > maxSongSizeInMB) {
@@ -24,7 +24,7 @@ $('#file').on('change', function (e) {
         errors.push(error);
     }
 
-    if (songContentType !== mp3ContentType) {
+    if ($.inArray(songContentType, allowedContentTypes) === -1) {
         let error = invalidFeedback.text(invalidFileFormatMsg);
         errors.push(error);
     }
