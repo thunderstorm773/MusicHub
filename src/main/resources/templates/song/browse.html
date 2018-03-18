@@ -17,8 +17,8 @@
 <div class="text-center mt-2">
     <h4>All Tracks</h4>
 </div>
-<div class="row justify-content-center mt-3 text-center">
-    <div th:if="${#lists.isEmpty(songs)}">
+<div class="row justify-content-center mt-3 text-center" id="songsContainer">
+    <div th:if="${#lists.isEmpty(songs.getContent())}">
         <h3>No songs available</h3>
     </div>
     <div class="col-md-2" th:each="song : ${songs}" th:object="${song}">
@@ -36,22 +36,22 @@
     </div>
 </div>
 <div>
-    <ul class="pagination justify-content-center"
+    <ul class="pagination justify-content-center" th:if="${!#lists.isEmpty(songs.getContent())}"
         th:with="hasPrevious=${songs.hasPrevious()}, hasNext=${songs.hasNext()},
         previousPageable=${songs.previousPageable()}, nextPageable=${songs.nextPageable()}">
-        <li class="page-item" th:classappend="${!hasPrevious} ? 'disabled'">
-            <a class="page-link"
-               th:href="${hasPrevious} ? @{/songs/browse(page=${previousPageable.getPageNumber()})}">&laquo;</a>
-        </li>
+        <!--<li class="page-item" th:classappend="${!hasPrevious} ? 'disabled'">-->
+            <!--<a class="page-link song"-->
+               <!--th:href="${hasPrevious} ? @{/songs/browse/js(page=${previousPageable.getPageNumber()})}">&laquo;</a>-->
+        <!--</li>-->
         <li class="page-item" th:each="page : ${#numbers.sequence(1, songs.getTotalPages())}"
             th:with="index=${page} - 1"
             th:classappend="${songs.getNumber() == index} ? 'active'">
-            <a class="page-link" th:href="@{/songs/browse(page=${index})}"
-               th:text="${page}"></a>
+            <a class="page-link song" th:href="@{/songs/browse/js(page=${index})}"
+              th:text="${page}"></a>
         </li>
-        <li class="page-item" th:classappend="${!hasNext} ? 'disabled'">
-            <a class="page-link"
-               th:href="${hasNext} ? @{/songs/browse(page=${nextPageable.getPageNumber()})}">&raquo;</a>
-        </li>
+        <!--<li class="page-item" th:classappend="${!hasNext} ? 'disabled'">-->
+            <!--<a class="page-link song"-->
+               <!--th:href="${hasNext} ? @{/songs/browse/js(page=${nextPageable.getPageNumber()})}">&raquo;</a>-->
+        <!--</li>-->
     </ul>
 </div>

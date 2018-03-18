@@ -1,5 +1,6 @@
 package com.softuni.musichub.song.controller;
 
+import com.google.gson.Gson;
 import com.softuni.musichub.category.model.view.CategoryView;
 import com.softuni.musichub.category.service.api.CategoryService;
 import com.softuni.musichub.category.staticData.CategoryConstants;
@@ -11,6 +12,7 @@ import com.softuni.musichub.user.entity.User;
 import com.softuni.musichub.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -52,13 +55,16 @@ public class SongController {
 
     private final FileUtil fileUtil;
 
+    private final Gson gson;
+
     @Autowired
     public SongController(CategoryService categoryService,
                           SongService songService,
-                          FileUtil fileUtil) {
+                          FileUtil fileUtil, Gson gson) {
         this.categoryService = categoryService;
         this.songService = songService;
         this.fileUtil = fileUtil;
+        this.gson = gson;
     }
 
     @GetMapping("/upload")
@@ -120,5 +126,12 @@ public class SongController {
         modelAndView.addObject(Constants.VIEW, BROWSE_SONGS_VIEW);
         modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
         return modelAndView;
+    }
+    @GetMapping("/browse/js")
+    @ResponseBody
+    public String getSongsAsJson(@PageableDefault(size = SONGS_PER_PAGE) Pageable pageable) {
+        Page<SongView> songsPage = this.songService.findAll(pageable);
+        String songsAsJson = this.gson.toJson(songsPage);
+        return songsAsJson;
     }
 }
