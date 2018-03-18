@@ -5,6 +5,7 @@ import com.softuni.musichub.category.model.view.CategoryView;
 import com.softuni.musichub.category.service.api.CategoryService;
 import com.softuni.musichub.song.entity.Song;
 import com.softuni.musichub.song.model.bindingModel.UploadSong;
+import com.softuni.musichub.song.model.viewModel.SongView;
 import com.softuni.musichub.song.repository.SongRepository;
 import com.softuni.musichub.song.service.api.SongService;
 import com.softuni.musichub.tag.entity.Tag;
@@ -15,12 +16,16 @@ import com.softuni.musichub.user.entity.User;
 import com.softuni.musichub.utils.CDNUtil;
 import com.softuni.musichub.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -112,5 +117,17 @@ public class SongServiceImpl implements SongService {
         String songPartialUrl = (String) uploadResult.get(CDNUtil.PUBLIC_ID_KEY);
         song.setSongPartialUrl(songPartialUrl);
         this.songRepository.save(song);
+    }
+
+    @Override
+    public Page<SongView> findAll(Pageable pageable) {
+        Page<Song> songsPage = this.songRepository.findAll(pageable);
+        List<Song> songs = songsPage.getContent();
+        List<SongView> songViews = this.mapperUtil.convertAll(songs, SongView.class);
+        Pageable songsPageable = songsPage.getPageable();
+        Long totalSongsCount = songsPage.getTotalElements();
+        Page<SongView> songsViewPage = new PageImpl<>(songViews, songsPageable,
+                totalSongsCount);
+        return songsViewPage;
     }
 }

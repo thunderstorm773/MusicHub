@@ -4,11 +4,15 @@ import com.softuni.musichub.category.model.view.CategoryView;
 import com.softuni.musichub.category.service.api.CategoryService;
 import com.softuni.musichub.category.staticData.CategoryConstants;
 import com.softuni.musichub.song.model.bindingModel.UploadSong;
+import com.softuni.musichub.song.model.viewModel.SongView;
 import com.softuni.musichub.song.service.api.SongService;
 import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.entity.User;
 import com.softuni.musichub.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,9 +34,17 @@ public class SongController {
 
     private static final String UPLOAD_SONG_VIEW = "song/upload";
 
+    private static final String BROWSE_SONGS_TITLE = "Browse songs";
+
+    private static final String BROWSE_SONGS_VIEW = "song/browse";
+
     private static final String UPLOAD_SONG = "uploadSong";
 
     private static final String UPLOAD_SONG_SOON = "Song will be uploaded soon!";
+
+    private static final String SONGS_KEY = "songs";
+
+    private static final int SONGS_PER_PAGE = 12;
 
     private final CategoryService categoryService;
 
@@ -92,5 +104,21 @@ public class SongController {
         return modelAndView;
     }
 
+    @GetMapping("/browse")
+    public ModelAndView getBrowseSongsPage(ModelAndView modelAndView,
+                                          @PageableDefault(size = SONGS_PER_PAGE) Pageable pageable) {
+        Page<SongView> songsPage = this.songService.findAll(pageable);
+        Integer songsCount = songsPage.getNumberOfElements();
+        Integer pageNumber = pageable.getPageNumber();
+        if (songsCount == 0 && (pageNumber != 0)) {
+            modelAndView.setViewName("redirect:/songs/browse");
+            return modelAndView;
+        }
 
+        modelAndView.addObject(SONGS_KEY, songsPage);
+        modelAndView.addObject(Constants.TITLE, BROWSE_SONGS_TITLE);
+        modelAndView.addObject(Constants.VIEW, BROWSE_SONGS_VIEW);
+        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
+        return modelAndView;
+    }
 }

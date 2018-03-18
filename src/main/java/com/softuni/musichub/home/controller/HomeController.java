@@ -24,6 +24,12 @@ public class HomeController {
         return modelAndView;
     }
 
+    @GetMapping("/index")
+    public ModelAndView redirectToIndexPage(ModelAndView modelAndView) {
+        modelAndView.setViewName("redirect:/");
+        return modelAndView;
+    }
+
     @GetMapping("/about-us")
     public ModelAndView getAboutUsPage(ModelAndView modelAndView) {
         modelAndView.addObject(Constants.TITLE, ABOUT_US_TITLE);
