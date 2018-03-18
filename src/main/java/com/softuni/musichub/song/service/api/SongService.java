@@ -12,4 +12,6 @@ public interface SongService {
     void upload(UploadSong uploadSong, User user) throws IOException;
 
     Page<SongView> findAll(Pageable pageable);
+
+    Page<SongView> findAllByTitle(String songTitle, Pageable pageable);
 }

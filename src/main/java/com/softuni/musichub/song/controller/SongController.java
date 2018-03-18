@@ -12,7 +12,6 @@ import com.softuni.musichub.user.entity.User;
 import com.softuni.musichub.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,10 +22,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -112,8 +111,15 @@ public class SongController {
 
     @GetMapping("/browse")
     public ModelAndView getBrowseSongsPage(ModelAndView modelAndView,
-                                          @PageableDefault(size = SONGS_PER_PAGE) Pageable pageable) {
-        Page<SongView> songsPage = this.songService.findAll(pageable);
+                                           @RequestParam(value = "songTitle", required = false) String songTitle,
+                                           @PageableDefault(size = SONGS_PER_PAGE) Pageable pageable) {
+        Page<SongView> songsPage;
+        if (songTitle == null) {
+            songsPage = this.songService.findAll(pageable);
+        } else {
+            songsPage = this.songService.findAllByTitle(songTitle, pageable);
+        }
+
         Integer songsCount = songsPage.getNumberOfElements();
         Integer pageNumber = pageable.getPageNumber();
         if (songsCount == 0 && (pageNumber != 0)) {
@@ -127,10 +133,18 @@ public class SongController {
         modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
         return modelAndView;
     }
+
     @GetMapping("/browse/js")
     @ResponseBody
-    public String getSongsAsJson(@PageableDefault(size = SONGS_PER_PAGE) Pageable pageable) {
-        Page<SongView> songsPage = this.songService.findAll(pageable);
+    public String getSongsAsJson(String songTitle,
+                                 @PageableDefault(size = SONGS_PER_PAGE) Pageable pageable) {
+        Page<SongView> songsPage;
+        if (songTitle == null) {
+            songsPage = this.songService.findAll(pageable);
+        }else {
+            songsPage = this.songService.findAllByTitle(songTitle, pageable);
+        }
+
         String songsAsJson = this.gson.toJson(songsPage);
         return songsAsJson;
     }

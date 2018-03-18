@@ -130,4 +130,16 @@ public class SongServiceImpl implements SongService {
                 totalSongsCount);
         return songsViewPage;
     }
+
+    @Override
+    public Page<SongView> findAllByTitle(String songTitle, Pageable pageable) {
+        Page<Song> songsPage = this.songRepository.findAllByTitle(songTitle, pageable);
+        List<Song> songs = songsPage.getContent();
+        List<SongView> songViews = this.mapperUtil.convertAll(songs, SongView.class);
+        Pageable songsPageable = songsPage.getPageable();
+        Long totalSongsCount = songsPage.getTotalElements();
+        Page<SongView> songsViewPage = new PageImpl<>(songViews, songsPageable,
+                totalSongsCount);
+        return songsViewPage;
+    }
 }
