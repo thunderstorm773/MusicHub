@@ -1,8 +1,7 @@
-<html xmlns:th="http://www.thymeleaf.org">
 <form class="form-inline justify-content-center">
     <div class="input-group col-md-7 col-sm-12">
         <input class="form-control form-control-lg" type="text"
-               name="songTitle" placeholder="Search for a track">
+               name="songTitle" placeholder="Search for a track" required>
         <span class="input-group-append">
                     <button type="submit" class="btn btn-secondary">
                         <i class="fas fa-search"></i>
@@ -37,7 +36,8 @@
     </div>
 </div>
 <div>
-    <ul class="pagination justify-content-center" th:if="${!#lists.isEmpty(songs.getContent())}"
+    <ul class="pagination justify-content-center" th:if="${!#lists.isEmpty(songs.getContent())
+                and songs.getTotalPages() > 1}"
         th:with="hasPrevious=${songs.hasPrevious()}, hasNext=${songs.hasNext()},
         previousPageable=${songs.previousPageable()}, nextPageable=${songs.nextPageable()}">
         <!--<li class="page-item" th:classappend="${!hasPrevious} ? 'disabled'">-->

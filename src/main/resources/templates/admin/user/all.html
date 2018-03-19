@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<h4 class="mb-4">All Users</h4>
+<form class="row">
+    <div class="form-group col-md-5 col-sm-9 col-lg-4">
+        <div class="input-group">
+            <input class="form-control form-control" type="text"
+                   name="username" placeholder="Search by username" required>
+            <span class="input-group-append">
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </span>
+        </div>
+    </div>
+</form>
+<table class="table table-hover table-bordered">
+    <thead>
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Username</th>
+        <th scope="col">Email</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="table-active" th:each="user : ${users}" th:object="${user}">
+        <td th:text="*{id}">Id</td>
+        <td th:text="*{username}">Username</td>
+        <td th:text="*{email}">Email</td>
+        <td>
+            <a th:href="@{/admin/users/edit/{id} (id=*{username})}" class="edit mr-2">Edit</a>
+            <a th:href="@{/admin/users/delete/{id} (id=*{username})}" class="delete mr-2">Delete</a>
+            <a th:href="@{/users/show/{id} (id=*{username})}" class="show">Show</a>
+        </td>
+    </tr>
+</table>
+<ul class="pagination justify-content-center" th:if="${!#lists.isEmpty(users.getContent())
+               and users.getTotalPages() > 1}"
+    th:with="hasPrevious=${users.hasPrevious()}, hasNext=${users.hasNext()},
+        previousPageable=${users.previousPageable()}, nextPageable=${users.nextPageable()}">
+    <li class="page-item" th:each="page : ${#numbers.sequence(1, users.getTotalPages())}"
+        th:with="index=${page} - 1"
+        th:classappend="${users.getNumber() == index} ? 'active'">
+        <a class="page-link" th:href="@{/admin/users/all(page=${index})}"
+           th:text="${page}"></a>
+    </li>
+</ul>

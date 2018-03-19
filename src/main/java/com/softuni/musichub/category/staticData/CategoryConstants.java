@@ -13,4 +13,6 @@ public class CategoryConstants {
             "Category already exists";
 
     public static final String CATEGORIES = "categories";
+
+    public static final String CATEGORY = "category";
 }

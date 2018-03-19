@@ -18,7 +18,7 @@ public class MapperUtil {
         return this.modelMapper;
     }
 
-    public <S, D> List<D> convertAll(List<S> source, Class<D> destination) {
+    public <S, D> List<D> convertAll(Iterable<S> source, Class<D> destination) {
         List<D> convertedItems = new ArrayList<>();
         for (S s : source) {
             D convertedItem = this.getModelMapper().map(s, destination);

@@ -1,6 +1,8 @@
 package com.softuni.musichub.category.entity;
 
+import com.softuni.musichub.song.entity.Song;
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "categories")
@@ -9,6 +11,8 @@ public class Category {
     private Long id;
 
     private String name;
+
+    private Set<Song> songs;
 
     public Category() {
     }
@@ -31,5 +35,14 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
+    public Set<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(Set<Song> songs) {
+        this.songs = songs;
     }
 }

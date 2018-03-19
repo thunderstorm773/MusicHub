@@ -1,5 +1,6 @@
 package com.softuni.musichub.user.entity;
 
+import com.softuni.musichub.song.entity.Song;
 import com.softuni.musichub.user.entityListener.UserEntityListener;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
@@ -26,6 +27,8 @@ public class User implements UserDetails {
     private boolean isCredentialsNonExpired;
 
     private boolean isEnabled;
+
+    private Set<Song> songs;
 
     private Set<Role> authorities;
 
@@ -109,6 +112,15 @@ public class User implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    @OneToMany(mappedBy = "uploader", cascade = CascadeType.REMOVE)
+    public Set<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(Set<Song> songs) {
+        this.songs = songs;
     }
 
     @ManyToMany(fetch = FetchType.EAGER)

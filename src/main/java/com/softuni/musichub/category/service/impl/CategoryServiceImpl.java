@@ -8,6 +8,9 @@ import com.softuni.musichub.category.repository.CategoryRepository;
 import com.softuni.musichub.category.service.api.CategoryService;
 import com.softuni.musichub.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -48,10 +51,21 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryView> findAll() {
-        List<Category> categories = this.categoryRepository.findAll();
+    public Page<CategoryView> findAll(Pageable pageable) {
+        Page<Category> categoryPage = this.categoryRepository.findAll(pageable);
+        List<Category> categories = categoryPage.getContent();
         List<CategoryView> categoryViews = this.mapperUtil
                 .convertAll(categories, CategoryView.class);
+        Long totalElements = categoryPage.getTotalElements();
+        Page<CategoryView> categoryViewPage = new PageImpl<>(categoryViews, pageable,
+                totalElements);
+        return categoryViewPage;
+    }
+
+    @Override
+    public List<CategoryView> findAll() {
+        Iterable<Category> categories = this.categoryRepository.findAll();
+        List<CategoryView> categoryViews = this.mapperUtil.convertAll(categories, CategoryView.class);
         return categoryViews;
     }
 

@@ -8,6 +8,7 @@ import com.softuni.musichub.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -30,5 +31,12 @@ public class RoleServiceImpl implements RoleService{
         RoleView roleView = this.mapperUtil.getModelMapper()
                 .map(role, RoleView.class);
         return roleView;
+    }
+
+    @Override
+    public List<RoleView> findAll() {
+        List<Role> roles = this.roleRepository.findAll();
+        List<RoleView> roleViews = this.mapperUtil.convertAll(roles, RoleView.class);
+        return roleViews;
     }
 }

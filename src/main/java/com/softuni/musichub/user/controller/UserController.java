@@ -17,16 +17,6 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 public class UserController {
 
-    private static final String USER_REGISTER_TITLE = "Register";
-
-    private static final String USER_REGISTER_VIEW = "user/register";
-
-    private static final String USER_LOGIN_TITLE = "Login";
-
-    private static final String USER_LOGIN_VIEW = "user/login";
-
-    private static final String REGISTER_USER = "registerUser";
-
     private final UserService userService;
 
     @Autowired
@@ -37,13 +27,13 @@ public class UserController {
     @GetMapping("/register")
     public ModelAndView getRegisterUserPage(ModelAndView modelAndView,
                                             Model model) {
-        if (!model.asMap().containsKey(REGISTER_USER)) {
+        if (!model.asMap().containsKey(UserConstants.REGISTER_USER)) {
             RegisterUser registerUser = new RegisterUser();
-            modelAndView.addObject(REGISTER_USER, registerUser);
+            modelAndView.addObject(UserConstants.REGISTER_USER, registerUser);
         }
 
-        modelAndView.addObject(Constants.TITLE, USER_REGISTER_TITLE);
-        modelAndView.addObject(Constants.VIEW, USER_REGISTER_VIEW);
+        modelAndView.addObject(Constants.TITLE, UserConstants.USER_REGISTER_TITLE);
+        modelAndView.addObject(Constants.VIEW, UserConstants.USER_REGISTER_VIEW);
         modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
         return modelAndView;
     }
@@ -54,8 +44,9 @@ public class UserController {
                                      BindingResult bindingResult,
                                      RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute(REGISTER_USER, registerUser);
-            String bindingResultKey = Constants.BINDING_RESULT_PACKAGE + REGISTER_USER;
+            redirectAttributes.addFlashAttribute(UserConstants.REGISTER_USER, registerUser);
+            String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
+                    + UserConstants.REGISTER_USER;
             redirectAttributes.addFlashAttribute(bindingResultKey, bindingResult);
             modelAndView.setViewName("redirect:/users/register");
             return modelAndView;
@@ -74,8 +65,8 @@ public class UserController {
                     UserConstants.INVALID_CREDENTIALS_MESSAGE);
         }
 
-        modelAndView.addObject(Constants.TITLE, USER_LOGIN_TITLE);
-        modelAndView.addObject(Constants.VIEW, USER_LOGIN_VIEW);
+        modelAndView.addObject(Constants.TITLE, UserConstants.USER_LOGIN_TITLE);
+        modelAndView.addObject(Constants.VIEW, UserConstants.USER_LOGIN_VIEW);
         modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
         return modelAndView;
     }

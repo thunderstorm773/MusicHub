@@ -40,4 +40,20 @@ public class UserConstants {
 
     public static final String INVALID_CREDENTIALS_MESSAGE =
             "Invalid credentials";
+
+    public static final String USERS = "users";
+
+    public static final String ROLES = "roles";
+
+    public static final String USER_REGISTER_TITLE = "Register";
+
+    public static final String USER_REGISTER_VIEW = "user/register";
+
+    public static final String USER_LOGIN_TITLE = "Login";
+
+    public static final String USER_LOGIN_VIEW = "user/login";
+
+    public static final String REGISTER_USER = "registerUser";
+
+
 }
