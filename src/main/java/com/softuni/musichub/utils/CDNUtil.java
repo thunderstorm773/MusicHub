@@ -57,6 +57,7 @@ public class CDNUtil {
                 API_KEY, API_KEY_VALUE,
                 API_SECRET_KEY, API_SECRET_VALUE
         );
+
         this.cloudinary = new Cloudinary(configMap);
     }
 

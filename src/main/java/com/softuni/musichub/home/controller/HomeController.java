@@ -18,15 +18,13 @@ public class HomeController {
 
     @GetMapping("/")
     public ModelAndView getIndexPage(ModelAndView modelAndView) {
-        modelAndView.addObject(Constants.TITLE, INDEX_TITLE);
-        modelAndView.addObject(Constants.VIEW, INDEX_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
+        modelAndView.setViewName("redirect:/songs/browse");
         return modelAndView;
     }
 
     @GetMapping("/index")
     public ModelAndView redirectToIndexPage(ModelAndView modelAndView) {
-        modelAndView.setViewName("redirect:/");
+        modelAndView.setViewName("redirect:/songs/browse");
         return modelAndView;
     }
 

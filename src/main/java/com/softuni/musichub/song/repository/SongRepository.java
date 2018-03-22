@@ -13,4 +13,9 @@ public interface SongRepository extends PagingAndSortingRepository<Song, Long>{
 
     @Query("SELECT s FROM Song AS s WHERE s.title LIKE %:title%")
     Page<Song> findAllByTitle(@Param("title") String title, Pageable pageable);
+
+    Page<Song> findAllByCategoryName(String categoryName, Pageable pageable);
+
+    @Query("SELECT s FROM Song AS s INNER JOIN s.tags AS t WHERE t.name = :tagName")
+    Page<Song> findAllByTagName(@Param("tagName") String tagName, Pageable pageable);
 }

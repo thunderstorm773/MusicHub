@@ -1,6 +1,7 @@
 package com.softuni.musichub.song.service.api;
 
 import com.softuni.musichub.song.model.bindingModel.UploadSong;
+import com.softuni.musichub.song.model.viewModel.SongDetailsView;
 import com.softuni.musichub.song.model.viewModel.SongView;
 import com.softuni.musichub.user.entity.User;
 import org.springframework.data.domain.Page;
@@ -14,4 +15,11 @@ public interface SongService {
     Page<SongView> findAll(Pageable pageable);
 
     Page<SongView> findAllByTitle(String songTitle, Pageable pageable);
+
+    SongDetailsView getDetailsById(Long songId);
+
+    Page<SongView> findAllByCategoryName(String categoryName, Pageable pageable);
+
+    Page<SongView> findAllByTagName(String tagName, Pageable pageable);
+
 }

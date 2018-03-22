@@ -4,7 +4,9 @@ import com.softuni.musichub.category.entity.Category;
 import com.softuni.musichub.category.model.view.CategoryView;
 import com.softuni.musichub.category.service.api.CategoryService;
 import com.softuni.musichub.song.entity.Song;
+import com.softuni.musichub.song.exception.SongNotFoundException;
 import com.softuni.musichub.song.model.bindingModel.UploadSong;
+import com.softuni.musichub.song.model.viewModel.SongDetailsView;
 import com.softuni.musichub.song.model.viewModel.SongView;
 import com.softuni.musichub.song.repository.SongRepository;
 import com.softuni.musichub.song.service.api.SongService;
@@ -79,6 +81,16 @@ public class SongServiceImpl implements SongService {
         return tags;
     }
 
+    private Page<SongView> constructSongViewPage(Page<Song> songPage) {
+        List<Song> songs = songPage.getContent();
+        List<SongView> songViews = this.mapperUtil.convertAll(songs, SongView.class);
+        Pageable songsPageable = songPage.getPageable();
+        Long totalSongsCount = songPage.getTotalElements();
+        Page<SongView> songsViewPage = new PageImpl<>(songViews, songsPageable,
+                totalSongsCount);
+        return songsViewPage;
+    }
+
     @Async
     @Override
     public void upload(UploadSong uploadSong, User user) throws IOException {
@@ -121,25 +133,37 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Page<SongView> findAll(Pageable pageable) {
-        Page<Song> songsPage = this.songRepository.findAll(pageable);
-        List<Song> songs = songsPage.getContent();
-        List<SongView> songViews = this.mapperUtil.convertAll(songs, SongView.class);
-        Pageable songsPageable = songsPage.getPageable();
-        Long totalSongsCount = songsPage.getTotalElements();
-        Page<SongView> songsViewPage = new PageImpl<>(songViews, songsPageable,
-                totalSongsCount);
-        return songsViewPage;
+        Page<Song> songPage = this.songRepository.findAll(pageable);
+        return this.constructSongViewPage(songPage);
     }
 
     @Override
     public Page<SongView> findAllByTitle(String songTitle, Pageable pageable) {
-        Page<Song> songsPage = this.songRepository.findAllByTitle(songTitle, pageable);
-        List<Song> songs = songsPage.getContent();
-        List<SongView> songViews = this.mapperUtil.convertAll(songs, SongView.class);
-        Pageable songsPageable = songsPage.getPageable();
-        Long totalSongsCount = songsPage.getTotalElements();
-        Page<SongView> songsViewPage = new PageImpl<>(songViews, songsPageable,
-                totalSongsCount);
-        return songsViewPage;
+        Page<Song> songPage = this.songRepository.findAllByTitle(songTitle, pageable);
+        return this.constructSongViewPage(songPage);
+    }
+
+    @Override
+    public SongDetailsView getDetailsById(Long songId) {
+        Song song = this.songRepository.findById(songId).orElse(null);
+        if (song == null) {
+            throw new SongNotFoundException();
+        }
+
+        SongDetailsView songDetailsView = this.mapperUtil.getModelMapper()
+                .map(song, SongDetailsView.class);
+        return songDetailsView;
+    }
+
+    @Override
+    public Page<SongView> findAllByCategoryName(String categoryName, Pageable pageable) {
+        Page<Song> songPage = this.songRepository.findAllByCategoryName(categoryName, pageable);
+        return this.constructSongViewPage(songPage);
+    }
+
+    @Override
+    public Page<SongView> findAllByTagName(String tagName, Pageable pageable) {
+        Page<Song> songPage = this.songRepository.findAllByTagName(tagName, pageable);
+        return this.constructSongViewPage(songPage);
     }
 }

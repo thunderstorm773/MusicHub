@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="row" th:object="${songDetails}">
+    <div class="col-md-6 text-center">
+        <h4 th:text="*{title}">Title</h4>
+        <h6>Added on <span th:text="*{#dates.format(uploadedOn, 'dd/MM/yyyy')}"></span>
+            by <span class="badge badge-primary" th:text="*{uploaderUsername}">Uploader</span></h6>
+        <!--<div class="form-group">-->
+        <!--<a th:href="@{/songs/edit/{songId} (songId=*{id})}" class="btn btn-warning">Edit</a>-->
+        <!--<a th:href="@{/songs/delete/{songId} (songId=*{id})}" class="btn btn-danger">Delete</a>-->
+        <!--<a href="#" class="btn btn-primary">Download</a>-->
+        <!--</div>-->
+    </div>
+    <div class="col-md-3 text-center">
+        <h4>Category</h4>
+        <a th:href="@{/songs/browse(categoryName=*{categoryName})}"
+           class="btn btn-secondary mb-2 mr-2 list-group-flush"
+           th:text="|&#35;*{categoryName}|">Category</a>
+    </div>
+    <div class="col-md-3 text-center">
+        <h4>Tags</h4>
+        <h5 class="text-danger" th:if="${#sets.isEmpty(songDetails.tags)}">No tags</h5>
+        <a th:each="tag : *{tags}" th:text="|&#35;${tag.name}|"
+           th:href="@{/songs/browse(tagName=${tag.name})}"
+           class="btn btn-secondary mb-2 mr-2 list-group-flush">Name</a>
+    </div>
+</div>

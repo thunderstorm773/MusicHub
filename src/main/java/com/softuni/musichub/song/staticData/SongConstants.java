@@ -25,6 +25,12 @@ public class SongConstants {
 
     public static final String BROWSE_SONGS_VIEW = "song/browse";
 
+    public static final String SONG_DETAILS_TITLE = "Song details";
+
+    public static final String SONG_DETAILS_VIEW = "song/details";
+
+    public static final String SONG_DETAILS = "songDetails";
+
     public static final String UPLOAD_SONG = "uploadSong";
 
     public static final String UPLOAD_SONG_SOON = "Song will be uploaded soon!";
@@ -34,4 +40,6 @@ public class SongConstants {
     public static final String UPLOADED_ON = "uploadedOn";
 
     public static final int SONGS_PER_PAGE = 12;
+
+
 }

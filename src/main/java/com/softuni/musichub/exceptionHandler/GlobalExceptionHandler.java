@@ -8,6 +8,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public String handleAllExceptions() {
-        return "redirect:/error/500";
+        return "redirect:/errors/500";
     }
 }
