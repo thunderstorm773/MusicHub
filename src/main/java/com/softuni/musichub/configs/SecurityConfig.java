@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/bootstrap-4.0.0.**", "/css/**",
                         "/font-awesome/**", "/images/**",
-                        "/jquery/**", "/theme/**", "/scripts/**").permitAll()
+                        "/jquery/**", "/theme/**", "/scripts/**", "/audiojs/**").permitAll()
                 .antMatchers("/users/login", "/users/register").anonymous()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/songs/upload").authenticated()

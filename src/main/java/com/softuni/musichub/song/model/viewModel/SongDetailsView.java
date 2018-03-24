@@ -14,6 +14,8 @@ public class SongDetailsView {
 
     private String uploaderUsername;
 
+    private String streamingUrl;
+
     private String downloadUrl;
 
     private Date uploadedOn;
@@ -53,6 +55,14 @@ public class SongDetailsView {
 
     public void setUploaderUsername(String uploaderUsername) {
         this.uploaderUsername = uploaderUsername;
+    }
+
+    public String getStreamingUrl() {
+        return streamingUrl;
+    }
+
+    public void setStreamingUrl(String streamingUrl) {
+        this.streamingUrl = streamingUrl;
     }
 
     public String getDownloadUrl() {

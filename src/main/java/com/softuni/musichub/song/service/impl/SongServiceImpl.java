@@ -162,6 +162,9 @@ public class SongServiceImpl implements SongService {
         String songDownloadUrl = this.cdnUtil
                 .getResourceDownloadUrl(songPartialUrl, CDNUtil.VIDEO_RESOURCE_TYPE);
         songDetailsView.setDownloadUrl(songDownloadUrl);
+        String songStreamingUrl = this.cdnUtil
+                .getResourceFullUrl(songPartialUrl, CDNUtil.VIDEO_RESOURCE_TYPE);
+        songDetailsView.setStreamingUrl(songStreamingUrl);
         return songDetailsView;
     }
 
