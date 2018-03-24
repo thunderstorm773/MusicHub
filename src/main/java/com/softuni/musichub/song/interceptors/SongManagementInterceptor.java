@@ -44,7 +44,8 @@ public class SongManagementInterceptor extends HandlerInterceptorAdapter {
             String songIdStr = (String) pathVariables.get(SongConstants.ID);
             songId = Long.valueOf(songIdStr);
         } catch (NumberFormatException e) {
-            return true;
+            response.sendRedirect("/songs/browse");
+            return false;
         }
 
         SongView songView = this.songService.findById(songId);
@@ -53,8 +54,8 @@ public class SongManagementInterceptor extends HandlerInterceptorAdapter {
         String authenticationName = authentication.getName();
         boolean isUserHasAnyRole = this.userService.isUserHasAnyRole(authenticationName, ROLE_ADMIN);
         if (!authenticationName.equals(uploaderUsername) && (!isUserHasAnyRole)) {
-            request.getRequestDispatcher("/songs/details/" + songId)
-                    .forward(request, response);
+            response.sendRedirect("/songs/details/" + songId);
+            return false;
         }
 
         return true;
