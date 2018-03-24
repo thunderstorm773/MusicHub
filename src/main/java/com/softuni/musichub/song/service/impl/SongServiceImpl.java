@@ -5,6 +5,7 @@ import com.softuni.musichub.category.model.view.CategoryView;
 import com.softuni.musichub.category.service.api.CategoryService;
 import com.softuni.musichub.song.entity.Song;
 import com.softuni.musichub.song.exception.SongNotFoundException;
+import com.softuni.musichub.song.model.bindingModel.EditSong;
 import com.softuni.musichub.song.model.bindingModel.UploadSong;
 import com.softuni.musichub.song.model.viewModel.SongDetailsView;
 import com.softuni.musichub.song.model.viewModel.SongView;
@@ -32,6 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -58,6 +60,10 @@ public class SongServiceImpl implements SongService {
         this.tagService = tagService;
         this.mapperUtil = mapperUtil;
         this.cdnUtil = cdnUtil;
+    }
+
+    private Set<String> mapTagNames(Set<Tag> tags) {
+        return tags.stream().map(Tag::getName).collect(Collectors.toSet());
     }
 
     private Set<Tag> getTags(String tagsAsString) {
@@ -144,7 +150,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public SongDetailsView getDetailsById(Long songId) {
+    public SongDetailsView getDetailsById(Long songId) throws Exception {
         Song song = this.songRepository.findById(songId).orElse(null);
         if (song == null) {
             throw new SongNotFoundException();
@@ -152,6 +158,10 @@ public class SongServiceImpl implements SongService {
 
         SongDetailsView songDetailsView = this.mapperUtil.getModelMapper()
                 .map(song, SongDetailsView.class);
+        String songPartialUrl = song.getSongPartialUrl();
+        String songDownloadUrl = this.cdnUtil
+                .getResourceDownloadUrl(songPartialUrl, CDNUtil.VIDEO_RESOURCE_TYPE);
+        songDetailsView.setDownloadUrl(songDownloadUrl);
         return songDetailsView;
     }
 
@@ -165,5 +175,71 @@ public class SongServiceImpl implements SongService {
     public Page<SongView> findAllByTagName(String tagName, Pageable pageable) {
         Page<Song> songPage = this.songRepository.findAllByTagName(tagName, pageable);
         return this.constructSongViewPage(songPage);
+    }
+
+    @Override
+    public SongView findById(Long id) throws SongNotFoundException {
+        Song song = this.songRepository.findById(id).orElse(null);
+        if (song == null) {
+            throw new SongNotFoundException();
+        }
+
+        SongView songView = this.mapperUtil.getModelMapper().map(song, SongView.class);
+        return songView;
+    }
+
+    @Override
+    public void deleteById(Long songId) throws Exception {
+        Song song = this.songRepository.findById(songId).orElse(null);
+        if (song == null) {
+            throw new SongNotFoundException();
+        }
+
+        String songPartialUrl = song.getSongPartialUrl();
+        // TODO To check if resource is deleted in CDN
+        this.cdnUtil.deleteResource(songPartialUrl);
+        this.songRepository.delete(song);
+    }
+
+    @Override
+    public EditSong getEditSongById(Long songId) throws SongNotFoundException {
+        Song song = this.songRepository.findById(songId).orElse(null);
+        if (song == null) {
+            throw new SongNotFoundException();
+        }
+
+        EditSong editSong = this.mapperUtil.getModelMapper().map(song, EditSong.class);
+        Set<Tag> tags = song.getTags();
+        Set<String> tagNames = this.mapTagNames(tags);
+        String concatenatedTagNames = String.join(", ", tagNames);
+        editSong.setTagNames(concatenatedTagNames);
+        return editSong;
+    }
+
+    @Override
+    public void edit(EditSong editSong, Long songId) throws SongNotFoundException {
+        Song song = this.songRepository.findById(songId).orElse(null);
+        if (song == null) {
+            throw new SongNotFoundException();
+        }
+
+        Long newCategoryId = editSong.getCategoryId();
+        CategoryView categoryView = this.categoryService.findById(newCategoryId);
+        if (categoryView == null) {
+            return;
+        }
+
+        String newTitle = editSong.getTitle();
+        Category newCategory = this.mapperUtil.getModelMapper()
+                .map(categoryView, Category.class);
+        String tagNames = editSong.getTagNames();
+        if (tagNames == null) {
+            return;
+        }
+
+        Set<Tag> newTags = this.getTags(tagNames);
+        song.setTitle(newTitle);
+        song.setCategory(newCategory);
+        song.setTags(newTags);
     }
 }

@@ -5,6 +5,7 @@ import com.softuni.musichub.category.model.view.CategoryView;
 import com.softuni.musichub.category.service.api.CategoryService;
 import com.softuni.musichub.category.staticData.CategoryConstants;
 import com.softuni.musichub.song.exception.SongNotFoundException;
+import com.softuni.musichub.song.model.bindingModel.EditSong;
 import com.softuni.musichub.song.model.bindingModel.UploadSong;
 import com.softuni.musichub.song.model.viewModel.SongDetailsView;
 import com.softuni.musichub.song.model.viewModel.SongView;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -154,12 +156,71 @@ public class SongController {
 
     @GetMapping("/details/{id}")
     public ModelAndView getSongDetailsPage(ModelAndView modelAndView,
-                                           @PathVariable Long id) {
+                                           @PathVariable Long id) throws Exception {
         SongDetailsView songDetailsView = this.songService.getDetailsById(id);
         modelAndView.addObject(SongConstants.SONG_DETAILS, songDetailsView);
         modelAndView.addObject(Constants.TITLE, SongConstants.SONG_DETAILS_TITLE);
         modelAndView.addObject(Constants.VIEW, SongConstants.SONG_DETAILS_VIEW);
         modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
+        return modelAndView;
+    }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView getDeleteSongPage(ModelAndView modelAndView,
+                                          @PathVariable Long id) {
+        SongView songView = this.songService.findById(id);
+        modelAndView.addObject(Constants.TITLE, SongConstants.DELETE_SONG_TITLE);
+        modelAndView.addObject(Constants.VIEW, SongConstants.DELETE_SONG_VIEW);
+        modelAndView.addObject(SongConstants.DELETE_SONG, songView);
+        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
+        return modelAndView;
+    }
+
+    @PostMapping("/delete/{id}")
+    public ModelAndView deleteSong(ModelAndView modelAndView,
+                                   @PathVariable Long id) throws Exception {
+        this.songService.deleteById(id);
+        modelAndView.setViewName("redirect:/songs/browse");
+        return modelAndView;
+    }
+
+    @GetMapping("/edit/{id}")
+    public ModelAndView getEditSongPage(ModelAndView modelAndView,
+                                        @PathVariable Long id,
+                                        Model model) {
+        EditSong editSong;
+        if (!model.asMap().containsKey(SongConstants.EDIT_SONG)) {
+            editSong = this.songService.getEditSongById(id);
+        } else {
+            editSong = (EditSong) model.asMap().get(SongConstants.EDIT_SONG);
+        }
+
+        List<CategoryView> categories = this.categoryService.findAll();
+        modelAndView.addObject(CategoryConstants.CATEGORIES, categories);
+        modelAndView.addObject(SongConstants.EDIT_SONG, editSong);
+        modelAndView.addObject(Constants.TITLE, SongConstants.EDIT_SONG_TITLE);
+        modelAndView.addObject(Constants.VIEW, SongConstants.EDIT_SONG_VIEW);
+        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
+        return modelAndView;
+    }
+
+    @PostMapping("/edit/{id}")
+    public ModelAndView editSong(ModelAndView modelAndView,
+                                 @PathVariable Long id,
+                                 @Valid @ModelAttribute EditSong editSong,
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute(SongConstants.EDIT_SONG, editSong);
+            String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
+                    + SongConstants.EDIT_SONG;
+            redirectAttributes.addFlashAttribute(bindingResultKey, bindingResult);
+            modelAndView.setViewName("redirect:/songs/edit/" + id);
+            return modelAndView;
+        }
+
+        this.songService.edit(editSong, id);
+        modelAndView.setViewName("redirect:/songs/details/" + id);
         return modelAndView;
     }
 }

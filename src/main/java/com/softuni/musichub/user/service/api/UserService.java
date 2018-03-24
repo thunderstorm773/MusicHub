@@ -21,4 +21,6 @@ public interface UserService extends UserDetailsService {
     void deleteByUsername(String username);
 
     void edit(EditUser editUser, String username);
+
+    boolean isUserHasAnyRole(String username, String... roleNames);
 }

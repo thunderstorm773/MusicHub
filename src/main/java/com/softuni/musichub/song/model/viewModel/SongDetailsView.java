@@ -14,6 +14,8 @@ public class SongDetailsView {
 
     private String uploaderUsername;
 
+    private String downloadUrl;
+
     private Date uploadedOn;
 
     private Set<TagView> tags;
@@ -51,6 +53,14 @@ public class SongDetailsView {
 
     public void setUploaderUsername(String uploaderUsername) {
         this.uploaderUsername = uploaderUsername;
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public void setDownloadUrl(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
     }
 
     public Date getUploadedOn() {

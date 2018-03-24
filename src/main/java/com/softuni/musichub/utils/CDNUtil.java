@@ -1,25 +1,24 @@
 package com.softuni.musichub.utils;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
+import com.cloudinary.Url;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Component
 public class CDNUtil {
 
-    private static final String TEMP_FOLDER_NAME = "temp";
-
     private static final String RESOURCE_TYPE_KEY = "resource_type";
 
     private static final String FOLDER_KEY = "folder";
-
-    private static final String RESOURCE_FULL_URL =
-            "https://res.cloudinary.com/%s/%s/upload/%s/%s";
 
     private static final String CLOUD_NAME_KEY = "cloud_name";
 
@@ -44,6 +43,8 @@ public class CDNUtil {
     public static final String SONGS_FOLDER = "songs";
 
     public static final String IMAGES_FOLDER = "images";
+
+    private static final String ATTACHMENT_FLAG = "attachment";
 
     private Cloudinary cloudinary;
 
@@ -75,5 +76,17 @@ public class CDNUtil {
         String resourceFullUrl = this.cloudinary.url()
                 .resourceType(resourceType).generate(partialUrl);
         return resourceFullUrl;
+    }
+
+    public String getResourceDownloadUrl(String partialUrl, String resourceType) throws Exception {
+        Transformation attachmentFlag = new Transformation().flags(ATTACHMENT_FLAG);
+        Url url = this.cloudinary.url().transformation(attachmentFlag);
+        String downloadUrl = url.resourceType(resourceType).generate(partialUrl);
+        return downloadUrl;
+    }
+
+    public void deleteResource(String partialUrl) throws Exception {
+        this.cloudinary.api().deleteResources(Arrays.asList(partialUrl),
+                ObjectUtils.asMap(RESOURCE_TYPE_KEY, VIDEO_RESOURCE_TYPE));
     }
 }

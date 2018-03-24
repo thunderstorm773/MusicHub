@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -144,6 +145,12 @@ public class UserServiceImpl implements UserService {
         List<Role> roleList = this.mapperUtil.convertAll(roleViews, Role.class);
         Set<Role> newRoles = new HashSet<>(roleList);
         user.setAuthorities(newRoles);
+    }
+
+    @Override
+    public boolean isUserHasAnyRole(String username, String... roleNames) {
+        BigInteger result = (BigInteger) this.userRepository.isUserHasAnyRole(username, roleNames);
+        return result.equals(new BigInteger("1"));
     }
 
     @Override

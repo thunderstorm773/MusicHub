@@ -3,10 +3,8 @@ package com.softuni.musichub.song.entity;
 import com.softuni.musichub.category.entity.Category;
 import com.softuni.musichub.tag.entity.Tag;
 import com.softuni.musichub.user.entity.User;
-
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity

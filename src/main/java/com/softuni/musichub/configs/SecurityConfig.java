@@ -4,6 +4,7 @@ import com.softuni.musichub.user.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -36,14 +37,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/login", "/users/register").anonymous()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/songs/upload").authenticated()
-                .and().exceptionHandling().accessDeniedPage("/")
-                .and().formLogin().defaultSuccessUrl("/").loginPage("/users/login")
+                .anyRequest().permitAll()
+                .and().exceptionHandling().accessDeniedPage("/songs/browse")
+                .and().formLogin().defaultSuccessUrl("/songs/browse").loginPage("/users/login")
                 .usernameParameter("username").passwordParameter("password")
                 .and().rememberMe()
                 .rememberMeParameter("rememberMe")
                 .tokenValiditySeconds(TOKEN_VALIDITY_SECONDS)
-                .and().logout().logoutUrl("/users/logout")
-                .permitAll();
+                .and().logout().logoutUrl("/users/logout");
     }
 
     @Override

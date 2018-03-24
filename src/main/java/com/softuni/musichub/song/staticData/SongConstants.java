@@ -31,6 +31,8 @@ public class SongConstants {
 
     public static final String SONG_DETAILS = "songDetails";
 
+    public static final String DELETE_SONG = "deleteSong";
+
     public static final String UPLOAD_SONG = "uploadSong";
 
     public static final String UPLOAD_SONG_SOON = "Song will be uploaded soon!";
@@ -40,6 +42,18 @@ public class SongConstants {
     public static final String UPLOADED_ON = "uploadedOn";
 
     public static final int SONGS_PER_PAGE = 12;
+
+    public static final String DELETE_SONG_TITLE = "Delete song";
+
+    public static final String DELETE_SONG_VIEW = "song/delete";
+
+    public static final String EDIT_SONG_TITLE = "Edit song";
+
+    public static final String EDIT_SONG_VIEW = "song/edit";
+
+    public static final String EDIT_SONG = "editSong";
+
+    public static final String ID = "id";
 
 
 }

@@ -1,14 +1,17 @@
-<html xmlns:th="http://www.thymeleaf.org">
 <div class="row" th:object="${songDetails}">
     <div class="col-md-6 text-center">
         <h4 th:text="*{title}">Title</h4>
         <h6>Added on <span th:text="*{#dates.format(uploadedOn, 'dd/MM/yyyy')}"></span>
             by <span class="badge badge-primary" th:text="*{uploaderUsername}">Uploader</span></h6>
-        <!--<div class="form-group">-->
-        <!--<a th:href="@{/songs/edit/{songId} (songId=*{id})}" class="btn btn-warning">Edit</a>-->
-        <!--<a th:href="@{/songs/delete/{songId} (songId=*{id})}" class="btn btn-danger">Delete</a>-->
-        <!--<a href="#" class="btn btn-primary">Download</a>-->
-        <!--</div>-->
+        <div class="form-group">
+            <th:block th:if="${#authentication.name} eq *{uploaderUsername} or
+                    ${#authorization.expr('hasRole(''ADMIN'')')}">
+                <a th:href="@{/songs/edit/{songId} (songId=*{id})}" class="btn btn-warning">Edit</a>
+                <a th:href="@{/songs/delete/{songId} (songId=*{id})}" class="btn btn-danger">Delete</a>
+            </th:block>
+            <a href="#" class="btn btn-primary"
+               sec:authorize="isAuthenticated()" th:href="*{downloadUrl}">Download</a>
+        </div>
     </div>
     <div class="col-md-3 text-center">
         <h4>Category</h4>
