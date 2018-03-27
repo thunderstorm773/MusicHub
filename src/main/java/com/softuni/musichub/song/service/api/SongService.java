@@ -31,4 +31,6 @@ public interface SongService {
     EditSong getEditSongById(Long songId) throws SongNotFoundException;
 
     void edit(EditSong editSong, Long songId) throws SongNotFoundException;
+
+    boolean isSongExists(Long songId);
 }

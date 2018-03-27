@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/jquery/**", "/theme/**", "/scripts/**", "/audiojs/**").permitAll()
                 .antMatchers("/users/login", "/users/register").anonymous()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/songs/upload").authenticated()
+                .antMatchers("/songs/upload", "/comments/post").authenticated()
                 .anyRequest().permitAll()
                 .and().exceptionHandling().accessDeniedPage("/songs/browse")
                 .and().formLogin().defaultSuccessUrl("/songs/browse").loginPage("/users/login")

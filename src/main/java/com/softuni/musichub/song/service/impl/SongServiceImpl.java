@@ -3,6 +3,7 @@ package com.softuni.musichub.song.service.impl;
 import com.softuni.musichub.category.entity.Category;
 import com.softuni.musichub.category.model.view.CategoryView;
 import com.softuni.musichub.category.service.api.CategoryService;
+import com.softuni.musichub.comment.models.viewModels.CommentView;
 import com.softuni.musichub.song.entity.Song;
 import com.softuni.musichub.song.exception.SongNotFoundException;
 import com.softuni.musichub.song.model.bindingModel.EditSong;
@@ -27,10 +28,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -97,6 +95,16 @@ public class SongServiceImpl implements SongService {
         return songsViewPage;
     }
 
+    private void sortCommentsByPublishedDateDesc(SongDetailsView songDetailsView) {
+        List<CommentView> commentViews = songDetailsView.getComments();
+        Comparator<CommentView> commentViewComparator = (c1, c2) ->
+            c2.getPublishedOn().compareTo(c1.getPublishedOn());
+
+        List<CommentView> sortedComments = commentViews.stream().sorted(commentViewComparator)
+                .collect(Collectors.toList());
+        songDetailsView.setComments(sortedComments);
+    }
+
     @Async
     @Override
     public void upload(UploadSong uploadSong, User user) throws IOException {
@@ -158,6 +166,7 @@ public class SongServiceImpl implements SongService {
 
         SongDetailsView songDetailsView = this.mapperUtil.getModelMapper()
                 .map(song, SongDetailsView.class);
+        this.sortCommentsByPublishedDateDesc(songDetailsView);
         String songPartialUrl = song.getSongPartialUrl();
         String songDownloadUrl = this.cdnUtil
                 .getResourceDownloadUrl(songPartialUrl, CDNUtil.VIDEO_RESOURCE_TYPE);
@@ -199,7 +208,6 @@ public class SongServiceImpl implements SongService {
         }
 
         String songPartialUrl = song.getSongPartialUrl();
-        // TODO To check if resource is deleted in CDN
         this.cdnUtil.deleteResource(songPartialUrl);
         this.songRepository.delete(song);
     }
@@ -244,5 +252,10 @@ public class SongServiceImpl implements SongService {
         song.setTitle(newTitle);
         song.setCategory(newCategory);
         song.setTags(newTags);
+    }
+
+    @Override
+    public boolean isSongExists(Long songId) {
+        return this.songRepository.existsById(songId);
     }
 }

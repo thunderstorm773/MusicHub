@@ -1,6 +1,7 @@
 package com.softuni.musichub.song.entity;
 
 import com.softuni.musichub.category.entity.Category;
+import com.softuni.musichub.comment.entity.Comment;
 import com.softuni.musichub.tag.entity.Tag;
 import com.softuni.musichub.user.entity.User;
 import javax.persistence.*;
@@ -24,6 +25,8 @@ public class Song {
     private Date uploadedOn;
 
     private Set<Tag> tags;
+
+    private Set<Comment> comments;
 
     public Song() {
         this.uploadedOn = new Date();
@@ -96,5 +99,14 @@ public class Song {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    @OneToMany(mappedBy = "song", cascade = CascadeType.REMOVE)
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 }

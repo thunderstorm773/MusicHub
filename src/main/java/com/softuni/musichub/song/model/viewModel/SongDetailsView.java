@@ -1,7 +1,9 @@
 package com.softuni.musichub.song.model.viewModel;
 
+import com.softuni.musichub.comment.models.viewModels.CommentView;
 import com.softuni.musichub.tag.model.viewModel.TagView;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 public class SongDetailsView {
@@ -21,6 +23,8 @@ public class SongDetailsView {
     private Date uploadedOn;
 
     private Set<TagView> tags;
+
+    private List<CommentView> comments;
 
     public SongDetailsView() {
     }
@@ -87,5 +91,13 @@ public class SongDetailsView {
 
     public void setTags(Set<TagView> tags) {
         this.tags = tags;
+    }
+
+    public List<CommentView> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentView> comments) {
+        this.comments = comments;
     }
 }
