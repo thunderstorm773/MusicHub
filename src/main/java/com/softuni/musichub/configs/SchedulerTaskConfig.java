@@ -20,5 +20,6 @@ public class SchedulerTaskConfig {
     @Scheduled(cron = "0 0 1 * * *")
     public void deleteAllRejectedCommentsAtInterval() {
         this.commentService.deleteAllRejectedComments();
+
     }
 }
