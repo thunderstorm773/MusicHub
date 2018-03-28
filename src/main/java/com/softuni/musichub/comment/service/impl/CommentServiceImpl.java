@@ -14,9 +14,13 @@ import com.softuni.musichub.user.model.viewModel.UserView;
 import com.softuni.musichub.user.service.api.UserService;
 import com.softuni.musichub.utils.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.util.List;
 
 @Service
 @Transactional
@@ -58,5 +62,35 @@ public class CommentServiceImpl implements CommentService {
         Comment postedComment = this.commentRepository.save(comment);
         return this.mapperUtil.getModelMapper()
                 .map(postedComment, CommentView.class);
+    }
+
+    @Override
+    public Page<CommentView> findPendingComments(Pageable pageable) {
+        Page<Comment> commentPage = this.commentRepository.findPendingComments(pageable);
+        List<Comment> comments = commentPage.getContent();
+        List<CommentView> commentViews = this.mapperUtil.convertAll(comments, CommentView.class);
+        long totalElements = commentPage.getTotalElements();
+        Page<CommentView> commentViewPage = new PageImpl<>(commentViews, pageable, totalElements);
+        return commentViewPage;
+    }
+
+    @Override
+    public void approve(Long id) {
+        Comment comment = this.commentRepository.findById(id).orElse(null);
+        if (comment == null) {
+            return;
+        }
+
+        comment.setStatus(CommentStatus.APPROVED);
+    }
+
+    @Override
+    public void reject(Long id) {
+        Comment comment = this.commentRepository.findById(id).orElse(null);
+        if (comment == null) {
+            return;
+        }
+
+        comment.setStatus(CommentStatus.REJECTED);
     }
 }

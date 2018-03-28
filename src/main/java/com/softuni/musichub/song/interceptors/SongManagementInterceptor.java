@@ -19,6 +19,8 @@ public class SongManagementInterceptor extends HandlerInterceptorAdapter {
 
     private static final String ROLE_ADMIN = "ROLE_ADMIN";
 
+    private static final String ROLE_MODERATOR = "ROLE_MODERATOR";
+
     private final SongService songService;
 
     private final UserService userService;
@@ -52,7 +54,8 @@ public class SongManagementInterceptor extends HandlerInterceptorAdapter {
         String uploaderUsername = songView.getUploaderUsername();
         Authentication authentication = this.getAuthentication();
         String authenticationName = authentication.getName();
-        boolean isUserHasAnyRole = this.userService.isUserHasAnyRole(authenticationName, ROLE_ADMIN);
+        boolean isUserHasAnyRole = this.userService
+                .isUserHasAnyRole(authenticationName, ROLE_ADMIN, ROLE_MODERATOR);
         if (!authenticationName.equals(uploaderUsername) && (!isUserHasAnyRole)) {
             response.sendRedirect("/songs/details/" + songId);
             return false;

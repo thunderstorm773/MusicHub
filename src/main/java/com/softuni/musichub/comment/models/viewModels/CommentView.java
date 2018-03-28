@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class CommentView {
 
+    private Long id;
+
     private String content;
 
     private String authorUsername;
@@ -14,6 +16,14 @@ public class CommentView {
     private Date publishedOn;
 
     public CommentView() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getContent() {

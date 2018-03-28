@@ -31,11 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/bootstrap-4.0.0.**", "/css/**",
+                .antMatchers("/bootstrap-4.0.0/**", "/css/**",
                         "/font-awesome/**", "/images/**",
                         "/jquery/**", "/theme/**", "/scripts/**", "/audiojs/**").permitAll()
                 .antMatchers("/users/login", "/users/register").anonymous()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/comments/approve/{id}", "/comments/reject/{id}", "/comments/pending")
+                .hasAnyRole("ADMIN", "MODERATOR")
                 .antMatchers("/songs/upload", "/comments/post").authenticated()
                 .anyRequest().permitAll()
                 .and().exceptionHandling().accessDeniedPage("/songs/browse")
