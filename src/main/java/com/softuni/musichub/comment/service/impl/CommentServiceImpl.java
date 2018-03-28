@@ -93,4 +93,10 @@ public class CommentServiceImpl implements CommentService {
 
         comment.setStatus(CommentStatus.REJECTED);
     }
+
+    @Override
+    public void deleteAllRejectedComments() {
+        this.commentRepository.deleteAllRejectedComments();
+        System.out.println("All comments with status REJECTED have been deleted!");
+    }
 }

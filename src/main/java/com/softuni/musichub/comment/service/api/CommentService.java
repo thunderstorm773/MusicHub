@@ -15,4 +15,6 @@ public interface CommentService {
     void approve(Long id);
 
     void reject(Long id);
+
+    void deleteAllRejectedComments();
 }

@@ -1,3 +1,5 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<h4 class="text-center" th:if="${#lists.isEmpty(pendingComments.getContent())}">No pending comments</h4>
 <div class="row justify-content-center mt-4"
      th:each="comment : ${pendingComments}" th:object="${comment}">
     <div class="list-group col-md-6">
