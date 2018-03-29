@@ -42,7 +42,7 @@ $('#addComment').on('click', function (e) {
                 let authorUsername = commentJson['authorUsername'];
                 let status = getStatus(commentJson['status']);
                 let publishedOn = formatDate(commentJson['publishedOn']);
-                let content = commentJson['content'];
+                let content = encodeHTML(commentJson['content']);
 
                 let commentDiv = $('<div class="row justify-content-center mt-4">' +
                     '<div class="list-group col-md-6">' +
@@ -61,6 +61,13 @@ $('#addComment').on('click', function (e) {
                     '</div>');
 
                 return commentDiv;
+            }
+
+            function encodeHTML(html) {
+                return html
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/"/g, '&quot;');
             }
             
             function formatDate(dateStr) {
@@ -95,5 +102,4 @@ $('#addComment').on('click', function (e) {
     function isCommentValid() {
         return commentContent.length >= commentMinLen;
     }
-
 });
