@@ -16,6 +16,7 @@ import com.softuni.musichub.user.service.api.UserService;
 import com.softuni.musichub.user.staticData.UserConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -98,7 +100,7 @@ public class AdminController {
             return modelAndView;
         }
 
-        modelAndView.addObject(CategoryConstants.CATEGORIES, categories);
+        modelAndView.addObject(Constants.PAGE, categories);
         modelAndView.addObject(Constants.TITLE, AdminConstants.ALL_CATEGORIES_TITLE);
         modelAndView.addObject(Constants.VIEW, AdminConstants.ALL_CATEGORIES_VIEW);
         modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
@@ -180,7 +182,7 @@ public class AdminController {
             return modelAndView;
         }
 
-        modelAndView.addObject(UserConstants.USERS, usersViewPage);
+        modelAndView.addObject(Constants.PAGE, usersViewPage);
         modelAndView.addObject(Constants.TITLE, AdminConstants.ALL_USERS_TITLE);
         modelAndView.addObject(Constants.VIEW, AdminConstants.ALL_USERS_VIEW);
         modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);

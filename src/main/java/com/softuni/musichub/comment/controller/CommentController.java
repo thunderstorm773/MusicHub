@@ -58,7 +58,7 @@ public class CommentController {
     public ModelAndView getPendingCommentsPage(ModelAndView modelAndView,
                                                @PageableDefault(CommentConstants.COMMENTS_PER_PAGE) Pageable pageable) {
         Page<CommentView> commentViewPage = this.commentService.findPendingComments(pageable);
-        modelAndView.addObject(CommentConstants.PENDING_COMMENTS, commentViewPage);
+        modelAndView.addObject(Constants.PAGE, commentViewPage);
         modelAndView.addObject(Constants.TITLE, CommentConstants.PENDING_COMMENTS_TITLE);
         modelAndView.addObject(Constants.VIEW, CommentConstants.PENDING_COMMENTS_VIEW);
         modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);

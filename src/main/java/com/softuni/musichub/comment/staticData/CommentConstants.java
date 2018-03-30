@@ -9,6 +9,4 @@ public class CommentConstants {
     public static final String PENDING_COMMENTS_TITLE = "Pending comments";
 
     public static final String PENDING_COMMENTS_VIEW = "comment/pending";
-
-    public static final String PENDING_COMMENTS = "pendingComments";
 }

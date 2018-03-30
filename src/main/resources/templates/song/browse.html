@@ -17,10 +17,10 @@
     <h4>All Tracks</h4>
 </div>
 <div class="row justify-content-center mt-3 text-center" id="songsContainer">
-    <div th:if="${#lists.isEmpty(songs.getContent())}">
+    <div th:if="${#lists.isEmpty(page.getContent())}">
         <h3>No songs available</h3>
     </div>
-    <div class="col-md-2" th:each="song : ${songs}" th:object="${song}">
+    <div class="col-md-2" th:each="song : ${page}" th:object="${song}">
         <figure>
             <img th:src="@{/images/music.png}" alt="cover" class="img-fluid">
             <figcaption class="mt-2">
@@ -35,24 +35,6 @@
         </figure>
     </div>
 </div>
-<div>
-    <ul class="pagination justify-content-center" th:if="${!#lists.isEmpty(songs.getContent())
-                and songs.getTotalPages() > 1}"
-        th:with="hasPrevious=${songs.hasPrevious()}, hasNext=${songs.hasNext()},
-        previousPageable=${songs.previousPageable()}, nextPageable=${songs.nextPageable()}">
-        <!--<li class="page-item" th:classappend="${!hasPrevious} ? 'disabled'">-->
-        <!--<a class="page-link song"-->
-        <!--th:href="${hasPrevious} ? @{/songs/browse/js(page=${previousPageable.getPageNumber()})}">&laquo;</a>-->
-        <!--</li>-->
-        <li class="page-item" th:each="page : ${#numbers.sequence(1, songs.getTotalPages())}"
-            th:with="index=${page} - 1"
-            th:classappend="${songs.getNumber() == index} ? 'active'">
-            <a class="page-link song" th:href="@{/songs/browse/js(page=${index})}"
-               th:text="${page}"></a>
-        </li>
-        <!--<li class="page-item" th:classappend="${!hasNext} ? 'disabled'">-->
-        <!--<a class="page-link song"-->
-        <!--th:href="${hasNext} ? @{/songs/browse/js(page=${nextPageable.getPageNumber()})}">&raquo;</a>-->
-        <!--</li>-->
-    </ul>
-</div>
+<th:block th:with="pageBaseUrl='/songs/browse/js'">
+    <div th:replace="~{fragments/pagination}"></div>
+</th:block>

@@ -1,12 +1,11 @@
-<html xmlns:th="http://www.thymeleaf.org">
 <h4 class="mb-4">
     All Categories - <a th:href="@{/admin/categories/add}" class="btn btn-primary">Create New</a>
 </h4>
 <div class="text-center justify-content-center"
-     th:if="${#lists.isEmpty(categories.getContent())}">
+     th:if="${#lists.isEmpty(page.getContent())}">
     <h3>No categories available</h3>
 </div>
-<table class="table table-hover table-bordered" th:if="${!#lists.isEmpty(categories.getContent())}">
+<table class="table table-hover table-bordered" th:if="${!#lists.isEmpty(page.getContent())}">
     <thead>
     <tr>
         <th scope="col">Name</th>
@@ -14,7 +13,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr class="table-active" th:each="category : ${categories}"
+    <tr class="table-active" th:each="category : ${page}"
         th:object="${category}">
         <td th:text="*{name}"></td>
         <td>
@@ -23,14 +22,6 @@
         </td>
     </tr>
 </table>
-<ul class="pagination justify-content-center" th:if="${!#lists.isEmpty(categories.getContent())
-        and categories.getTotalPages() > 1}"
-    th:with="hasPrevious=${categories.hasPrevious()}, hasNext=${categories.hasNext()},
-        previousPageable=${categories.previousPageable()}, nextPageable=${categories.nextPageable()}">
-    <li class="page-item" th:each="page : ${#numbers.sequence(1, categories.getTotalPages())}"
-        th:with="index=${page} - 1"
-        th:classappend="${categories.getNumber() == index} ? 'active'">
-        <a class="page-link" th:href="@{/admin/categories/all(page=${index})}"
-           th:text="${page}"></a>
-    </li>
-</ul>
+<th:block th:with="pageBaseUrl='/admin/categories/all'">
+    <div th:replace="~{fragments/pagination}"></div>
+</th:block>

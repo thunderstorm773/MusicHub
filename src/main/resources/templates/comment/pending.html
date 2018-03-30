@@ -1,7 +1,6 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<h4 class="text-center" th:if="${#lists.isEmpty(pendingComments.getContent())}">No pending comments</h4>
-<div class="row justify-content-center mt-4"
-     th:each="comment : ${pendingComments}" th:object="${comment}">
+<h4 class="text-center" th:if="${#lists.isEmpty(page.getContent())}">No pending comments</h4>
+<div class="row justify-content-center mt-4 mb-4"
+     th:each="comment : ${page}" th:object="${comment}">
     <div class="list-group col-md-6">
         <a href="" class="list-group-item list-group-item-action flex-column active"
            style="background-color: #282828">
@@ -28,16 +27,6 @@
         </div>
     </div>
 </div>
-<div class="row justify-content-center mt-3">
-    <ul class="pagination" th:if="${!#lists.isEmpty(pendingComments.getContent())
-                and pendingComments.getTotalPages() > 1}"
-        th:with="hasPrevious=${pendingComments.hasPrevious()}, hasNext=${pendingComments.hasNext()},
-        previousPageable=${pendingComments.previousPageable()}, nextPageable=${pendingComments.nextPageable()}">
-        <li class="page-item" th:each="page : ${#numbers.sequence(1, pendingComments.getTotalPages())}"
-            th:with="index=${page} - 1"
-            th:classappend="${pendingComments.getNumber() == index} ? 'active'">
-            <a class="page-link" th:href="@{/comments/pending(page=${index})}"
-               th:text="${page}"></a>
-        </li>
-    </ul>
-</div>
+<th:block th:with="pageBaseUrl='/comments/pending'">
+    <div th:replace="~{fragments/pagination}"></div>
+</th:block>

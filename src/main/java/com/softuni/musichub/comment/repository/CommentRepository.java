@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query("SELECT c FROM Comment AS c WHERE c.status = 'PENDING'")
+    @Query("SELECT c FROM Comment AS c WHERE c.status = 'PENDING' ORDER BY c.publishedOn DESC")
     Page<Comment> findPendingComments(Pageable pageable);
 
     @Modifying

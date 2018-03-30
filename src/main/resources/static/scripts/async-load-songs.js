@@ -1,4 +1,4 @@
-$('.page-link.song').on('click', function (e) {
+$('.page-link').on('click', function (e) {
     e.preventDefault();
 
     const songTitleKey = 'songTitle';
@@ -86,8 +86,6 @@ $('.page-link.song').on('click', function (e) {
             figure.appendTo(songInfo);
             songInfo.appendTo(songsContainer);
         }
-
-        //songsContainer.css('display', '');
     }
 
     function ajaxError() {

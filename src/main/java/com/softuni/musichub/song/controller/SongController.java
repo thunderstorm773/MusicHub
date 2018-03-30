@@ -130,7 +130,7 @@ public class SongController {
             return modelAndView;
         }
 
-        modelAndView.addObject(SongConstants.SONGS_KEY, songsPage);
+        modelAndView.addObject(Constants.PAGE, songsPage);
         modelAndView.addObject(Constants.TITLE, SongConstants.BROWSE_SONGS_TITLE);
         modelAndView.addObject(Constants.VIEW, SongConstants.BROWSE_SONGS_VIEW);
         modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
