@@ -1,9 +1,9 @@
 package com.softuni.musichub.song.interceptors;
 
-import com.softuni.musichub.song.model.viewModel.SongView;
-import com.softuni.musichub.song.service.api.SongService;
+import com.softuni.musichub.song.models.viewModels.SongView;
+import com.softuni.musichub.song.services.SongService;
 import com.softuni.musichub.song.staticData.SongConstants;
-import com.softuni.musichub.user.service.api.UserService;
+import com.softuni.musichub.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
