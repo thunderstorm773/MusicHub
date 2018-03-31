@@ -1,12 +1,15 @@
-<head>
+<head xmlns:th="http://www.thymeleaf.org">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title th:text="${title}"></title>
     <link rel="stylesheet" href="../../static/theme/cyborg/cyborg.min.css"
           th:href="@{/theme/cyborg/cyborg.min.css}"/>
-    <link rel="stylesheet" th:href="@{/css/table-actions.css}"/>
-    <link rel="stylesheet" th:href="@{/css/browse-songs.css}"/>
-    <link rel="stylesheet" th:href="@{/css/audiojs.css}">
+    <link rel="stylesheet" th:href="@{/css/table-actions.css}"
+          th:if="${tableActionsStyleEnabled != null}"/>
+    <link rel="stylesheet" th:href="@{/css/browse-songs.css}"
+          th:if="${browseSongsStyleEnabled != null}"/>
+    <link rel="stylesheet" th:href="@{/css/audiojs.css}"
+          th:if="${audioJsStyleEnabled != null}">
     <link rel="shortcut icon" type="image/png" th:href="@{/images/music-hub-favicon.png}"/>
 </head>

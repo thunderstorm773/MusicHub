@@ -100,6 +100,7 @@ public class AdminController {
             return modelAndView;
         }
 
+        modelAndView.addObject(AdminConstants.TABLE_ACTIONS_STYLE_ENABLED, "");
         modelAndView.addObject(Constants.PAGE, categories);
         modelAndView.addObject(Constants.TITLE, AdminConstants.ALL_CATEGORIES_TITLE);
         modelAndView.addObject(Constants.VIEW, AdminConstants.ALL_CATEGORIES_VIEW);
@@ -182,6 +183,7 @@ public class AdminController {
             return modelAndView;
         }
 
+        modelAndView.addObject(AdminConstants.TABLE_ACTIONS_STYLE_ENABLED, "");
         modelAndView.addObject(Constants.PAGE, usersViewPage);
         modelAndView.addObject(Constants.TITLE, AdminConstants.ALL_USERS_TITLE);
         modelAndView.addObject(Constants.VIEW, AdminConstants.ALL_USERS_VIEW);

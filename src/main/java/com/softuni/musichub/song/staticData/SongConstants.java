@@ -37,8 +37,6 @@ public class SongConstants {
 
     public static final String UPLOAD_SONG_SOON = "Song will be uploaded soon!";
 
-    public static final String SONGS_KEY = "songs";
-
     public static final String UPLOADED_ON = "uploadedOn";
 
     public static final int SONGS_PER_PAGE = 12;
@@ -55,5 +53,11 @@ public class SongConstants {
 
     public static final String ID = "id";
 
+    public static final String BROWSE_SONGS_STYLE_ENABLED = "browseSongsStyleEnabled";
 
+    public static final String AUDIO_JS_STYLE_ENABLED = "audioJsStyleEnabled";
+
+    public static final String VALIDATE_UPLOAD_SONG_JS_ENABLED = "validateUploadSongJsEnabled";
+
+    public static final String ASYNC_LOAD_SONGS_JS_ENABLED = "asyncLoadSongsJsEnabled";
 }

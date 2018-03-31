@@ -50,4 +50,6 @@ public class AdminConstants {
 
     public static final String NOT_SELECTED_ROLES_MESSAGE =
             "You must select at least 1 role";
+
+    public static final String TABLE_ACTIONS_STYLE_ENABLED = "tableActionsStyleEnabled";
 }

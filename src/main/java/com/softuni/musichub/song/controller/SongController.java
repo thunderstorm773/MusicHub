@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.softuni.musichub.category.model.view.CategoryView;
 import com.softuni.musichub.category.service.api.CategoryService;
 import com.softuni.musichub.category.staticData.CategoryConstants;
+import com.softuni.musichub.comment.staticData.CommentConstants;
 import com.softuni.musichub.song.exception.SongNotFoundException;
 import com.softuni.musichub.song.model.bindingModel.EditSong;
 import com.softuni.musichub.song.model.bindingModel.UploadSong;
@@ -68,6 +69,7 @@ public class SongController {
         }
 
         List<CategoryView> categories = this.categoryService.findAll();
+        modelAndView.addObject(SongConstants.VALIDATE_UPLOAD_SONG_JS_ENABLED, "");
         modelAndView.addObject(CategoryConstants.CATEGORIES, categories);
         modelAndView.addObject(Constants.TITLE, SongConstants.UPLOAD_SONG_TITLE);
         modelAndView.addObject(Constants.VIEW, SongConstants.UPLOAD_SONG_VIEW);
@@ -130,6 +132,8 @@ public class SongController {
             return modelAndView;
         }
 
+        modelAndView.addObject(SongConstants.BROWSE_SONGS_STYLE_ENABLED, "");
+        modelAndView.addObject(SongConstants.ASYNC_LOAD_SONGS_JS_ENABLED, "");
         modelAndView.addObject(Constants.PAGE, songsPage);
         modelAndView.addObject(Constants.TITLE, SongConstants.BROWSE_SONGS_TITLE);
         modelAndView.addObject(Constants.VIEW, SongConstants.BROWSE_SONGS_VIEW);
@@ -158,6 +162,8 @@ public class SongController {
     public ModelAndView getSongDetailsPage(ModelAndView modelAndView,
                                            @PathVariable Long id) throws Exception {
         SongDetailsView songDetailsView = this.songService.getDetailsById(id);
+        modelAndView.addObject(SongConstants.AUDIO_JS_STYLE_ENABLED, "");
+        modelAndView.addObject(CommentConstants.POST_COMMENTS_JS_ENABLED, "");
         modelAndView.addObject(SongConstants.SONG_DETAILS, songDetailsView);
         modelAndView.addObject(Constants.TITLE, SongConstants.SONG_DETAILS_TITLE);
         modelAndView.addObject(Constants.VIEW, SongConstants.SONG_DETAILS_VIEW);
