@@ -1,6 +1,6 @@
 package com.softuni.musichub.user.staticData;
 
-public class UserConstants {
+public class AccountConstants {
 
     public static final int USERNAME_MIN_LEN = 3;
 
@@ -40,8 +40,6 @@ public class UserConstants {
 
     public static final String INVALID_CREDENTIALS_MESSAGE =
             "Invalid credentials";
-
-    public static final String USERS = "users";
 
     public static final String ROLES = "roles";
 

@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;
 import com.cloudinary.Url;
 import com.cloudinary.utils.ObjectUtils;
+import com.softuni.musichub.config.CdnConfigData;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import java.io.File;
@@ -13,25 +14,11 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Component
-public class CDNUtil {
+public class CdnUtil {
 
     private static final String RESOURCE_TYPE_KEY = "resource_type";
 
     private static final String FOLDER_KEY = "folder";
-
-    private static final String CLOUD_NAME_KEY = "cloud_name";
-
-    private static final String CLOUD_NAME_VALUE = "musichub-ld";
-
-    private static final String VERSION_KEY = "version";
-
-    private static final String API_KEY = "api_key";
-
-    private static final String API_KEY_VALUE = "536486612627791";
-
-    private static final String API_SECRET_KEY = "api_secret";
-
-    private static final String API_SECRET_VALUE = "uJAGCgJLCkBMKWz8V--pyR3F-Is";
 
     public static final String VIDEO_RESOURCE_TYPE = "video";
 
@@ -45,17 +32,19 @@ public class CDNUtil {
 
     private static final String ATTACHMENT_FLAG = "attachment";
 
+    private static final String VERSION_KEY = "version";
+
     private Cloudinary cloudinary;
 
-    public CDNUtil() {
+    public CdnUtil() {
         this.configCloudinary();
     }
 
     private void configCloudinary() {
         Map configMap = ObjectUtils.asMap(
-                CLOUD_NAME_KEY, CLOUD_NAME_VALUE,
-                API_KEY, API_KEY_VALUE,
-                API_SECRET_KEY, API_SECRET_VALUE
+                CdnConfigData.CLOUD_NAME_KEY, CdnConfigData.CLOUD_NAME_VALUE,
+                CdnConfigData.API_KEY, CdnConfigData.API_KEY_VALUE,
+                CdnConfigData.API_SECRET_KEY, CdnConfigData.API_SECRET_VALUE
         );
 
         this.cloudinary = new Cloudinary(configMap);

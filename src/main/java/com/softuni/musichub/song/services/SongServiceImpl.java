@@ -16,7 +16,7 @@ import com.softuni.musichub.song.tag.models.bindingModels.AddTag;
 import com.softuni.musichub.song.tag.models.viewModels.TagView;
 import com.softuni.musichub.song.tag.services.TagService;
 import com.softuni.musichub.user.entities.User;
-import com.softuni.musichub.util.CDNUtil;
+import com.softuni.musichub.util.CdnUtil;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,14 +44,14 @@ public class SongServiceImpl implements SongService {
 
     private final MapperUtil mapperUtil;
 
-    private final CDNUtil cdnUtil;
+    private final CdnUtil cdnUtil;
 
     @Autowired
     public SongServiceImpl(SongRepository songRepository,
                            CategoryService categoryService,
                            TagService tagService,
                            MapperUtil mapperUtil,
-                           CDNUtil cdnUtil) {
+                           CdnUtil cdnUtil) {
         this.songRepository = songRepository;
         this.categoryService = categoryService;
         this.tagService = tagService;
@@ -126,8 +126,8 @@ public class SongServiceImpl implements SongService {
 
         song.setUploader(user);
         File songFile = uploadSong.getPersistedFile();
-        CompletableFuture<Map> taskResult = this.cdnUtil.upload(songFile, CDNUtil.VIDEO_RESOURCE_TYPE,
-                CDNUtil.SONGS_FOLDER);
+        CompletableFuture<Map> taskResult = this.cdnUtil.upload(songFile, CdnUtil.VIDEO_RESOURCE_TYPE,
+                CdnUtil.SONGS_FOLDER);
         CompletableFuture.anyOf(taskResult).join();
         Map uploadResult;
         try {
@@ -139,7 +139,7 @@ public class SongServiceImpl implements SongService {
 
         // Delete local file after it has been uploaded in CDN
         songFile.delete();
-        String songPartialUrl = (String) uploadResult.get(CDNUtil.PUBLIC_ID_KEY);
+        String songPartialUrl = (String) uploadResult.get(CdnUtil.PUBLIC_ID_KEY);
         song.setSongPartialUrl(songPartialUrl);
         this.songRepository.save(song);
     }
@@ -168,10 +168,10 @@ public class SongServiceImpl implements SongService {
         this.sortCommentsByPublishedDateDesc(songDetailsView);
         String songPartialUrl = song.getSongPartialUrl();
         String songDownloadUrl = this.cdnUtil
-                .getResourceDownloadUrl(songPartialUrl, CDNUtil.VIDEO_RESOURCE_TYPE);
+                .getResourceDownloadUrl(songPartialUrl, CdnUtil.VIDEO_RESOURCE_TYPE);
         songDetailsView.setDownloadUrl(songDownloadUrl);
         String songStreamingUrl = this.cdnUtil
-                .getResourceFullUrl(songPartialUrl, CDNUtil.VIDEO_RESOURCE_TYPE);
+                .getResourceFullUrl(songPartialUrl, CdnUtil.VIDEO_RESOURCE_TYPE);
         songDetailsView.setStreamingUrl(songStreamingUrl);
         return songDetailsView;
     }

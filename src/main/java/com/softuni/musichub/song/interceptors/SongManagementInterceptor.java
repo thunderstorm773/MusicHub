@@ -46,7 +46,7 @@ public class SongManagementInterceptor extends HandlerInterceptorAdapter {
             String songIdStr = (String) pathVariables.get(SongConstants.ID);
             songId = Long.valueOf(songIdStr);
         } catch (NumberFormatException e) {
-            response.sendRedirect("/songs/browse");
+            response.sendRedirect("/");
             return false;
         }
 

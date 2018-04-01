@@ -22,7 +22,7 @@
     </div>
     <div class="col-md-3 text-center">
         <h4>Category</h4>
-        <a th:href="@{/songs/browse(categoryName=*{categoryName})}"
+        <a th:href="@{/(categoryName=*{categoryName})}"
            class="btn btn-secondary mb-2 mr-2 list-group-flush"
            th:text="|&#35;*{categoryName}|">Category</a>
     </div>
@@ -30,7 +30,7 @@
         <h4>Tags</h4>
         <h5 class="text-danger" th:if="${#sets.isEmpty(songDetails.tags)}">No tags</h5>
         <a th:each="tag : *{tags}" th:text="|&#35;${tag.name}|"
-           th:href="@{/songs/browse(tagName=${tag.name})}"
+           th:href="@{/(tagName=${tag.name})}"
            class="btn btn-secondary mb-2 mr-2 list-group-flush">Name</a>
     </div>
 </div>

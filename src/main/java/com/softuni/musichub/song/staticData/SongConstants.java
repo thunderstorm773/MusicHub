@@ -21,10 +21,6 @@ public class SongConstants {
 
     public static final String UPLOAD_SONG_VIEW = "song/upload";
 
-    public static final String BROWSE_SONGS_TITLE = "Browse songs";
-
-    public static final String BROWSE_SONGS_VIEW = "song/browse";
-
     public static final String SONG_DETAILS_TITLE = "Song details";
 
     public static final String SONG_DETAILS_VIEW = "song/details";
@@ -36,10 +32,6 @@ public class SongConstants {
     public static final String UPLOAD_SONG = "uploadSong";
 
     public static final String UPLOAD_SONG_SOON = "Song will be uploaded soon!";
-
-    public static final String UPLOADED_ON = "uploadedOn";
-
-    public static final int SONGS_PER_PAGE = 12;
 
     public static final String DELETE_SONG_TITLE = "Delete song";
 
@@ -53,11 +45,7 @@ public class SongConstants {
 
     public static final String ID = "id";
 
-    public static final String BROWSE_SONGS_STYLE_ENABLED = "browseSongsStyleEnabled";
-
     public static final String AUDIO_JS_STYLE_ENABLED = "audioJsStyleEnabled";
 
     public static final String VALIDATE_UPLOAD_SONG_JS_ENABLED = "validateUploadSongJsEnabled";
-
-    public static final String ASYNC_LOAD_SONGS_JS_ENABLED = "asyncLoadSongsJsEnabled";
 }

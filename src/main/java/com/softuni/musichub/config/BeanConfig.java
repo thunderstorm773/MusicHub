@@ -11,15 +11,11 @@ public class BeanConfig {
 
     @Bean
     public BCryptPasswordEncoder getBCryptPasswordEncoder() {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder;
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public Gson getGson() {
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .create();
-        return gson;
+        return new GsonBuilder().setPrettyPrinting().create();
     }
 }

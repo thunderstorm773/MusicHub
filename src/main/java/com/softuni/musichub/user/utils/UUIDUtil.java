@@ -1,4 +1,4 @@
-package com.softuni.musichub.util;
+package com.softuni.musichub.user.utils;
 
 import java.util.UUID;
 

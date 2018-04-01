@@ -1,6 +1,6 @@
 package com.softuni.musichub.user.models.bindingModels;
 
-import com.softuni.musichub.user.staticData.UserConstants;
+import com.softuni.musichub.user.staticData.AccountConstants;
 import com.softuni.musichub.user.validations.PasswordMatching;
 import com.softuni.musichub.user.validations.Username;
 import javax.validation.constraints.NotBlank;
@@ -21,10 +21,10 @@ public class RegisterUser {
     public RegisterUser() {
     }
 
-    @NotBlank(message = UserConstants.USERNAME_BLANK_MESSAGE)
-    @Size(min = UserConstants.USERNAME_MIN_LEN,
-            max = UserConstants.USERNAME_MAX_LEN,
-            message = UserConstants.USERNAME_REQUIRED_LEN_MESSAGE)
+    @NotBlank(message = AccountConstants.USERNAME_BLANK_MESSAGE)
+    @Size(min = AccountConstants.USERNAME_MIN_LEN,
+            max = AccountConstants.USERNAME_MAX_LEN,
+            message = AccountConstants.USERNAME_REQUIRED_LEN_MESSAGE)
     @Username
     public String getUsername() {
         return username;
@@ -34,9 +34,9 @@ public class RegisterUser {
         this.username = username;
     }
 
-    @NotBlank(message = UserConstants.EMAIL_BLANK_MESSAGE)
-    @Pattern(regexp = UserConstants.EMAIL_PATTERN,
-            message = UserConstants.INCORRECT_EMAIL_FORMAT_MESSAGE)
+    @NotBlank(message = AccountConstants.EMAIL_BLANK_MESSAGE)
+    @Pattern(regexp = AccountConstants.EMAIL_PATTERN,
+            message = AccountConstants.INCORRECT_EMAIL_FORMAT_MESSAGE)
     public String getEmail() {
         return email;
     }
@@ -45,9 +45,9 @@ public class RegisterUser {
         this.email = email;
     }
 
-    @NotBlank(message = UserConstants.PASSWORD_BLANK_MESSAGE)
-    @Size(min = UserConstants.PASSWORD_MIN_LEN,
-            message = UserConstants.PASSWORD_MIN_LEN_MESSAGE)
+    @NotBlank(message = AccountConstants.PASSWORD_BLANK_MESSAGE)
+    @Size(min = AccountConstants.PASSWORD_MIN_LEN,
+            message = AccountConstants.PASSWORD_MIN_LEN_MESSAGE)
     public String getPassword() {
         return password;
     }
@@ -56,7 +56,7 @@ public class RegisterUser {
         this.password = password;
     }
 
-    @NotBlank(message = UserConstants.CONFIRM_PASSWORD_BLANK_MESSAGE)
+    @NotBlank(message = AccountConstants.CONFIRM_PASSWORD_BLANK_MESSAGE)
     public String getConfirmPassword() {
         return confirmPassword;
     }

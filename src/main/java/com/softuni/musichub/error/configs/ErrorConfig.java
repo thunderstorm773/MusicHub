@@ -1,5 +1,6 @@
-package com.softuni.musichub.config;
+package com.softuni.musichub.error.configs;
 
+import com.softuni.musichub.error.staticData.ErrorConstants;
 import org.springframework.boot.web.embedded.tomcat.ConfigurableTomcatWebServerFactory;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -12,7 +13,7 @@ public class ErrorConfig implements WebServerFactoryCustomizer<ConfigurableTomca
     @Override
     public void customize(ConfigurableTomcatWebServerFactory factory) {
         ErrorPage notFoundError = new ErrorPage(HttpStatus.NOT_FOUND,
-                "/errors/404");
+                ErrorConstants.NOT_FOUND_ERROR_ROUTE);
         factory.addErrorPages(notFoundError);
     }
 }

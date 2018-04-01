@@ -15,11 +15,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public String handleMethodArgumentTypeMismatchException() {
-        return "redirect:/songs/browse";
+        return "redirect:/";
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public String handleHttpRequestMethodNotSupportedException() {
-        return "redirect:/songs/browse";
+        return "redirect:/";
     }
 }

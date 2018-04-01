@@ -1,11 +1,6 @@
 package com.softuni.musichub.admin.controllers;
 
 import com.softuni.musichub.admin.staticData.AdminConstants;
-import com.softuni.musichub.admin.category.models.bindingModels.AddCategory;
-import com.softuni.musichub.admin.category.models.bindingModels.EditCategory;
-import com.softuni.musichub.admin.category.models.views.CategoryView;
-import com.softuni.musichub.admin.category.services.CategoryService;
-import com.softuni.musichub.admin.category.staticData.CategoryConstants;
 import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.exceptions.UserNotFoundException;
 import com.softuni.musichub.user.models.bindingModels.EditUser;
@@ -13,7 +8,7 @@ import com.softuni.musichub.user.models.viewModels.RoleView;
 import com.softuni.musichub.user.models.viewModels.UserView;
 import com.softuni.musichub.user.services.RoleService;
 import com.softuni.musichub.user.services.UserService;
-import com.softuni.musichub.user.staticData.UserConstants;
+import com.softuni.musichub.user.staticData.AccountConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,19 +27,15 @@ import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminController {
-
-    private final CategoryService categoryService;
+public class UserController {
 
     private final UserService userService;
 
     private final RoleService roleService;
 
     @Autowired
-    public AdminController(CategoryService categoryService,
-                           UserService userService,
-                           RoleService roleService) {
-        this.categoryService = categoryService;
+    public UserController(UserService userService,
+                          RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -52,115 +43,6 @@ public class AdminController {
     @ExceptionHandler(UserNotFoundException.class)
     public String handleUserNotFoundException() {
         return "redirect:/admin/users/all";
-    }
-
-    @GetMapping("/categories/add")
-    public ModelAndView getAddCategoryPage(ModelAndView modelAndView,
-                                           Model model) {
-        if (!model.asMap().containsKey(AdminConstants.ADD_CATEGORY)) {
-            AddCategory addCategory = new AddCategory();
-            modelAndView.addObject(AdminConstants.ADD_CATEGORY, addCategory);
-        }
-
-        modelAndView.addObject(Constants.TITLE, AdminConstants.ADD_CATEGORY_TITLE);
-        modelAndView.addObject(Constants.VIEW, AdminConstants.ADD_CATEGORY_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
-    }
-
-    @PostMapping("/categories/add")
-    public ModelAndView addCategory(ModelAndView modelAndView,
-                                    @Valid @ModelAttribute AddCategory addCategory,
-                                    BindingResult bindingResult,
-                                    RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute(AdminConstants.ADD_CATEGORY, addCategory);
-            String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
-                    + AdminConstants.ADD_CATEGORY;
-            redirectAttributes.addFlashAttribute(bindingResultKey, bindingResult);
-            modelAndView.setViewName("redirect:/admin/categories/add");
-            return modelAndView;
-        }
-
-        this.categoryService.addCategory(addCategory);
-        modelAndView.setViewName("redirect:/admin/categories/all");
-        return modelAndView;
-    }
-
-    @GetMapping("/categories/all")
-    public ModelAndView getAllCategoriesPage(ModelAndView modelAndView,
-                                             @PageableDefault(AdminConstants.CATEGORIES_PER_PAGE) Pageable pageable) {
-        Page<CategoryView> categories = this.categoryService.findAll(pageable);
-        Integer categoriesCount = categories.getNumberOfElements();
-        Integer pageNumber = categories.getNumber();
-        if (categoriesCount == 0 && (pageNumber != 0)) {
-            modelAndView.setViewName("redirect:/admin/categories/all");
-            return modelAndView;
-        }
-
-        modelAndView.addObject(AdminConstants.TABLE_ACTIONS_STYLE_ENABLED, "");
-        modelAndView.addObject(Constants.PAGE, categories);
-        modelAndView.addObject(Constants.TITLE, AdminConstants.ALL_CATEGORIES_TITLE);
-        modelAndView.addObject(Constants.VIEW, AdminConstants.ALL_CATEGORIES_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
-    }
-
-    @GetMapping("/categories/{id}/delete")
-    public ModelAndView getDeleteCategoryPage(ModelAndView modelAndView,
-                                              @PathVariable Long id) {
-        CategoryView category = this.categoryService.findById(id);
-        if (category == null) {
-            modelAndView.setViewName("redirect:/admin/categories/all");
-            return modelAndView;
-        }
-
-        modelAndView.addObject(CategoryConstants.CATEGORY, category);
-        modelAndView.addObject(Constants.TITLE, AdminConstants.DELETE_CATEGORY_TITLE);
-        modelAndView.addObject(Constants.VIEW, AdminConstants.DELETE_CATEGORY_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
-    }
-
-    @PostMapping("/categories/{id}/delete")
-    public ModelAndView deleteCategory(ModelAndView modelAndView,
-                                       @PathVariable Long id) {
-        this.categoryService.deleteById(id);
-        modelAndView.setViewName("redirect:/admin/categories/all");
-        return modelAndView;
-    }
-
-    @GetMapping("/categories/{id}/edit")
-    public ModelAndView getEditCategoryPage(ModelAndView modelAndView,
-                                            @PathVariable Long id) {
-        CategoryView category = this.categoryService.findById(id);
-        if (category == null) {
-            modelAndView.setViewName("redirect:/admin/categories/all");
-            return modelAndView;
-        }
-
-        modelAndView.addObject(AdminConstants.EDIT_CATEGORY, category);
-        modelAndView.addObject(Constants.TITLE, AdminConstants.EDIT_CATEGORY_TITLE);
-        modelAndView.addObject(Constants.VIEW, AdminConstants.EDIT_CATEGORY_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
-    }
-
-    @PostMapping("/categories/{id}/edit")
-    public ModelAndView editCategory(ModelAndView modelAndView,
-                                     @PathVariable Long id,
-                                     @Valid @ModelAttribute EditCategory editCategory,
-                                     BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            modelAndView.addObject(Constants.TITLE, AdminConstants.EDIT_CATEGORY_TITLE);
-            modelAndView.addObject(Constants.VIEW, AdminConstants.EDIT_CATEGORY_VIEW);
-            modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-            return modelAndView;
-        }
-
-        this.categoryService.edit(editCategory, id);
-        modelAndView.setViewName("redirect:/admin/categories/all");
-        return modelAndView;
     }
 
     @GetMapping("/users/all")
@@ -230,7 +112,7 @@ public class AdminController {
         }
 
         List<RoleView> roleViews = this.roleService.findAll();
-        modelAndView.addObject(UserConstants.ROLES, roleViews);
+        modelAndView.addObject(AccountConstants.ROLES, roleViews);
         modelAndView.addObject(AdminConstants.EDIT_USER, userView);
         modelAndView.addObject(Constants.TITLE, AdminConstants.EDIT_USER_TITLE);
         modelAndView.addObject(Constants.VIEW, AdminConstants.EDIT_USER_VIEW);
@@ -256,6 +138,4 @@ public class AdminController {
         modelAndView.setViewName("redirect:/admin/users/all");
         return modelAndView;
     }
-
-
 }

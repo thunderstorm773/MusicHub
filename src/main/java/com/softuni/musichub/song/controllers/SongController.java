@@ -1,6 +1,5 @@
 package com.softuni.musichub.song.controllers;
 
-import com.google.gson.Gson;
 import com.softuni.musichub.admin.category.models.views.CategoryView;
 import com.softuni.musichub.admin.category.services.CategoryService;
 import com.softuni.musichub.admin.category.staticData.CategoryConstants;
@@ -16,10 +15,6 @@ import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -44,21 +38,18 @@ public class SongController {
 
     private final FileUtil fileUtil;
 
-    private final Gson gson;
-
     @Autowired
     public SongController(CategoryService categoryService,
                           SongService songService,
-                          FileUtil fileUtil, Gson gson) {
+                          FileUtil fileUtil) {
         this.categoryService = categoryService;
         this.songService = songService;
         this.fileUtil = fileUtil;
-        this.gson = gson;
     }
 
     @ExceptionHandler(SongNotFoundException.class)
     public String handleSongNotFoundException() {
-        return "redirect:/songs/browse";
+        return "redirect:/";
     }
 
     @GetMapping("/upload")
@@ -106,58 +97,6 @@ public class SongController {
         return modelAndView;
     }
 
-    @GetMapping("/browse")
-    public ModelAndView getBrowseSongsPage(ModelAndView modelAndView,
-                                           @RequestParam(value = "songTitle", required = false) String songTitle,
-                                           @RequestParam(value = "categoryName", required = false) String categoryName,
-                                           @RequestParam(value = "tagName", required = false) String tagName,
-                                           @PageableDefault(size = SongConstants.SONGS_PER_PAGE,
-                                                   sort = SongConstants.UPLOADED_ON,
-                                                   direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<SongView> songsPage;
-        if (songTitle == null && categoryName == null && tagName == null) {
-            songsPage = this.songService.findAll(pageable);
-        } else if (songTitle != null) {
-            songsPage = this.songService.findAllByTitle(songTitle, pageable);
-        } else if (categoryName != null) {
-            songsPage = this.songService.findAllByCategoryName(categoryName, pageable);
-        } else {
-            songsPage = this.songService.findAllByTagName(tagName, pageable);
-        }
-
-        Integer songsCount = songsPage.getNumberOfElements();
-        Integer pageNumber = pageable.getPageNumber();
-        if (songsCount == 0 && (pageNumber != 0)) {
-            modelAndView.setViewName("redirect:/songs/browse");
-            return modelAndView;
-        }
-
-        modelAndView.addObject(SongConstants.BROWSE_SONGS_STYLE_ENABLED, "");
-        modelAndView.addObject(SongConstants.ASYNC_LOAD_SONGS_JS_ENABLED, "");
-        modelAndView.addObject(Constants.PAGE, songsPage);
-        modelAndView.addObject(Constants.TITLE, SongConstants.BROWSE_SONGS_TITLE);
-        modelAndView.addObject(Constants.VIEW, SongConstants.BROWSE_SONGS_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
-    }
-
-    @GetMapping("/browse/js")
-    @ResponseBody
-    public String getSongsAsJson(String songTitle,
-                                 @PageableDefault(size = SongConstants.SONGS_PER_PAGE,
-                                         sort = SongConstants.UPLOADED_ON,
-                                         direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<SongView> songsPage;
-        if (songTitle == null) {
-            songsPage = this.songService.findAll(pageable);
-        } else {
-            songsPage = this.songService.findAllByTitle(songTitle, pageable);
-        }
-
-        String songsAsJson = this.gson.toJson(songsPage);
-        return songsAsJson;
-    }
-
     @GetMapping("/details/{id}")
     public ModelAndView getSongDetailsPage(ModelAndView modelAndView,
                                            @PathVariable Long id) throws Exception {
@@ -186,7 +125,7 @@ public class SongController {
     public ModelAndView deleteSong(ModelAndView modelAndView,
                                    @PathVariable Long id) throws Exception {
         this.songService.deleteById(id);
-        modelAndView.setViewName("redirect:/songs/browse");
+        modelAndView.setViewName("redirect:/");
         return modelAndView;
     }
 

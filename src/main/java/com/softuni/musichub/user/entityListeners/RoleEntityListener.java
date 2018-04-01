@@ -1,7 +1,7 @@
 package com.softuni.musichub.user.entityListeners;
 
 import com.softuni.musichub.user.entities.Role;
-import com.softuni.musichub.util.UUIDUtil;
+import com.softuni.musichub.user.utils.UUIDUtil;
 import javax.persistence.PrePersist;
 
 public class RoleEntityListener {

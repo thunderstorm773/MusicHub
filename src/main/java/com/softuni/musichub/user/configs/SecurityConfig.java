@@ -1,4 +1,4 @@
-package com.softuni.musichub.config;
+package com.softuni.musichub.user.configs;
 
 import com.softuni.musichub.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final int TOKEN_VALIDITY_SECONDS = 864_000;
+    private static final int TOKEN_VALIDITY_SECONDS = 864_000;
 
     private final UserService userService;
 
@@ -38,8 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAnyRole("ADMIN", "MODERATOR")
                 .antMatchers("/songs/upload", "/comments/post").authenticated()
                 .anyRequest().permitAll()
-                .and().exceptionHandling().accessDeniedPage("/songs/browse")
-                .and().formLogin().defaultSuccessUrl("/songs/browse").loginPage("/users/login")
+                .and().exceptionHandling().accessDeniedPage("/")
+                .and().formLogin().defaultSuccessUrl("/").loginPage("/users/login")
                 .usernameParameter("username").passwordParameter("password")
                 .and().rememberMe()
                 .rememberMeParameter("rememberMe")

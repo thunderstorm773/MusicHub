@@ -22,7 +22,7 @@ public class UsernameValidator implements ConstraintValidator<Username, String> 
     @Override
     public boolean isValid(String username, ConstraintValidatorContext constraintValidatorContext) {
         try {
-            UserView userView = this.userService.findByUsername(username);
+            this.userService.findByUsername(username);
             return false;
         } catch (UserNotFoundException e) {
             return true;

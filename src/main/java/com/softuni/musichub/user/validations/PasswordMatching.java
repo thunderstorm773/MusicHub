@@ -1,6 +1,6 @@
 package com.softuni.musichub.user.validations;
 
-import com.softuni.musichub.user.staticData.UserConstants;
+import com.softuni.musichub.user.staticData.AccountConstants;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = PasswordMatchingValidator.class)
 public @interface PasswordMatching {
 
-    String message() default UserConstants.PASSWORD_MISMATCHING_MESSAGE;
+    String message() default AccountConstants.PASSWORD_MISMATCHING_MESSAGE;
 
     Class<?>[] groups() default {};
 

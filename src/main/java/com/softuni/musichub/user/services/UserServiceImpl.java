@@ -8,9 +8,7 @@ import com.softuni.musichub.user.models.bindingModels.RegisterUser;
 import com.softuni.musichub.user.models.viewModels.RoleView;
 import com.softuni.musichub.user.models.viewModels.UserView;
 import com.softuni.musichub.user.repositories.UserRepository;
-import com.softuni.musichub.user.services.RoleService;
-import com.softuni.musichub.user.services.UserService;
-import com.softuni.musichub.user.staticData.UserConstants;
+import com.softuni.musichub.user.staticData.AccountConstants;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -157,7 +155,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.userRepository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException(UserConstants.INVALID_CREDENTIALS_MESSAGE);
+            throw new UsernameNotFoundException(AccountConstants.INVALID_CREDENTIALS_MESSAGE);
         }
 
         return user;
