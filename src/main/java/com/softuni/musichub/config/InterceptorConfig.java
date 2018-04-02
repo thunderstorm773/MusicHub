@@ -9,6 +9,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
+    private static final String DELETE_SONG_URL_PATTERN = "/songs/delete/{id}";
+
+    private static final String EDIT_SONG_URL_PATTERN = "/songs/edit/{id}";
+
     private final SongManagementInterceptor songInterceptor;
 
     @Autowired
@@ -19,6 +23,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(this.songInterceptor)
-                .addPathPatterns("/songs/delete/{id}", "/songs/edit/{id}");
+                .addPathPatterns(DELETE_SONG_URL_PATTERN, EDIT_SONG_URL_PATTERN);
     }
 }

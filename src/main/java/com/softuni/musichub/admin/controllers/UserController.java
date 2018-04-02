@@ -7,7 +7,8 @@ import com.softuni.musichub.user.models.bindingModels.EditUser;
 import com.softuni.musichub.user.models.viewModels.RoleView;
 import com.softuni.musichub.user.models.viewModels.UserView;
 import com.softuni.musichub.user.services.RoleService;
-import com.softuni.musichub.user.services.UserService;
+import com.softuni.musichub.user.services.UserExtractionService;
+import com.softuni.musichub.user.services.UserManipulationService;
 import com.softuni.musichub.user.staticData.AccountConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,14 +30,18 @@ import java.util.Set;
 @RequestMapping("/admin")
 public class UserController {
 
-    private final UserService userService;
+    private final UserExtractionService userExtractionService;
+
+    private final UserManipulationService userManipulationService;
 
     private final RoleService roleService;
 
     @Autowired
-    public UserController(UserService userService,
+    public UserController(UserExtractionService userExtractionService,
+                          UserManipulationService userManipulationService,
                           RoleService roleService) {
-        this.userService = userService;
+        this.userExtractionService = userExtractionService;
+        this.userManipulationService = userManipulationService;
         this.roleService = roleService;
     }
 
@@ -48,19 +53,12 @@ public class UserController {
     @GetMapping("/users/all")
     public ModelAndView getAllUsersPage(ModelAndView modelAndView,
                                         @PageableDefault(AdminConstants.USERS_PER_PAGE) Pageable pageable,
-                                        @RequestParam(value = "username", required = false) String username) {
+                                        @RequestParam(value = AccountConstants.USERNAME_KEY, required = false) String username) {
         Page<UserView> usersViewPage;
         if (username == null) {
-            usersViewPage = this.userService.findAll(pageable);
+            usersViewPage = this.userExtractionService.findAll(pageable);
         } else {
-            usersViewPage = this.userService.findAllByUsernameContains(username, pageable);
-        }
-
-        Integer usersCount = usersViewPage.getNumberOfElements();
-        Integer pageNumber = pageable.getPageNumber();
-        if (usersCount == 0 && (pageNumber != 0)) {
-            modelAndView.setViewName("redirect:/admin/users/all");
-            return modelAndView;
+            usersViewPage = this.userExtractionService.findAllByUsernameContains(username, pageable);
         }
 
         modelAndView.addObject(AdminConstants.TABLE_ACTIONS_STYLE_ENABLED, "");
@@ -74,7 +72,7 @@ public class UserController {
     @GetMapping("/users/delete/{username}")
     public ModelAndView getDeleteUserPage(ModelAndView modelAndView,
                                           @PathVariable String username) {
-        UserView userView = this.userService.findByUsername(username);
+        UserView userView = this.userExtractionService.findByUsername(username);
         modelAndView.addObject(AdminConstants.DELETE_USER, userView);
         modelAndView.addObject(Constants.TITLE, AdminConstants.DELETE_USER_TITLE);
         modelAndView.addObject(Constants.VIEW, AdminConstants.DELETE_USER_VIEW);
@@ -95,7 +93,7 @@ public class UserController {
             return modelAndView;
         }
 
-        this.userService.deleteByUsername(username);
+        this.userManipulationService.deleteByUsername(username);
         modelAndView.setViewName("redirect:/admin/users/all");
         return modelAndView;
     }
@@ -104,7 +102,7 @@ public class UserController {
     public ModelAndView getEditUserPage(ModelAndView modelAndView,
                                         Model model,
                                         @PathVariable String username) {
-        UserView userView = this.userService.findByUsername(username);
+        UserView userView = this.userExtractionService.findByUsername(username);
         if (model.asMap().containsKey(AdminConstants.EDIT_USER)) {
             EditUser editUser = (EditUser) model.asMap().get(AdminConstants.EDIT_USER);
             Set<String> roleNames = editUser.getRoleNames();
@@ -134,7 +132,7 @@ public class UserController {
             return modelAndView;
         }
 
-        this.userService.edit(editUser, username);
+        this.userManipulationService.edit(editUser, username);
         modelAndView.setViewName("redirect:/admin/users/all");
         return modelAndView;
     }

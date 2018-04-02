@@ -2,7 +2,7 @@ package com.softuni.musichub.user.controllers;
 
 import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.models.bindingModels.RegisterUser;
-import com.softuni.musichub.user.services.UserService;
+import com.softuni.musichub.user.services.UserManipulationService;
 import com.softuni.musichub.user.staticData.AccountConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,11 +17,11 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 public class AccountController {
 
-    private final UserService userService;
+    private final UserManipulationService userManipulationService;
 
     @Autowired
-    public AccountController(UserService userService) {
-        this.userService = userService;
+    public AccountController(UserManipulationService userManipulationService) {
+        this.userManipulationService = userManipulationService;
     }
 
     @GetMapping("/register")
@@ -52,14 +52,14 @@ public class AccountController {
             return modelAndView;
         }
 
-        this.userService.registerUser(registerUser);
+        this.userManipulationService.registerUser(registerUser);
         modelAndView.setViewName("redirect:/users/login");
         return modelAndView;
     }
 
     @GetMapping("/login")
     public ModelAndView getLoginUserPage(ModelAndView modelAndView,
-                                         @RequestParam(value = "error", required = false) String loginError) {
+                                         @RequestParam(value = Constants.ERROR, required = false) String loginError) {
         if (loginError != null) {
             modelAndView.addObject(Constants.ERROR,
                     AccountConstants.INVALID_CREDENTIALS_MESSAGE);

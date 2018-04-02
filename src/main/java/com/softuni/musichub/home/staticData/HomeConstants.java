@@ -23,4 +23,6 @@ public class HomeConstants {
     public static final String CATEGORY_NAME_SEARCH_KEY = "categoryName";
 
     public static final String TAG_NAME_SEARCH_KEY = "tagName";
+
+    public static final String INDEX_ROUTE = "/";
 }

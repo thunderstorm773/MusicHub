@@ -10,5 +10,5 @@ public class ErrorConstants {
 
     public static final String NOT_FOUND_ERROR_VIEW = "error/404";
 
-    public static final String NOT_FOUND_ERROR_ROUTE = "/errors/404";
+    public static final String NOT_FOUND_ERROR_URL = "/errors/404";
 }

@@ -10,9 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 
-public interface SongService {
-
-    void upload(UploadSong uploadSong, User user) throws IOException;
+public interface SongExtractionService {
 
     Page<SongView> findAll(Pageable pageable);
 
@@ -26,11 +24,7 @@ public interface SongService {
 
     SongView findById(Long songId) throws SongNotFoundException;
 
-    void deleteById(Long songId) throws Exception;
-
     EditSong getEditSongById(Long songId) throws SongNotFoundException;
-
-    void edit(EditSong editSong, Long songId) throws SongNotFoundException;
 
     boolean isSongExists(Long songId);
 }

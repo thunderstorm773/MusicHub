@@ -3,7 +3,6 @@ package com.softuni.musichub.user.services;
 import com.softuni.musichub.user.entities.Role;
 import com.softuni.musichub.user.models.viewModels.RoleView;
 import com.softuni.musichub.user.repositories.RoleRepository;
-import com.softuni.musichub.user.services.RoleService;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,15 +27,12 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public RoleView findByName(String roleName) {
         Role role = this.roleRepository.findByAuthority(roleName);
-        RoleView roleView = this.mapperUtil.getModelMapper()
-                .map(role, RoleView.class);
-        return roleView;
+        return this.mapperUtil.getModelMapper().map(role, RoleView.class);
     }
 
     @Override
     public List<RoleView> findAll() {
         List<Role> roles = this.roleRepository.findAll();
-        List<RoleView> roleViews = this.mapperUtil.convertAll(roles, RoleView.class);
-        return roleViews;
+        return this.mapperUtil.convertAll(roles, RoleView.class);
     }
 }

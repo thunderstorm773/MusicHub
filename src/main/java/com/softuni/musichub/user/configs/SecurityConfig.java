@@ -1,6 +1,6 @@
 package com.softuni.musichub.user.configs;
 
-import com.softuni.musichub.user.services.UserService;
+import com.softuni.musichub.user.services.UserExtractionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,15 +15,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final int TOKEN_VALIDITY_SECONDS = 864_000;
 
-    private final UserService userService;
+    private final UserExtractionService userExtractionService;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public SecurityConfig(UserService userService,
+    public SecurityConfig(UserExtractionService userExtractionService,
                           BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
-        this.userService = userService;
+        this.userExtractionService = userExtractionService;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(this.userService)
+        auth.userDetailsService(this.userExtractionService)
                 .passwordEncoder(this.passwordEncoder);
     }
 }

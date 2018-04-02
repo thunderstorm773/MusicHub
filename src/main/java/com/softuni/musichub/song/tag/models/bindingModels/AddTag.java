@@ -4,7 +4,8 @@ public class AddTag {
 
     private String name;
 
-    public AddTag() {
+    public AddTag(String name) {
+        this.name = name;
     }
 
     public String getName() {

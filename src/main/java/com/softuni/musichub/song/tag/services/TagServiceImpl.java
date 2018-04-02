@@ -4,7 +4,6 @@ import com.softuni.musichub.song.tag.entities.Tag;
 import com.softuni.musichub.song.tag.models.bindingModels.AddTag;
 import com.softuni.musichub.song.tag.models.viewModels.TagView;
 import com.softuni.musichub.song.tag.repositories.TagRepository;
-import com.softuni.musichub.song.tag.services.TagService;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +25,10 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void save(AddTag addTag) {
+    public TagView save(AddTag addTag) {
         Tag tag = this.mapperUtil.getModelMapper().map(addTag, Tag.class);
-        this.tagRepository.save(tag);
+        Tag savedTag = this.tagRepository.save(tag);
+        return this.mapperUtil.getModelMapper().map(savedTag, TagView.class);
     }
 
     @Override
@@ -38,7 +38,6 @@ public class TagServiceImpl implements TagService {
             return null;
         }
 
-        TagView tagView = this.mapperUtil.getModelMapper().map(tag, TagView.class);
-        return tagView;
+        return this.mapperUtil.getModelMapper().map(tag, TagView.class);
     }
 }

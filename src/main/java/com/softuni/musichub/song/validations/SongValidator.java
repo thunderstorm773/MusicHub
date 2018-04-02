@@ -27,10 +27,6 @@ public class SongValidator implements ConstraintValidator<Song, MultipartFile>{
         String fileContentType = multipartFile.getContentType();
         boolean isFileHasAllowedContentType = Arrays
                 .stream(ALLOWED_CONTENT_TYPES).anyMatch(t -> t.equals(fileContentType));
-        if (!isFileHasAllowedContentType) {
-            return false;
-        }
-
-        return true;
+        return isFileHasAllowedContentType;
     }
 }

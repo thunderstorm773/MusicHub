@@ -1,7 +1,7 @@
 package com.softuni.musichub.song.controllers;
 
 import com.softuni.musichub.admin.category.models.views.CategoryView;
-import com.softuni.musichub.admin.category.services.CategoryService;
+import com.softuni.musichub.admin.category.services.CategoryExtractionService;
 import com.softuni.musichub.admin.category.staticData.CategoryConstants;
 import com.softuni.musichub.song.comment.staticData.CommentConstants;
 import com.softuni.musichub.song.exceptions.SongNotFoundException;
@@ -9,7 +9,8 @@ import com.softuni.musichub.song.models.bindingModels.EditSong;
 import com.softuni.musichub.song.models.bindingModels.UploadSong;
 import com.softuni.musichub.song.models.viewModels.SongDetailsView;
 import com.softuni.musichub.song.models.viewModels.SongView;
-import com.softuni.musichub.song.services.SongService;
+import com.softuni.musichub.song.services.SongExtractionService;
+import com.softuni.musichub.song.services.SongManipulationService;
 import com.softuni.musichub.song.staticData.SongConstants;
 import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.entities.User;
@@ -32,19 +33,29 @@ import java.util.List;
 @RequestMapping("/songs")
 public class SongController {
 
-    private final CategoryService categoryService;
+    private final CategoryExtractionService categoryExtractionService;
 
-    private final SongService songService;
+    private final SongManipulationService songManipulationService;
 
-    private final FileUtil fileUtil;
+    private final SongExtractionService songExtractionService;
 
     @Autowired
-    public SongController(CategoryService categoryService,
-                          SongService songService,
-                          FileUtil fileUtil) {
-        this.categoryService = categoryService;
-        this.songService = songService;
-        this.fileUtil = fileUtil;
+    public SongController(CategoryExtractionService categoryExtractionService,
+                          SongManipulationService songManipulationService,
+                          SongExtractionService songExtractionService) {
+        this.categoryExtractionService = categoryExtractionService;
+        this.songManipulationService = songManipulationService;
+        this.songExtractionService = songExtractionService;
+    }
+
+    private UploadSong saveSongInFileSystem(UploadSong uploadSong, FileUtil fileUtil)
+            throws IOException {
+        MultipartFile songTempFile = uploadSong.getFile();
+        byte[] songTempFileBytes = songTempFile.getBytes();
+        String songTempFileName = songTempFile.getOriginalFilename();
+        File songPersistedFile = fileUtil.createFile(songTempFileBytes, songTempFileName);
+        uploadSong.setPersistedFile(songPersistedFile);
+        return uploadSong;
     }
 
     @ExceptionHandler(SongNotFoundException.class)
@@ -59,7 +70,7 @@ public class SongController {
             modelAndView.addObject(SongConstants.UPLOAD_SONG, uploadSong);
         }
 
-        List<CategoryView> categories = this.categoryService.findAll();
+        List<CategoryView> categories = this.categoryExtractionService.findAll();
         modelAndView.addObject(SongConstants.VALIDATE_UPLOAD_SONG_JS_ENABLED, "");
         modelAndView.addObject(CategoryConstants.CATEGORIES, categories);
         modelAndView.addObject(Constants.TITLE, SongConstants.UPLOAD_SONG_TITLE);
@@ -73,7 +84,8 @@ public class SongController {
                                    @Valid @ModelAttribute UploadSong uploadSong,
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes,
-                                   @AuthenticationPrincipal User user) throws IOException {
+                                   @AuthenticationPrincipal User user,
+                                   FileUtil fileUtil) throws IOException {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(SongConstants.UPLOAD_SONG, uploadSong);
             String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
@@ -83,15 +95,10 @@ public class SongController {
             return modelAndView;
         }
 
-        MultipartFile songTempFile = uploadSong.getFile();
-        byte[] songTempFileBytes = songTempFile.getBytes();
-        String songTempFileName = songTempFile.getOriginalFilename();
-        // Create persisted file to upload in CDN after
-        // this request is finished
-        File songPersistedFile = this.fileUtil
-                .createFile(songTempFileBytes, songTempFileName);
-        uploadSong.setPersistedFile(songPersistedFile);
-        this.songService.upload(uploadSong, user);
+        // Create persisted file to upload in CDN
+        // and then set this file as field in uploadSong
+        uploadSong = this.saveSongInFileSystem(uploadSong, fileUtil);
+        this.songManipulationService.upload(uploadSong, user);
         redirectAttributes.addFlashAttribute(Constants.INFO, SongConstants.UPLOAD_SONG_SOON);
         modelAndView.setViewName("redirect:/songs/upload");
         return modelAndView;
@@ -100,7 +107,7 @@ public class SongController {
     @GetMapping("/details/{id}")
     public ModelAndView getSongDetailsPage(ModelAndView modelAndView,
                                            @PathVariable Long id) throws Exception {
-        SongDetailsView songDetailsView = this.songService.getDetailsById(id);
+        SongDetailsView songDetailsView = this.songExtractionService.getDetailsById(id);
         modelAndView.addObject(SongConstants.AUDIO_JS_STYLE_ENABLED, "");
         modelAndView.addObject(CommentConstants.POST_COMMENTS_JS_ENABLED, "");
         modelAndView.addObject(SongConstants.SONG_DETAILS, songDetailsView);
@@ -113,7 +120,7 @@ public class SongController {
     @GetMapping("/delete/{id}")
     public ModelAndView getDeleteSongPage(ModelAndView modelAndView,
                                           @PathVariable Long id) {
-        SongView songView = this.songService.findById(id);
+        SongView songView = this.songExtractionService.findById(id);
         modelAndView.addObject(Constants.TITLE, SongConstants.DELETE_SONG_TITLE);
         modelAndView.addObject(Constants.VIEW, SongConstants.DELETE_SONG_VIEW);
         modelAndView.addObject(SongConstants.DELETE_SONG, songView);
@@ -124,7 +131,7 @@ public class SongController {
     @PostMapping("/delete/{id}")
     public ModelAndView deleteSong(ModelAndView modelAndView,
                                    @PathVariable Long id) throws Exception {
-        this.songService.deleteById(id);
+        this.songManipulationService.deleteById(id);
         modelAndView.setViewName("redirect:/");
         return modelAndView;
     }
@@ -135,12 +142,12 @@ public class SongController {
                                         Model model) {
         EditSong editSong;
         if (!model.asMap().containsKey(SongConstants.EDIT_SONG)) {
-            editSong = this.songService.getEditSongById(id);
+            editSong = this.songExtractionService.getEditSongById(id);
         } else {
             editSong = (EditSong) model.asMap().get(SongConstants.EDIT_SONG);
         }
 
-        List<CategoryView> categories = this.categoryService.findAll();
+        List<CategoryView> categories = this.categoryExtractionService.findAll();
         modelAndView.addObject(CategoryConstants.CATEGORIES, categories);
         modelAndView.addObject(SongConstants.EDIT_SONG, editSong);
         modelAndView.addObject(Constants.TITLE, SongConstants.EDIT_SONG_TITLE);
@@ -164,7 +171,7 @@ public class SongController {
             return modelAndView;
         }
 
-        this.songService.edit(editSong, id);
+        this.songManipulationService.edit(editSong, id);
         modelAndView.setViewName("redirect:/songs/details/" + id);
         return modelAndView;
     }

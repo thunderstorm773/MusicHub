@@ -5,7 +5,7 @@ import com.softuni.musichub.song.comment.models.bindingModels.PostComment;
 import com.softuni.musichub.song.comment.models.viewModels.CommentView;
 import com.softuni.musichub.song.comment.services.CommentService;
 import com.softuni.musichub.song.comment.staticData.CommentConstants;
-import com.softuni.musichub.song.services.SongService;
+import com.softuni.musichub.song.services.SongExtractionService;
 import com.softuni.musichub.staticData.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,30 +22,38 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    private final SongService songService;
+    private final SongExtractionService songService;
 
     private final Gson gson;
 
     @Autowired
     public CommentController(CommentService commentService,
-                             SongService songService,
+                             SongExtractionService songService,
                              Gson gson) {
         this.commentService = commentService;
         this.songService = songService;
         this.gson = gson;
     }
 
-    @PostMapping("/post")
-    @ResponseBody
-    public String postComment(String commentContent, Long songId,
-                              Principal principal) {
+    private boolean isCommentValid(String commentContent, Long songId) {
         if (commentContent == null
                 || commentContent.length() < CommentConstants.COMMENT_MIN_LEN) {
-            return null;
+            return false;
         }
 
         boolean isSongExists = this.songService.isSongExists(songId);
         if (!isSongExists) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @PostMapping("/post")
+    @ResponseBody
+    public String postComment(String commentContent, Long songId,
+                              Principal principal) {
+        if (!isCommentValid(commentContent, songId)) {
             return null;
         }
 
@@ -75,7 +83,7 @@ public class CommentController {
 
     @PostMapping("/reject/{id}")
     public ModelAndView rejectComment(ModelAndView modelAndView,
-                                       @PathVariable Long id) {
+                                      @PathVariable Long id) {
         this.commentService.reject(id);
         modelAndView.setViewName("redirect:/comments/pending");
         return modelAndView;

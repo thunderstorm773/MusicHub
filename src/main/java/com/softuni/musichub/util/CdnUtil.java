@@ -22,17 +22,11 @@ public class CdnUtil {
 
     public static final String VIDEO_RESOURCE_TYPE = "video";
 
-    public static final String IMAGE_RESOURCE_TYPE = "image";
-
     public static final String PUBLIC_ID_KEY = "public_id";
 
     public static final String SONGS_FOLDER = "songs";
 
-    public static final String IMAGES_FOLDER = "images";
-
     private static final String ATTACHMENT_FLAG = "attachment";
-
-    private static final String VERSION_KEY = "version";
 
     private Cloudinary cloudinary;
 
@@ -66,7 +60,7 @@ public class CdnUtil {
         return resourceFullUrl;
     }
 
-    public String getResourceDownloadUrl(String partialUrl, String resourceType) throws Exception {
+    public String getResourceDownloadUrl(String partialUrl, String resourceType) {
         Transformation attachmentFlag = new Transformation().flags(ATTACHMENT_FLAG);
         Url url = this.cloudinary.url().transformation(attachmentFlag);
         String downloadUrl = url.resourceType(resourceType).generate(partialUrl);

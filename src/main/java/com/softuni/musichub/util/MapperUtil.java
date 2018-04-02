@@ -1,6 +1,9 @@
 package com.softuni.musichub.util;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,5 +29,13 @@ public class MapperUtil {
         }
 
         return convertedItems;
+    }
+
+    public <S, D> Page<D> convertToPage(Pageable pageable,
+            Page<S> source, Class<D> destination) {
+        List<S> pageContent = source.getContent();
+        List<D> pageMappedContent = this.convertAll(pageContent, destination);
+        Long totalElements = source.getTotalElements();
+        return new PageImpl<>(pageMappedContent, pageable, totalElements);
     }
 }

@@ -48,4 +48,6 @@ public class SongConstants {
     public static final String AUDIO_JS_STYLE_ENABLED = "audioJsStyleEnabled";
 
     public static final String VALIDATE_UPLOAD_SONG_JS_ENABLED = "validateUploadSongJsEnabled";
+
+    public static final String SONG_DETAILS_BASE_ROUTE = "/songs/details/";
 }

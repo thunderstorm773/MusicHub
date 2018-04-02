@@ -7,19 +7,17 @@ import com.softuni.musichub.song.comment.models.viewModels.CommentView;
 import com.softuni.musichub.song.comment.repositories.CommentRepository;
 import com.softuni.musichub.song.entities.Song;
 import com.softuni.musichub.song.models.viewModels.SongView;
-import com.softuni.musichub.song.services.SongService;
+import com.softuni.musichub.song.services.SongExtractionService;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.user.models.viewModels.UserView;
-import com.softuni.musichub.user.services.UserService;
+import com.softuni.musichub.user.services.UserExtractionService;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.Principal;
-import java.util.List;
 
 @Service
 @Transactional
@@ -27,37 +25,36 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
-    private final SongService songService;
+    private final SongExtractionService songService;
 
-    private final UserService userService;
+    private final UserExtractionService userService;
 
     private final MapperUtil mapperUtil;
 
     @Autowired
     public CommentServiceImpl(CommentRepository commentRepository,
-                              SongService songService,
-                              UserService userService, MapperUtil mapperUtil) {
+                              SongExtractionService songService,
+                              UserExtractionService userService, MapperUtil mapperUtil) {
         this.commentRepository = commentRepository;
         this.songService = songService;
         this.userService = userService;
         this.mapperUtil = mapperUtil;
     }
 
-    private Comment constructComment(String commentContent, Principal principal,
-                                     SongView songView) {
+    private Comment constructComment(PostComment postComment, Principal principal) {
+        Long songId = postComment.getSongId();
+        SongView songView = this.songService.findById(songId);
         Song song = this.mapperUtil.getModelMapper().map(songView, Song.class);
         UserView userView = this.userService.findByUsername(principal.getName());
         User user = this.mapperUtil.getModelMapper().map(userView, User.class);
         CommentStatus defaultStatus = CommentStatus.PENDING;
+        String commentContent = postComment.getContent();
         return new Comment(commentContent, user, defaultStatus, song);
     }
 
     @Override
     public CommentView postComment(PostComment postComment, Principal principal) {
-        Long songId = postComment.getSongId();
-        SongView songView = this.songService.findById(songId);
-        String commentContent = postComment.getContent();
-        Comment comment = this.constructComment(commentContent, principal, songView);
+        Comment comment = this.constructComment(postComment, principal);
         Comment postedComment = this.commentRepository.save(comment);
         return this.mapperUtil.getModelMapper()
                 .map(postedComment, CommentView.class);
@@ -66,11 +63,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Page<CommentView> findPendingComments(Pageable pageable) {
         Page<Comment> commentPage = this.commentRepository.findPendingComments(pageable);
-        List<Comment> comments = commentPage.getContent();
-        List<CommentView> commentViews = this.mapperUtil.convertAll(comments, CommentView.class);
-        long totalElements = commentPage.getTotalElements();
-        Page<CommentView> commentViewPage = new PageImpl<>(commentViews, pageable, totalElements);
-        return commentViewPage;
+        return this.mapperUtil.convertToPage(pageable, commentPage, CommentView.class);
     }
 
     @Override
