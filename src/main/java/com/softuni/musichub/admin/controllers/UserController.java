@@ -1,6 +1,7 @@
 package com.softuni.musichub.admin.controllers;
 
 import com.softuni.musichub.admin.staticData.AdminConstants;
+import com.softuni.musichub.controller.BaseController;
 import com.softuni.musichub.error.staticData.ErrorConstants;
 import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.exceptions.UserNotFoundException;
@@ -24,12 +25,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
-public class UserController {
+public class UserController extends BaseController {
 
     private final UserExtractionService userExtractionService;
 
@@ -47,13 +50,12 @@ public class UserController {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public String handleUserNotFoundException() {
-        return "redirect:" + AdminConstants.ALL_USERS_ROUTE;
+    public ModelAndView handleUserNotFoundException() {
+        return this.redirect(AdminConstants.ALL_USERS_ROUTE);
     }
 
     @GetMapping("/users/all")
-    public ModelAndView getAllUsersPage(ModelAndView modelAndView,
-                                        @PageableDefault(AdminConstants.USERS_PER_PAGE) Pageable pageable,
+    public ModelAndView getAllUsersPage(@PageableDefault(AdminConstants.USERS_PER_PAGE) Pageable pageable,
                                         @RequestParam(value = AccountConstants.USERNAME, required = false) String username) {
         Page<UserView> usersViewPage;
         if (username == null) {
@@ -62,48 +64,39 @@ public class UserController {
             usersViewPage = this.userExtractionService.findAllByUsernameContains(username, pageable);
         }
 
-        modelAndView.addObject(AdminConstants.TABLE_ACTIONS_STYLE_ENABLED, "");
-        modelAndView.addObject(Constants.PAGE, usersViewPage);
-        modelAndView.addObject(Constants.TITLE, AdminConstants.ALL_USERS_TITLE);
-        modelAndView.addObject(Constants.VIEW, AdminConstants.ALL_USERS_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(AdminConstants.TABLE_ACTIONS_STYLE_ENABLED, "");
+        objectByKey.put(Constants.PAGE, usersViewPage);
+        return this.view(AdminConstants.ALL_USERS_TITLE,
+                AdminConstants.ALL_USERS_VIEW, objectByKey);
     }
 
     @GetMapping("/users/delete/{username}")
-    public ModelAndView getDeleteUserPage(ModelAndView modelAndView,
-                                          @PathVariable String username) {
+    public ModelAndView getDeleteUserPage(@PathVariable String username) {
         UserView userView = this.userExtractionService.findByUsername(username);
-        modelAndView.addObject(AdminConstants.DELETE_USER, userView);
-        modelAndView.addObject(Constants.TITLE, AdminConstants.DELETE_USER_TITLE);
-        modelAndView.addObject(Constants.VIEW, AdminConstants.DELETE_USER_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(AdminConstants.DELETE_USER, userView);
+        return this.view(AdminConstants.DELETE_USER_TITLE,
+                AdminConstants.DELETE_USER_VIEW, objectByKey);
     }
 
     @PostMapping("/users/delete/{username}")
-    public ModelAndView deleteUser(ModelAndView modelAndView,
-                                   @PathVariable String username,
+    public ModelAndView deleteUser(@PathVariable String username,
                                    @AuthenticationPrincipal UserDetails loggedInUser,
                                    RedirectAttributes redirectAttributes) {
         String loggedInUserUsername = loggedInUser.getUsername();
         if (loggedInUserUsername.equals(username)) {
             redirectAttributes.addFlashAttribute(ErrorConstants.ERROR,
                     AdminConstants.USER_CANNOT_BE_DELETED_MESSAGE);
-            modelAndView.setViewName("redirect:" +
-                    AdminConstants.DELETE_USER_BASE_ROUTE + username);
-            return modelAndView;
+            return this.redirect(AdminConstants.DELETE_USER_BASE_ROUTE + username);
         }
 
         this.userManipulationService.deleteByUsername(username);
-        modelAndView.setViewName("redirect:" + AdminConstants.ALL_USERS_ROUTE);
-        return modelAndView;
+        return this.redirect(AdminConstants.ALL_USERS_ROUTE);
     }
 
     @GetMapping("/users/edit/{username}")
-    public ModelAndView getEditUserPage(ModelAndView modelAndView,
-                                        Model model,
-                                        @PathVariable String username) {
+    public ModelAndView getEditUserPage(Model model, @PathVariable String username) {
         UserView userView = this.userExtractionService.findByUsername(username);
         if (model.asMap().containsKey(AdminConstants.EDIT_USER)) {
             EditUser editUser = (EditUser) model.asMap().get(AdminConstants.EDIT_USER);
@@ -112,17 +105,15 @@ public class UserController {
         }
 
         List<RoleView> roleViews = this.roleService.findAll();
-        modelAndView.addObject(AccountConstants.ROLES, roleViews);
-        modelAndView.addObject(AdminConstants.EDIT_USER, userView);
-        modelAndView.addObject(Constants.TITLE, AdminConstants.EDIT_USER_TITLE);
-        modelAndView.addObject(Constants.VIEW, AdminConstants.EDIT_USER_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(AccountConstants.ROLES, roleViews);
+        objectByKey.put(AdminConstants.EDIT_USER, userView);
+        return this.view(AdminConstants.EDIT_USER_TITLE,
+                AdminConstants.EDIT_USER_VIEW, objectByKey);
     }
 
     @PostMapping("/users/edit/{username}")
-    public ModelAndView editUser(ModelAndView modelAndView,
-                                 @PathVariable String username,
+    public ModelAndView editUser(@PathVariable String username,
                                  @Valid @ModelAttribute EditUser editUser,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
@@ -130,13 +121,10 @@ public class UserController {
             redirectAttributes.addFlashAttribute(AdminConstants.EDIT_USER, editUser);
             redirectAttributes.addFlashAttribute(ErrorConstants.ERROR,
                     AdminConstants.NOT_SELECTED_ROLES_MESSAGE);
-            modelAndView.setViewName("redirect:" +
-                    AdminConstants.EDIT_USER_BASE_ROUTE + username);
-            return modelAndView;
+           return this.redirect(AdminConstants.EDIT_USER_BASE_ROUTE + username);
         }
 
         this.userManipulationService.edit(editUser, username);
-        modelAndView.setViewName("redirect:" + AdminConstants.ALL_USERS_ROUTE);
-        return modelAndView;
+        return this.redirect(AdminConstants.ALL_USERS_ROUTE);
     }
 }

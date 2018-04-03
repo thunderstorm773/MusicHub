@@ -7,6 +7,7 @@ import com.softuni.musichub.admin.category.services.CategoryExtractionService;
 import com.softuni.musichub.admin.category.services.CategoryManipulationService;
 import com.softuni.musichub.admin.category.staticData.CategoryConstants;
 import com.softuni.musichub.admin.staticData.AdminConstants;
+import com.softuni.musichub.controller.BaseController;
 import com.softuni.musichub.staticData.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
-public class CategoryController {
+public class CategoryController extends BaseController {
 
     private final CategoryManipulationService categoryManipulationService;
 
@@ -36,22 +39,18 @@ public class CategoryController {
     }
 
     @GetMapping("/categories/add")
-    public ModelAndView getAddCategoryPage(ModelAndView modelAndView,
-                                           Model model) {
+    public ModelAndView getAddCategoryPage(Model model) {
+        Map<String, Object> objectByKey = new HashMap<>();
         if (!model.asMap().containsKey(CategoryConstants.ADD_CATEGORY)) {
-            AddCategory addCategory = new AddCategory();
-            modelAndView.addObject(CategoryConstants.ADD_CATEGORY, addCategory);
+            objectByKey.put(CategoryConstants.ADD_CATEGORY, new AddCategory());
         }
 
-        modelAndView.addObject(Constants.TITLE, CategoryConstants.ADD_CATEGORY_TITLE);
-        modelAndView.addObject(Constants.VIEW, CategoryConstants.ADD_CATEGORY_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        return this.view(CategoryConstants.ADD_CATEGORY_TITLE,
+                CategoryConstants.ADD_CATEGORY_VIEW, objectByKey);
     }
 
     @PostMapping("/categories/add")
-    public ModelAndView addCategory(ModelAndView modelAndView,
-                                    @Valid @ModelAttribute AddCategory addCategory,
+    public ModelAndView addCategory(@Valid @ModelAttribute AddCategory addCategory,
                                     BindingResult bindingResult,
                                     RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
@@ -59,81 +58,65 @@ public class CategoryController {
             String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
                     + CategoryConstants.ADD_CATEGORY;
             redirectAttributes.addFlashAttribute(bindingResultKey, bindingResult);
-            modelAndView.setViewName("redirect:" + CategoryConstants.ADD_CATEGORY_ROUTE);
-            return modelAndView;
+            return this.redirect(CategoryConstants.ADD_CATEGORY_ROUTE);
         }
 
         this.categoryManipulationService.addCategory(addCategory);
-        modelAndView.setViewName("redirect:" + CategoryConstants.ALL_CATEGORIES_ROUTE);
-        return modelAndView;
+        return this.redirect(CategoryConstants.ALL_CATEGORIES_ROUTE);
     }
 
     @GetMapping("/categories/all")
-    public ModelAndView getAllCategoriesPage(ModelAndView modelAndView,
-                                             @PageableDefault(CategoryConstants.CATEGORIES_PER_PAGE) Pageable pageable) {
+    public ModelAndView getAllCategoriesPage(@PageableDefault(CategoryConstants.CATEGORIES_PER_PAGE) Pageable pageable) {
         Page<CategoryView> categories = this.categoryExtractionService.findAll(pageable);
-        modelAndView.addObject(AdminConstants.TABLE_ACTIONS_STYLE_ENABLED, "");
-        modelAndView.addObject(Constants.PAGE, categories);
-        modelAndView.addObject(Constants.TITLE, CategoryConstants.ALL_CATEGORIES_TITLE);
-        modelAndView.addObject(Constants.VIEW, CategoryConstants.ALL_CATEGORIES_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(AdminConstants.TABLE_ACTIONS_STYLE_ENABLED, "");
+        objectByKey.put(Constants.PAGE, categories);
+        return this.view(CategoryConstants.ALL_CATEGORIES_TITLE,
+                CategoryConstants.ALL_CATEGORIES_VIEW, objectByKey);
     }
 
     @GetMapping("/categories/{id}/delete")
-    public ModelAndView getDeleteCategoryPage(ModelAndView modelAndView,
-                                              @PathVariable Long id) {
+    public ModelAndView getDeleteCategoryPage(@PathVariable Long id) {
         CategoryView category = this.categoryExtractionService.findById(id);
         if (category == null) {
-            modelAndView.setViewName("redirect:" + CategoryConstants.ALL_CATEGORIES_ROUTE);
-            return modelAndView;
+            return this.redirect(CategoryConstants.ALL_CATEGORIES_ROUTE);
         }
 
-        modelAndView.addObject(CategoryConstants.CATEGORY, category);
-        modelAndView.addObject(Constants.TITLE, CategoryConstants.DELETE_CATEGORY_TITLE);
-        modelAndView.addObject(Constants.VIEW, CategoryConstants.DELETE_CATEGORY_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(CategoryConstants.CATEGORY, category);
+        return this.view(CategoryConstants.DELETE_CATEGORY_TITLE,
+                CategoryConstants.DELETE_CATEGORY_VIEW, objectByKey);
     }
 
     @PostMapping("/categories/{id}/delete")
-    public ModelAndView deleteCategory(ModelAndView modelAndView,
-                                       @PathVariable Long id) {
+    public ModelAndView deleteCategory(@PathVariable Long id) {
         this.categoryManipulationService.deleteById(id);
-        modelAndView.setViewName("redirect:" + CategoryConstants.ALL_CATEGORIES_ROUTE);
-        return modelAndView;
+        return this.redirect(CategoryConstants.ALL_CATEGORIES_ROUTE);
     }
 
     @GetMapping("/categories/{id}/edit")
-    public ModelAndView getEditCategoryPage(ModelAndView modelAndView,
-                                            @PathVariable Long id) {
+    public ModelAndView getEditCategoryPage(@PathVariable Long id) {
         CategoryView category = this.categoryExtractionService.findById(id);
         if (category == null) {
-            modelAndView.setViewName("redirect:" + CategoryConstants.ALL_CATEGORIES_ROUTE);
-            return modelAndView;
+            return this.redirect(CategoryConstants.ALL_CATEGORIES_ROUTE);
         }
 
-        modelAndView.addObject(CategoryConstants.EDIT_CATEGORY, category);
-        modelAndView.addObject(Constants.TITLE, CategoryConstants.EDIT_CATEGORY_TITLE);
-        modelAndView.addObject(Constants.VIEW, CategoryConstants.EDIT_CATEGORY_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(CategoryConstants.EDIT_CATEGORY, category);
+        return this.view(CategoryConstants.EDIT_CATEGORY_TITLE,
+                CategoryConstants.EDIT_CATEGORY_VIEW, objectByKey);
     }
 
     @PostMapping("/categories/{id}/edit")
-    public ModelAndView editCategory(ModelAndView modelAndView,
-                                     @PathVariable Long id,
+    public ModelAndView editCategory(@PathVariable Long id,
                                      @Valid @ModelAttribute EditCategory editCategory,
                                      BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            modelAndView.addObject(Constants.TITLE, CategoryConstants.EDIT_CATEGORY_TITLE);
-            modelAndView.addObject(Constants.VIEW, CategoryConstants.EDIT_CATEGORY_VIEW);
-            modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-            return modelAndView;
+            return this.view(CategoryConstants.EDIT_CATEGORY_TITLE,
+                    CategoryConstants.EDIT_CATEGORY_VIEW);
         }
 
         this.categoryManipulationService.edit(editCategory, id);
-        modelAndView.setViewName("redirect:" + CategoryConstants.ALL_CATEGORIES_ROUTE);
-        return modelAndView;
+        return this.redirect(CategoryConstants.ALL_CATEGORIES_ROUTE);
     }
 }

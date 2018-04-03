@@ -3,6 +3,7 @@ package com.softuni.musichub.song.controllers;
 import com.softuni.musichub.admin.category.models.views.CategoryView;
 import com.softuni.musichub.admin.category.services.CategoryExtractionService;
 import com.softuni.musichub.admin.category.staticData.CategoryConstants;
+import com.softuni.musichub.controller.BaseController;
 import com.softuni.musichub.home.staticData.HomeConstants;
 import com.softuni.musichub.song.comment.staticData.CommentConstants;
 import com.softuni.musichub.song.exceptions.SongNotFoundException;
@@ -28,11 +29,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/songs")
-public class SongController {
+public class SongController extends BaseController {
 
     private final CategoryExtractionService categoryExtractionService;
 
@@ -59,29 +62,27 @@ public class SongController {
     }
 
     @ExceptionHandler(SongNotFoundException.class)
-    public String handleSongNotFoundException() {
-        return "redirect:" + HomeConstants.INDEX_ROUTE;
+    public ModelAndView handleSongNotFoundException() {
+        return this.redirect(HomeConstants.INDEX_ROUTE);
     }
 
     @GetMapping("/upload")
-    public ModelAndView getUploadSongPage(ModelAndView modelAndView, Model model) {
+    public ModelAndView getUploadSongPage(Model model) {
+        Map<String, Object> objectByKey = new HashMap<>();
         if (!model.asMap().containsKey(SongConstants.UPLOAD_SONG)) {
             UploadSong uploadSong = new UploadSong();
-            modelAndView.addObject(SongConstants.UPLOAD_SONG, uploadSong);
+            objectByKey.put(SongConstants.UPLOAD_SONG, uploadSong);
         }
 
         List<CategoryView> categories = this.categoryExtractionService.findAll();
-        modelAndView.addObject(SongConstants.VALIDATE_UPLOAD_SONG_JS_ENABLED, "");
-        modelAndView.addObject(CategoryConstants.CATEGORIES, categories);
-        modelAndView.addObject(Constants.TITLE, SongConstants.UPLOAD_SONG_TITLE);
-        modelAndView.addObject(Constants.VIEW, SongConstants.UPLOAD_SONG_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        objectByKey.put(SongConstants.VALIDATE_UPLOAD_SONG_JS_ENABLED, "");
+        objectByKey.put(CategoryConstants.CATEGORIES, categories);
+        return this.view(SongConstants.UPLOAD_SONG_TITLE,
+                SongConstants.UPLOAD_SONG_VIEW, objectByKey);
     }
 
     @PostMapping("/upload")
-    public ModelAndView uploadSong(ModelAndView modelAndView,
-                                   @Valid @ModelAttribute UploadSong uploadSong,
+    public ModelAndView uploadSong(@Valid @ModelAttribute UploadSong uploadSong,
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes,
                                    @AuthenticationPrincipal User user,
@@ -91,8 +92,7 @@ public class SongController {
             String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
                     + SongConstants.UPLOAD_SONG;
             redirectAttributes.addFlashAttribute(bindingResultKey, bindingResult);
-            modelAndView.setViewName("redirect:" + SongConstants.SONG_UPLOAD_ROUTE);
-            return modelAndView;
+            return this.redirect(SongConstants.SONG_UPLOAD_ROUTE);
         }
 
         // Create persisted file to upload in CDN
@@ -100,46 +100,37 @@ public class SongController {
         this.saveSongInFileSystem(uploadSong, fileUtil);
         this.songManipulationService.upload(uploadSong, user);
         redirectAttributes.addFlashAttribute(Constants.INFO, SongConstants.UPLOAD_SONG_SOON);
-        modelAndView.setViewName("redirect:" + SongConstants.SONG_UPLOAD_ROUTE);
-        return modelAndView;
+        return this.redirect(SongConstants.SONG_UPLOAD_ROUTE);
     }
 
     @GetMapping("/details/{id}")
-    public ModelAndView getSongDetailsPage(ModelAndView modelAndView,
-                                           @PathVariable Long id) throws Exception {
+    public ModelAndView getSongDetailsPage(@PathVariable Long id) throws Exception {
         SongDetailsView songDetailsView = this.songExtractionService.getDetailsById(id);
-        modelAndView.addObject(SongConstants.AUDIO_JS_STYLE_ENABLED, "");
-        modelAndView.addObject(CommentConstants.POST_COMMENTS_JS_ENABLED, "");
-        modelAndView.addObject(SongConstants.SONG_DETAILS, songDetailsView);
-        modelAndView.addObject(Constants.TITLE, SongConstants.SONG_DETAILS_TITLE);
-        modelAndView.addObject(Constants.VIEW, SongConstants.SONG_DETAILS_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(SongConstants.AUDIO_JS_STYLE_ENABLED, "");
+        objectByKey.put(CommentConstants.POST_COMMENTS_JS_ENABLED, "");
+        objectByKey.put(SongConstants.SONG_DETAILS, songDetailsView);
+        return this.view(SongConstants.SONG_DETAILS_TITLE,
+                SongConstants.SONG_DETAILS_VIEW, objectByKey);
     }
 
     @GetMapping("/delete/{id}")
-    public ModelAndView getDeleteSongPage(ModelAndView modelAndView,
-                                          @PathVariable Long id) {
+    public ModelAndView getDeleteSongPage(@PathVariable Long id) {
         SongView songView = this.songExtractionService.findById(id);
-        modelAndView.addObject(Constants.TITLE, SongConstants.DELETE_SONG_TITLE);
-        modelAndView.addObject(Constants.VIEW, SongConstants.DELETE_SONG_VIEW);
-        modelAndView.addObject(SongConstants.DELETE_SONG, songView);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(SongConstants.DELETE_SONG, songView);
+        return this.view(SongConstants.DELETE_SONG_TITLE,
+                SongConstants.DELETE_SONG_VIEW, objectByKey);
     }
 
     @PostMapping("/delete/{id}")
-    public ModelAndView deleteSong(ModelAndView modelAndView,
-                                   @PathVariable Long id) throws Exception {
+    public ModelAndView deleteSong(@PathVariable Long id) throws Exception {
         this.songManipulationService.deleteById(id);
-        modelAndView.setViewName("redirect:" + HomeConstants.INDEX_ROUTE);
-        return modelAndView;
+        return this.redirect(HomeConstants.INDEX_ROUTE);
     }
 
     @GetMapping("/edit/{id}")
-    public ModelAndView getEditSongPage(ModelAndView modelAndView,
-                                        @PathVariable Long id,
-                                        Model model) {
+    public ModelAndView getEditSongPage(@PathVariable Long id, Model model) {
         EditSong editSong;
         if (!model.asMap().containsKey(SongConstants.EDIT_SONG)) {
             editSong = this.songExtractionService.getEditSongById(id);
@@ -147,18 +138,16 @@ public class SongController {
             editSong = (EditSong) model.asMap().get(SongConstants.EDIT_SONG);
         }
 
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(SongConstants.EDIT_SONG, editSong);
         List<CategoryView> categories = this.categoryExtractionService.findAll();
-        modelAndView.addObject(CategoryConstants.CATEGORIES, categories);
-        modelAndView.addObject(SongConstants.EDIT_SONG, editSong);
-        modelAndView.addObject(Constants.TITLE, SongConstants.EDIT_SONG_TITLE);
-        modelAndView.addObject(Constants.VIEW, SongConstants.EDIT_SONG_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        objectByKey.put(CategoryConstants.CATEGORIES, categories);
+        return this.view(SongConstants.EDIT_SONG_TITLE,
+                SongConstants.EDIT_SONG_VIEW, objectByKey);
     }
 
     @PostMapping("/edit/{id}")
-    public ModelAndView editSong(ModelAndView modelAndView,
-                                 @PathVariable Long id,
+    public ModelAndView editSong(@PathVariable Long id,
                                  @Valid @ModelAttribute EditSong editSong,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
@@ -167,14 +156,10 @@ public class SongController {
             String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
                     + SongConstants.EDIT_SONG;
             redirectAttributes.addFlashAttribute(bindingResultKey, bindingResult);
-            modelAndView.setViewName("redirect:" +
-                    SongConstants.EDIT_SONG_BASE_ROUTE + id);
-            return modelAndView;
+            return this.redirect(SongConstants.EDIT_SONG_BASE_ROUTE + id);
         }
 
         this.songManipulationService.edit(editSong, id);
-        modelAndView.setViewName("redirect:" +
-                SongConstants.SONG_DETAILS_BASE_ROUTE + id);
-        return modelAndView;
+        return this.redirect(SongConstants.SONG_DETAILS_BASE_ROUTE + id);
     }
 }

@@ -1,6 +1,7 @@
 package com.softuni.musichub.song.comment.controllers;
 
 import com.google.gson.Gson;
+import com.softuni.musichub.controller.BaseController;
 import com.softuni.musichub.song.comment.models.bindingModels.PostComment;
 import com.softuni.musichub.song.comment.models.viewModels.CommentView;
 import com.softuni.musichub.song.comment.services.CommentExtractionService;
@@ -16,10 +17,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/comments")
-public class CommentController {
+public class CommentController extends BaseController {
 
     private final CommentExtractionService commentExtractionService;
 
@@ -63,30 +66,24 @@ public class CommentController {
     }
 
     @GetMapping("/pending")
-    public ModelAndView getPendingCommentsPage(ModelAndView modelAndView,
-                                               @PageableDefault(CommentConstants.COMMENTS_PER_PAGE) Pageable pageable) {
+    public ModelAndView getPendingCommentsPage(@PageableDefault(CommentConstants.COMMENTS_PER_PAGE) Pageable pageable) {
         Page<CommentView> commentViewPage = this.commentExtractionService
                 .findPendingComments(pageable);
-        modelAndView.addObject(Constants.PAGE, commentViewPage);
-        modelAndView.addObject(Constants.TITLE, CommentConstants.PENDING_COMMENTS_TITLE);
-        modelAndView.addObject(Constants.VIEW, CommentConstants.PENDING_COMMENTS_VIEW);
-        modelAndView.setViewName(Constants.BASE_LAYOUT_VIEW);
-        return modelAndView;
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(Constants.PAGE, commentViewPage);
+        return this.view(CommentConstants.PENDING_COMMENTS_TITLE,
+                CommentConstants.PENDING_COMMENTS_VIEW, objectByKey);
     }
 
     @PostMapping("/approve/{id}")
-    public ModelAndView approveComment(ModelAndView modelAndView,
-                                       @PathVariable Long id) {
+    public ModelAndView approveComment(@PathVariable Long id) {
         this.commentManipulationService.approve(id);
-        modelAndView.setViewName("redirect:" + CommentConstants.PENDING_COMMENTS_ROUTE);
-        return modelAndView;
+        return this.redirect(CommentConstants.PENDING_COMMENTS_ROUTE);
     }
 
     @PostMapping("/reject/{id}")
-    public ModelAndView rejectComment(ModelAndView modelAndView,
-                                      @PathVariable Long id) {
+    public ModelAndView rejectComment(@PathVariable Long id) {
         this.commentManipulationService.reject(id);
-        modelAndView.setViewName("redirect:" + CommentConstants.PENDING_COMMENTS_ROUTE);
-        return modelAndView;
+       return this.redirect(CommentConstants.PENDING_COMMENTS_ROUTE);
     }
 }

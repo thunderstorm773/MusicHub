@@ -1,27 +1,29 @@
 package com.softuni.musichub.error.exceptionHandlers;
 
+import com.softuni.musichub.controller.BaseController;
 import com.softuni.musichub.error.staticData.ErrorConstants;
 import com.softuni.musichub.home.staticData.HomeConstants;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends BaseController{
 
     @ExceptionHandler(Exception.class)
-    public String handleAllExceptions() {
-        return "redirect:" + ErrorConstants.SERVER_ERROR_ROUTE;
+    public ModelAndView handleAllExceptions() {
+        return this.redirect(ErrorConstants.SERVER_ERROR_ROUTE);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public String handleMethodArgumentTypeMismatchException() {
-        return "redirect:" + HomeConstants.INDEX_ROUTE;
+    public ModelAndView handleMethodArgumentTypeMismatchException() {
+        return this.redirect(HomeConstants.INDEX_ROUTE);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public String handleHttpRequestMethodNotSupportedException() {
-        return "redirect:" + HomeConstants.INDEX_ROUTE;
+    public ModelAndView handleHttpRequestMethodNotSupportedException() {
+        return this.redirect(HomeConstants.INDEX_ROUTE);
     }
 }
