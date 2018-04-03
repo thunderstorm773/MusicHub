@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -20,14 +19,14 @@ import java.util.Map;
 @Component
 public class SongManagementInterceptor extends HandlerInterceptorAdapter {
 
-    private final SongExtractionService songService;
+    private final SongExtractionService songExtractionService;
 
     private final UserExtractionService userService;
 
     @Autowired
-    public SongManagementInterceptor(SongExtractionService songService,
+    public SongManagementInterceptor(SongExtractionService songExtractionService,
                                      UserExtractionService userService) {
-        this.songService = songService;
+        this.songExtractionService = songExtractionService;
         this.userService = userService;
     }
 
@@ -45,7 +44,7 @@ public class SongManagementInterceptor extends HandlerInterceptorAdapter {
     }
 
     private boolean isPrincipalUploader(Long songId, String principalName) {
-        SongView songView = this.songService.findById(songId);
+        SongView songView = this.songExtractionService.findById(songId);
         String uploaderUsername = songView.getUploaderUsername();
         return principalName.equals(uploaderUsername);
     }

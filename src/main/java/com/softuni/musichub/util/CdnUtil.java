@@ -22,7 +22,7 @@ public class CdnUtil {
 
     public static final String VIDEO_RESOURCE_TYPE = "video";
 
-    public static final String PUBLIC_ID_KEY = "public_id";
+    public static final String PUBLIC_ID = "public_id";
 
     public static final String SONGS_FOLDER = "songs";
 

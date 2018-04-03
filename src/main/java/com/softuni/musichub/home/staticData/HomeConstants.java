@@ -18,11 +18,11 @@ public class HomeConstants {
 
     public static final String UPLOADED_ON = "uploadedOn";
 
-    public static final String SONG_TITLE_SEARCH_KEY = "songTitle";
+    public static final String SONG_TITLE = "songTitle";
 
-    public static final String CATEGORY_NAME_SEARCH_KEY = "categoryName";
+    public static final String CATEGORY_NAME = "categoryName";
 
-    public static final String TAG_NAME_SEARCH_KEY = "tagName";
+    public static final String TAG_NAME = "tagName";
 
     public static final String INDEX_ROUTE = "/";
 }

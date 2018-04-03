@@ -11,15 +11,15 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class TagServiceImpl implements TagService {
+public class TagManipulationServiceImpl implements TagManipulationService{
 
     private final TagRepository tagRepository;
 
     private final MapperUtil mapperUtil;
 
     @Autowired
-    public TagServiceImpl(TagRepository tagRepository,
-                          MapperUtil mapperUtil) {
+    public TagManipulationServiceImpl(TagRepository tagRepository,
+                                      MapperUtil mapperUtil) {
         this.tagRepository = tagRepository;
         this.mapperUtil = mapperUtil;
     }
@@ -29,15 +29,5 @@ public class TagServiceImpl implements TagService {
         Tag tag = this.mapperUtil.getModelMapper().map(addTag, Tag.class);
         Tag savedTag = this.tagRepository.save(tag);
         return this.mapperUtil.getModelMapper().map(savedTag, TagView.class);
-    }
-
-    @Override
-    public TagView findByName(String tagName) {
-        Tag tag = this.tagRepository.findByName(tagName);
-        if (tag == null) {
-            return null;
-        }
-
-        return this.mapperUtil.getModelMapper().map(tag, TagView.class);
     }
 }

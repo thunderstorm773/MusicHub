@@ -9,14 +9,12 @@ import com.softuni.musichub.user.staticData.AccountConstants;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,15 +33,7 @@ public class UserExtractionServiceImpl implements UserExtractionService {
         this.mapperUtil = mapperUtil;
     }
 
-    private Page<UserView> convertToPage(Page<User> userPage, Pageable pageable) {
-        List<User> users = userPage.getContent();
-        List<UserView> userViews = this.mapperUtil.convertAll(users, UserView.class);
-        Long totalElements = userPage.getTotalElements();
-        Page<UserView> userViewPage = new PageImpl<>(userViews, pageable, totalElements);
-        return userViewPage;
-    }
-
-    private void setRoleViews(UserView userView, Set<Role> roles) {
+    private void setRoleNames(UserView userView, Set<Role> roles) {
         Set<String> roleNames = roles.stream().map(Role::getAuthority)
                 .collect(Collectors.toSet());
         userView.setRoleNames(roleNames);
@@ -58,22 +48,20 @@ public class UserExtractionServiceImpl implements UserExtractionService {
 
         Set<Role> roles = user.getAuthorities();
         UserView userView = this.mapperUtil.getModelMapper().map(user, UserView.class);
-        this.setRoleViews(userView, roles);
+        this.setRoleNames(userView, roles);
         return userView;
     }
 
     @Override
     public Page<UserView> findAllByUsernameContains(String username, Pageable pageable) {
         Page<User> userPage = this.userRepository.findAllByUsernameContains(username, pageable);
-        Page<UserView> userViewPage = this.convertToPage(userPage, pageable);
-        return userViewPage;
+        return this.mapperUtil.convertToPage(pageable, userPage, UserView.class);
     }
 
     @Override
     public Page<UserView> findAll(Pageable pageable) {
         Page<User> userPage = this.userRepository.findAll(pageable);
-        Page<UserView> userViewPage = this.convertToPage(userPage, pageable);
-        return userViewPage;
+        return this.mapperUtil.convertToPage(pageable, userPage, UserView.class);
     }
 
     @Override

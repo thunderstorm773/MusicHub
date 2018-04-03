@@ -3,7 +3,8 @@ package com.softuni.musichub.song.comment.controllers;
 import com.google.gson.Gson;
 import com.softuni.musichub.song.comment.models.bindingModels.PostComment;
 import com.softuni.musichub.song.comment.models.viewModels.CommentView;
-import com.softuni.musichub.song.comment.services.CommentService;
+import com.softuni.musichub.song.comment.services.CommentExtractionService;
+import com.softuni.musichub.song.comment.services.CommentManipulationService;
 import com.softuni.musichub.song.comment.staticData.CommentConstants;
 import com.softuni.musichub.song.services.SongExtractionService;
 import com.softuni.musichub.staticData.Constants;
@@ -20,18 +21,22 @@ import java.security.Principal;
 @RequestMapping("/comments")
 public class CommentController {
 
-    private final CommentService commentService;
+    private final CommentExtractionService commentExtractionService;
 
-    private final SongExtractionService songService;
+    private final CommentManipulationService commentManipulationService;
+
+    private final SongExtractionService songExtractionService;
 
     private final Gson gson;
 
     @Autowired
-    public CommentController(CommentService commentService,
-                             SongExtractionService songService,
+    public CommentController(CommentExtractionService commentExtractionService,
+                             CommentManipulationService commentManipulationService,
+                             SongExtractionService songExtractionService,
                              Gson gson) {
-        this.commentService = commentService;
-        this.songService = songService;
+        this.commentExtractionService = commentExtractionService;
+        this.commentManipulationService = commentManipulationService;
+        this.songExtractionService = songExtractionService;
         this.gson = gson;
     }
 
@@ -41,12 +46,7 @@ public class CommentController {
             return false;
         }
 
-        boolean isSongExists = this.songService.isSongExists(songId);
-        if (!isSongExists) {
-            return false;
-        }
-
-        return true;
+        return this.songExtractionService.isSongExists(songId);
     }
 
     @PostMapping("/post")
@@ -58,14 +58,15 @@ public class CommentController {
         }
 
         PostComment postComment = new PostComment(commentContent, songId);
-        CommentView commentView = this.commentService.postComment(postComment, principal);
+        CommentView commentView = this.commentManipulationService.postComment(postComment, principal);
         return this.gson.toJson(commentView);
     }
 
     @GetMapping("/pending")
     public ModelAndView getPendingCommentsPage(ModelAndView modelAndView,
                                                @PageableDefault(CommentConstants.COMMENTS_PER_PAGE) Pageable pageable) {
-        Page<CommentView> commentViewPage = this.commentService.findPendingComments(pageable);
+        Page<CommentView> commentViewPage = this.commentExtractionService
+                .findPendingComments(pageable);
         modelAndView.addObject(Constants.PAGE, commentViewPage);
         modelAndView.addObject(Constants.TITLE, CommentConstants.PENDING_COMMENTS_TITLE);
         modelAndView.addObject(Constants.VIEW, CommentConstants.PENDING_COMMENTS_VIEW);
@@ -76,16 +77,16 @@ public class CommentController {
     @PostMapping("/approve/{id}")
     public ModelAndView approveComment(ModelAndView modelAndView,
                                        @PathVariable Long id) {
-        this.commentService.approve(id);
-        modelAndView.setViewName("redirect:/comments/pending");
+        this.commentManipulationService.approve(id);
+        modelAndView.setViewName("redirect:" + CommentConstants.PENDING_COMMENTS_ROUTE);
         return modelAndView;
     }
 
     @PostMapping("/reject/{id}")
     public ModelAndView rejectComment(ModelAndView modelAndView,
                                       @PathVariable Long id) {
-        this.commentService.reject(id);
-        modelAndView.setViewName("redirect:/comments/pending");
+        this.commentManipulationService.reject(id);
+        modelAndView.setViewName("redirect:" + CommentConstants.PENDING_COMMENTS_ROUTE);
         return modelAndView;
     }
 }

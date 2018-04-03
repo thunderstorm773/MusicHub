@@ -13,7 +13,7 @@ public class ErrorConfig implements WebServerFactoryCustomizer<ConfigurableTomca
     @Override
     public void customize(ConfigurableTomcatWebServerFactory factory) {
         ErrorPage notFoundError = new ErrorPage(HttpStatus.NOT_FOUND,
-                ErrorConstants.NOT_FOUND_ERROR_URL);
+                ErrorConstants.NOT_FOUND_ERROR_ROUTE);
         factory.addErrorPages(notFoundError);
     }
 }

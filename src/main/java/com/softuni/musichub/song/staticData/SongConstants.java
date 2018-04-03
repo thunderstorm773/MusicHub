@@ -50,4 +50,8 @@ public class SongConstants {
     public static final String VALIDATE_UPLOAD_SONG_JS_ENABLED = "validateUploadSongJsEnabled";
 
     public static final String SONG_DETAILS_BASE_ROUTE = "/songs/details/";
+
+    public static final String SONG_UPLOAD_ROUTE = "/songs/upload";
+
+    public static final String EDIT_SONG_BASE_ROUTE = "/songs/edit/";
 }

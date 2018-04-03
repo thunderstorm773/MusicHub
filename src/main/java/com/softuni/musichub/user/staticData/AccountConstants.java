@@ -53,11 +53,15 @@ public class AccountConstants {
 
     public static final String REGISTER_USER = "registerUser";
 
-    public static final String USERNAME_KEY = "username";
+    public static final String USERNAME = "username";
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     public static final String ROLE_MODERATOR = "ROLE_MODERATOR";
 
     public static final String ROLE_USER = "ROLE_USER";
+
+    public static final String USERS_LOGIN_ROUTE = "/users/login";
+
+    public static final String USERS_REGISTER_ROUTE = "/users/register";
 }

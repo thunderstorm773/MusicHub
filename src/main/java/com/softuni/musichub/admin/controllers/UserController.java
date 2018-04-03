@@ -1,6 +1,7 @@
 package com.softuni.musichub.admin.controllers;
 
 import com.softuni.musichub.admin.staticData.AdminConstants;
+import com.softuni.musichub.error.staticData.ErrorConstants;
 import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.exceptions.UserNotFoundException;
 import com.softuni.musichub.user.models.bindingModels.EditUser;
@@ -47,13 +48,13 @@ public class UserController {
 
     @ExceptionHandler(UserNotFoundException.class)
     public String handleUserNotFoundException() {
-        return "redirect:/admin/users/all";
+        return "redirect:" + AdminConstants.ALL_USERS_ROUTE;
     }
 
     @GetMapping("/users/all")
     public ModelAndView getAllUsersPage(ModelAndView modelAndView,
                                         @PageableDefault(AdminConstants.USERS_PER_PAGE) Pageable pageable,
-                                        @RequestParam(value = AccountConstants.USERNAME_KEY, required = false) String username) {
+                                        @RequestParam(value = AccountConstants.USERNAME, required = false) String username) {
         Page<UserView> usersViewPage;
         if (username == null) {
             usersViewPage = this.userExtractionService.findAll(pageable);
@@ -87,14 +88,15 @@ public class UserController {
                                    RedirectAttributes redirectAttributes) {
         String loggedInUserUsername = loggedInUser.getUsername();
         if (loggedInUserUsername.equals(username)) {
-            redirectAttributes.addFlashAttribute(Constants.ERROR,
+            redirectAttributes.addFlashAttribute(ErrorConstants.ERROR,
                     AdminConstants.USER_CANNOT_BE_DELETED_MESSAGE);
-            modelAndView.setViewName("redirect:/admin/users/delete/" + username);
+            modelAndView.setViewName("redirect:" +
+                    AdminConstants.DELETE_USER_BASE_ROUTE + username);
             return modelAndView;
         }
 
         this.userManipulationService.deleteByUsername(username);
-        modelAndView.setViewName("redirect:/admin/users/all");
+        modelAndView.setViewName("redirect:" + AdminConstants.ALL_USERS_ROUTE);
         return modelAndView;
     }
 
@@ -126,14 +128,15 @@ public class UserController {
                                  RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(AdminConstants.EDIT_USER, editUser);
-            redirectAttributes.addFlashAttribute(Constants.ERROR,
+            redirectAttributes.addFlashAttribute(ErrorConstants.ERROR,
                     AdminConstants.NOT_SELECTED_ROLES_MESSAGE);
-            modelAndView.setViewName("redirect:/admin/users/edit/" + username);
+            modelAndView.setViewName("redirect:" +
+                    AdminConstants.EDIT_USER_BASE_ROUTE + username);
             return modelAndView;
         }
 
         this.userManipulationService.edit(editUser, username);
-        modelAndView.setViewName("redirect:/admin/users/all");
+        modelAndView.setViewName("redirect:" + AdminConstants.ALL_USERS_ROUTE);
         return modelAndView;
     }
 }

@@ -11,7 +11,8 @@ import com.softuni.musichub.song.repositories.SongRepository;
 import com.softuni.musichub.song.tag.entities.Tag;
 import com.softuni.musichub.song.tag.models.bindingModels.AddTag;
 import com.softuni.musichub.song.tag.models.viewModels.TagView;
-import com.softuni.musichub.song.tag.services.TagService;
+import com.softuni.musichub.song.tag.services.TagExtractionService;
+import com.softuni.musichub.song.tag.services.TagManipulationService;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.util.CdnUtil;
 import com.softuni.musichub.util.MapperUtil;
@@ -39,24 +40,27 @@ public class SongManipulationServiceImpl implements SongManipulationService {
 
     private final CategoryExtractionService categoryExtractionService;
 
-    private final TagService tagService;
+    private final TagExtractionService tagExtractionService;
+
+    private final TagManipulationService tagManipulationService;
 
     @Autowired
     public SongManipulationServiceImpl(SongRepository songRepository,
                                        CdnUtil cdnUtil,
                                        MapperUtil mapperUtil,
                                        CategoryExtractionService categoryExtractionService,
-                                       TagService tagService) {
+                                       TagExtractionService tagExtractionService, TagManipulationService tagManipulationService) {
         this.songRepository = songRepository;
         this.cdnUtil = cdnUtil;
         this.mapperUtil = mapperUtil;
         this.categoryExtractionService = categoryExtractionService;
-        this.tagService = tagService;
+        this.tagExtractionService = tagExtractionService;
+        this.tagManipulationService = tagManipulationService;
     }
 
     private TagView createTag(String tagName) {
         AddTag addTag = new AddTag(tagName);
-        return this.tagService.save(addTag);
+        return this.tagManipulationService.save(addTag);
     }
 
     private Set<Tag> getTagsByTagNames(String tagsAsString) {
@@ -64,7 +68,7 @@ public class SongManipulationServiceImpl implements SongManipulationService {
         if (tagsAsString.trim().length() > 0) {
             String[] tagTokens = tagsAsString.split(",\\s*");
             for (String tagName : tagTokens) {
-                TagView tagView = this.tagService.findByName(tagName);
+                TagView tagView = this.tagExtractionService.findByName(tagName);
                 if (tagView == null) {
                     tagView = this.createTag(tagName);
                 }
@@ -75,6 +79,21 @@ public class SongManipulationServiceImpl implements SongManipulationService {
         }
 
         return tags;
+    }
+
+    private Map uploadSongInCloud(File songFile) throws IOException {
+        CompletableFuture<Map> taskResult = this.cdnUtil.upload(songFile, CdnUtil.VIDEO_RESOURCE_TYPE,
+                CdnUtil.SONGS_FOLDER);
+        CompletableFuture.anyOf(taskResult).join();
+        Map uploadResult;
+        try {
+            uploadResult = taskResult.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return uploadResult;
     }
 
     @Async
@@ -88,8 +107,7 @@ public class SongManipulationServiceImpl implements SongManipulationService {
             return;
         }
 
-        Category category = this.mapperUtil.getModelMapper()
-                .map(categoryView, Category.class);
+        Category category = this.mapperUtil.getModelMapper().map(categoryView, Category.class);
         song.setCategory(category);
         String tagsAsString = uploadSong.getTagsAsString();
         if (tagsAsString != null) {
@@ -99,20 +117,10 @@ public class SongManipulationServiceImpl implements SongManipulationService {
 
         song.setUploader(user);
         File songFile = uploadSong.getPersistedFile();
-        CompletableFuture<Map> taskResult = this.cdnUtil.upload(songFile, CdnUtil.VIDEO_RESOURCE_TYPE,
-                CdnUtil.SONGS_FOLDER);
-        CompletableFuture.anyOf(taskResult).join();
-        Map uploadResult;
-        try {
-            uploadResult = taskResult.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return;
-        }
-
+        Map uploadResult = this.uploadSongInCloud(songFile);
         // Delete local file after it has been uploaded in CDN
         songFile.delete();
-        String songPartialUrl = (String) uploadResult.get(CdnUtil.PUBLIC_ID_KEY);
+        String songPartialUrl = (String) uploadResult.get(CdnUtil.PUBLIC_ID);
         song.setSongPartialUrl(songPartialUrl);
         this.songRepository.save(song);
     }
@@ -144,8 +152,7 @@ public class SongManipulationServiceImpl implements SongManipulationService {
         }
 
         String newTitle = editSong.getTitle();
-        Category newCategory = this.mapperUtil.getModelMapper()
-                .map(categoryView, Category.class);
+        Category newCategory = this.mapperUtil.getModelMapper().map(categoryView, Category.class);
         String tagNames = editSong.getTagNames();
         if (tagNames == null) {
             return;

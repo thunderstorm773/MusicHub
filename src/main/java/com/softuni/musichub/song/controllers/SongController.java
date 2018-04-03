@@ -3,6 +3,7 @@ package com.softuni.musichub.song.controllers;
 import com.softuni.musichub.admin.category.models.views.CategoryView;
 import com.softuni.musichub.admin.category.services.CategoryExtractionService;
 import com.softuni.musichub.admin.category.staticData.CategoryConstants;
+import com.softuni.musichub.home.staticData.HomeConstants;
 import com.softuni.musichub.song.comment.staticData.CommentConstants;
 import com.softuni.musichub.song.exceptions.SongNotFoundException;
 import com.softuni.musichub.song.models.bindingModels.EditSong;
@@ -48,19 +49,18 @@ public class SongController {
         this.songExtractionService = songExtractionService;
     }
 
-    private UploadSong saveSongInFileSystem(UploadSong uploadSong, FileUtil fileUtil)
+    private void saveSongInFileSystem(UploadSong uploadSong, FileUtil fileUtil)
             throws IOException {
         MultipartFile songTempFile = uploadSong.getFile();
         byte[] songTempFileBytes = songTempFile.getBytes();
         String songTempFileName = songTempFile.getOriginalFilename();
         File songPersistedFile = fileUtil.createFile(songTempFileBytes, songTempFileName);
         uploadSong.setPersistedFile(songPersistedFile);
-        return uploadSong;
     }
 
     @ExceptionHandler(SongNotFoundException.class)
     public String handleSongNotFoundException() {
-        return "redirect:/";
+        return "redirect:" + HomeConstants.INDEX_ROUTE;
     }
 
     @GetMapping("/upload")
@@ -91,16 +91,16 @@ public class SongController {
             String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
                     + SongConstants.UPLOAD_SONG;
             redirectAttributes.addFlashAttribute(bindingResultKey, bindingResult);
-            modelAndView.setViewName("redirect:/songs/upload");
+            modelAndView.setViewName("redirect:" + SongConstants.SONG_UPLOAD_ROUTE);
             return modelAndView;
         }
 
         // Create persisted file to upload in CDN
         // and then set this file as field in uploadSong
-        uploadSong = this.saveSongInFileSystem(uploadSong, fileUtil);
+        this.saveSongInFileSystem(uploadSong, fileUtil);
         this.songManipulationService.upload(uploadSong, user);
         redirectAttributes.addFlashAttribute(Constants.INFO, SongConstants.UPLOAD_SONG_SOON);
-        modelAndView.setViewName("redirect:/songs/upload");
+        modelAndView.setViewName("redirect:" + SongConstants.SONG_UPLOAD_ROUTE);
         return modelAndView;
     }
 
@@ -132,7 +132,7 @@ public class SongController {
     public ModelAndView deleteSong(ModelAndView modelAndView,
                                    @PathVariable Long id) throws Exception {
         this.songManipulationService.deleteById(id);
-        modelAndView.setViewName("redirect:/");
+        modelAndView.setViewName("redirect:" + HomeConstants.INDEX_ROUTE);
         return modelAndView;
     }
 
@@ -167,12 +167,14 @@ public class SongController {
             String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
                     + SongConstants.EDIT_SONG;
             redirectAttributes.addFlashAttribute(bindingResultKey, bindingResult);
-            modelAndView.setViewName("redirect:/songs/edit/" + id);
+            modelAndView.setViewName("redirect:" +
+                    SongConstants.EDIT_SONG_BASE_ROUTE + id);
             return modelAndView;
         }
 
         this.songManipulationService.edit(editSong, id);
-        modelAndView.setViewName("redirect:/songs/details/" + id);
+        modelAndView.setViewName("redirect:" +
+                SongConstants.SONG_DETAILS_BASE_ROUTE + id);
         return modelAndView;
     }
 }

@@ -1,7 +1,6 @@
 package com.softuni.musichub.admin.category.validations;
 
 import com.softuni.musichub.admin.category.staticData.CategoryConstants;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;

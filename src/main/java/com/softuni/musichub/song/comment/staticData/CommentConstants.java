@@ -12,4 +12,9 @@ public class CommentConstants {
 
     public static final String POST_COMMENTS_JS_ENABLED = "postCommentsJsEnabled";
 
+    public static final String PENDING_COMMENTS_ROUTE = "/comments/pending";
+
+    public static final String REJECTED_COMMENTS_DELETED_MESSAGE =
+            "All comments with status REJECTED have been deleted!";
+
 }

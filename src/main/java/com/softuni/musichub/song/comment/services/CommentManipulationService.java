@@ -6,11 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.security.Principal;
 
-public interface CommentService {
+public interface CommentManipulationService {
 
     CommentView postComment(PostComment postComment, Principal principal);
-
-    Page<CommentView> findPendingComments(Pageable pageable);
 
     void approve(Long id);
 

@@ -13,16 +13,16 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     private static final String EDIT_SONG_URL_PATTERN = "/songs/edit/{id}";
 
-    private final SongManagementInterceptor songInterceptor;
+    private final SongManagementInterceptor songManagementInterceptor;
 
     @Autowired
-    public InterceptorConfig(SongManagementInterceptor songInterceptor) {
-        this.songInterceptor = songInterceptor;
+    public InterceptorConfig(SongManagementInterceptor songManagementInterceptor) {
+        this.songManagementInterceptor = songManagementInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(this.songInterceptor)
+        registry.addInterceptor(this.songManagementInterceptor)
                 .addPathPatterns(DELETE_SONG_URL_PATTERN, EDIT_SONG_URL_PATTERN);
     }
 }

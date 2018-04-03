@@ -5,6 +5,7 @@ import com.softuni.musichub.song.comment.enums.CommentStatus;
 import com.softuni.musichub.song.comment.models.bindingModels.PostComment;
 import com.softuni.musichub.song.comment.models.viewModels.CommentView;
 import com.softuni.musichub.song.comment.repositories.CommentRepository;
+import com.softuni.musichub.song.comment.staticData.CommentConstants;
 import com.softuni.musichub.song.entities.Song;
 import com.softuni.musichub.song.models.viewModels.SongView;
 import com.softuni.musichub.song.services.SongExtractionService;
@@ -13,15 +14,13 @@ import com.softuni.musichub.user.models.viewModels.UserView;
 import com.softuni.musichub.user.services.UserExtractionService;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.Principal;
 
 @Service
 @Transactional
-public class CommentServiceImpl implements CommentService {
+public class CommentManipulationServiceImpl implements CommentManipulationService {
 
     private final CommentRepository commentRepository;
 
@@ -32,9 +31,9 @@ public class CommentServiceImpl implements CommentService {
     private final MapperUtil mapperUtil;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository,
-                              SongExtractionService songService,
-                              UserExtractionService userService, MapperUtil mapperUtil) {
+    public CommentManipulationServiceImpl(CommentRepository commentRepository,
+                                          SongExtractionService songService,
+                                          UserExtractionService userService, MapperUtil mapperUtil) {
         this.commentRepository = commentRepository;
         this.songService = songService;
         this.userService = userService;
@@ -56,14 +55,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentView postComment(PostComment postComment, Principal principal) {
         Comment comment = this.constructComment(postComment, principal);
         Comment postedComment = this.commentRepository.save(comment);
-        return this.mapperUtil.getModelMapper()
-                .map(postedComment, CommentView.class);
-    }
-
-    @Override
-    public Page<CommentView> findPendingComments(Pageable pageable) {
-        Page<Comment> commentPage = this.commentRepository.findPendingComments(pageable);
-        return this.mapperUtil.convertToPage(pageable, commentPage, CommentView.class);
+        return this.mapperUtil.getModelMapper().map(postedComment, CommentView.class);
     }
 
     @Override
@@ -89,6 +81,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteAllRejectedComments() {
         this.commentRepository.deleteAllRejectedComments();
-        System.out.println("All comments with status REJECTED have been deleted!");
+        System.out.println(CommentConstants.REJECTED_COMMENTS_DELETED_MESSAGE);
     }
 }

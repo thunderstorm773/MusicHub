@@ -11,8 +11,6 @@ public class Constants {
     public static final String BINDING_RESULT_PACKAGE =
             "org.springframework.validation.BindingResult.";
 
-    public static final String ERROR = "error";
-
     public static final String INFO = "info";
 
     public static final String ROOT_PATH = System.getProperty("user.dir");

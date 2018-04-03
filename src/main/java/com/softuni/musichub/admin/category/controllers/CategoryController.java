@@ -24,14 +24,14 @@ import javax.validation.Valid;
 @RequestMapping("/admin")
 public class CategoryController {
 
-    private final CategoryManipulationService categoryModifyingService;
+    private final CategoryManipulationService categoryManipulationService;
 
     private final CategoryExtractionService categoryExtractionService;
 
     @Autowired
-    public CategoryController(CategoryManipulationService categoryModifyingService,
+    public CategoryController(CategoryManipulationService categoryManipulationService,
                               CategoryExtractionService categoryExtractionService) {
-        this.categoryModifyingService = categoryModifyingService;
+        this.categoryManipulationService = categoryManipulationService;
         this.categoryExtractionService = categoryExtractionService;
     }
 
@@ -59,12 +59,12 @@ public class CategoryController {
             String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
                     + CategoryConstants.ADD_CATEGORY;
             redirectAttributes.addFlashAttribute(bindingResultKey, bindingResult);
-            modelAndView.setViewName("redirect:/admin/categories/add");
+            modelAndView.setViewName("redirect:" + CategoryConstants.ADD_CATEGORY_ROUTE);
             return modelAndView;
         }
 
-        this.categoryModifyingService.addCategory(addCategory);
-        modelAndView.setViewName("redirect:/admin/categories/all");
+        this.categoryManipulationService.addCategory(addCategory);
+        modelAndView.setViewName("redirect:" + CategoryConstants.ALL_CATEGORIES_ROUTE);
         return modelAndView;
     }
 
@@ -85,7 +85,7 @@ public class CategoryController {
                                               @PathVariable Long id) {
         CategoryView category = this.categoryExtractionService.findById(id);
         if (category == null) {
-            modelAndView.setViewName("redirect:/admin/categories/all");
+            modelAndView.setViewName("redirect:" + CategoryConstants.ALL_CATEGORIES_ROUTE);
             return modelAndView;
         }
 
@@ -99,8 +99,8 @@ public class CategoryController {
     @PostMapping("/categories/{id}/delete")
     public ModelAndView deleteCategory(ModelAndView modelAndView,
                                        @PathVariable Long id) {
-        this.categoryModifyingService.deleteById(id);
-        modelAndView.setViewName("redirect:/admin/categories/all");
+        this.categoryManipulationService.deleteById(id);
+        modelAndView.setViewName("redirect:" + CategoryConstants.ALL_CATEGORIES_ROUTE);
         return modelAndView;
     }
 
@@ -109,7 +109,7 @@ public class CategoryController {
                                             @PathVariable Long id) {
         CategoryView category = this.categoryExtractionService.findById(id);
         if (category == null) {
-            modelAndView.setViewName("redirect:/admin/categories/all");
+            modelAndView.setViewName("redirect:" + CategoryConstants.ALL_CATEGORIES_ROUTE);
             return modelAndView;
         }
 
@@ -132,8 +132,8 @@ public class CategoryController {
             return modelAndView;
         }
 
-        this.categoryModifyingService.edit(editCategory, id);
-        modelAndView.setViewName("redirect:/admin/categories/all");
+        this.categoryManipulationService.edit(editCategory, id);
+        modelAndView.setViewName("redirect:" + CategoryConstants.ALL_CATEGORIES_ROUTE);
         return modelAndView;
     }
 }

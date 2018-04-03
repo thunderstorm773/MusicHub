@@ -47,12 +47,12 @@ public class HomeController {
 
     @GetMapping("/")
     public ModelAndView getHomePage(ModelAndView modelAndView,
-                                    @RequestParam(value = HomeConstants.SONG_TITLE_SEARCH_KEY, required = false) String songTitle,
-                                    @RequestParam(value = HomeConstants.CATEGORY_NAME_SEARCH_KEY, required = false) String categoryName,
-                                    @RequestParam(value = HomeConstants.TAG_NAME_SEARCH_KEY, required = false) String tagName,
+                                    @RequestParam(value = HomeConstants.SONG_TITLE, required = false) String songTitle,
+                                    @RequestParam(value = HomeConstants.CATEGORY_NAME, required = false) String categoryName,
+                                    @RequestParam(value = HomeConstants.TAG_NAME, required = false) String tagName,
                                     @PageableDefault(size = HomeConstants.SONGS_PER_PAGE,
-                                                   sort = HomeConstants.UPLOADED_ON,
-                                                   direction = Sort.Direction.DESC) Pageable pageable) {
+                                            sort = HomeConstants.UPLOADED_ON,
+                                            direction = Sort.Direction.DESC) Pageable pageable) {
         Page<SongView> songsPage =
                 this.getSongPageBySearchParam(songTitle, categoryName, tagName, pageable);
         modelAndView.addObject(HomeConstants.BROWSE_SONGS_STYLE_ENABLED, "");
@@ -85,7 +85,7 @@ public class HomeController {
 
     @GetMapping("/index")
     public ModelAndView redirectToHomePage(ModelAndView modelAndView) {
-        modelAndView.setViewName("redirect:/");
+        modelAndView.setViewName("redirect:" + HomeConstants.INDEX_ROUTE);
         return modelAndView;
     }
 }

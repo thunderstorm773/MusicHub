@@ -1,5 +1,6 @@
 package com.softuni.musichub.user.controllers;
 
+import com.softuni.musichub.error.staticData.ErrorConstants;
 import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.models.bindingModels.RegisterUser;
 import com.softuni.musichub.user.services.UserManipulationService;
@@ -48,20 +49,20 @@ public class AccountController {
             String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
                     + AccountConstants.REGISTER_USER;
             redirectAttributes.addFlashAttribute(bindingResultKey, bindingResult);
-            modelAndView.setViewName("redirect:/users/register");
+            modelAndView.setViewName("redirect:" + AccountConstants.USERS_REGISTER_ROUTE);
             return modelAndView;
         }
 
         this.userManipulationService.registerUser(registerUser);
-        modelAndView.setViewName("redirect:/users/login");
+        modelAndView.setViewName("redirect:" + AccountConstants.USERS_LOGIN_ROUTE);
         return modelAndView;
     }
 
     @GetMapping("/login")
     public ModelAndView getLoginUserPage(ModelAndView modelAndView,
-                                         @RequestParam(value = Constants.ERROR, required = false) String loginError) {
+                                         @RequestParam(value = ErrorConstants.ERROR, required = false) String loginError) {
         if (loginError != null) {
-            modelAndView.addObject(Constants.ERROR,
+            modelAndView.addObject(ErrorConstants.ERROR,
                     AccountConstants.INVALID_CREDENTIALS_MESSAGE);
         }
 

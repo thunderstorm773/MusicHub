@@ -30,4 +30,10 @@ public class AdminConstants {
             "You must select at least 1 role";
 
     public static final String TABLE_ACTIONS_STYLE_ENABLED = "tableActionsStyleEnabled";
+
+    public static final String ALL_USERS_ROUTE = "/admin/users/all";
+
+    public static final String DELETE_USER_BASE_ROUTE = "/admin/users/delete/";
+
+    public static final String EDIT_USER_BASE_ROUTE = "/admin/users/edit/";
 }
