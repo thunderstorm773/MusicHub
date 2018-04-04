@@ -2,6 +2,7 @@ package com.softuni.musichub.user.controllers;
 
 import com.softuni.musichub.controller.BaseController;
 import com.softuni.musichub.error.staticData.ErrorConstants;
+import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.models.bindingModels.RegisterUser;
 import com.softuni.musichub.user.services.UserManipulationService;
 import com.softuni.musichub.user.staticData.AccountConstants;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,14 +36,17 @@ public class AccountController extends BaseController {
 
     @PostMapping("/register")
     public ModelAndView registerUser(@Valid @ModelAttribute RegisterUser registerUser,
-                                     BindingResult bindingResult) {
+                                     BindingResult bindingResult,
+                                     RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return this.view(AccountConstants.USER_REGISTER_TITLE,
                     AccountConstants.USER_REGISTER_VIEW);
         }
 
         this.userManipulationService.registerUser(registerUser);
-        return this.redirect(AccountConstants.USERS_LOGIN_ROUTE);
+        redirectAttributes.addFlashAttribute(Constants.INFO,
+                AccountConstants.REGISTERED_USER_MESSAGE);
+        return this.redirect(AccountConstants.USER_LOGIN_ROUTE);
     }
 
     @GetMapping("/login")

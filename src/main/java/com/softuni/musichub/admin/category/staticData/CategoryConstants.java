@@ -6,8 +6,6 @@ public class CategoryConstants {
 
     public static final String ADD_CATEGORY_VIEW = "admin/category/add";
 
-    public static final String ADD_CATEGORY = "addCategory";
-
     public static final String EDIT_CATEGORY = "editCategory";
 
     public static final String ALL_CATEGORIES_TITLE = "All categories";
@@ -39,6 +37,10 @@ public class CategoryConstants {
     public static final int CATEGORIES_PER_PAGE = 20;
 
     public static final String ALL_CATEGORIES_ROUTE = "/admin/categories/all";
+
+    public static final String CATEGORY_CREATED_MESSAGE = "Successfully created category!";
+
+    public static final String CATEGORY_EDITED_MESSAGE = "Successfully edited category!";
 
     public static final String ADD_CATEGORY_ROUTE = "/admin/categories/add";
 }

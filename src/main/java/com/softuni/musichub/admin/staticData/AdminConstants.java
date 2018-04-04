@@ -34,4 +34,6 @@ public class AdminConstants {
     public static final String DELETE_USER_BASE_ROUTE = "/admin/users/delete/";
 
     public static final String EDIT_USER_BASE_ROUTE = "/admin/users/edit/";
+
+    public static final String USER_EDITED_MESSAGE = "User successfully edited!";
 }

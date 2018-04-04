@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,13 +54,15 @@ public class TagController extends BaseController {
 
     @PostMapping("/add")
     public ModelAndView addTag(@Valid @ModelAttribute AddTag addTag,
-                               BindingResult bindingResult) {
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return this.view(TagConstants.ADD_TAG_TITLE, TagConstants.ADD_TAG_VIEW);
         }
 
         this.tagManipulationService.save(addTag);
-        return this.redirect(TagConstants.ALL_TAGS_ROUTE);
+        redirectAttributes.addFlashAttribute(Constants.INFO, TagConstants.TAG_ADDED_MESSAGE);
+        return this.redirect(TagConstants.ADD_TAG_ROUTE);
     }
 
     @GetMapping("/{id}/edit")
@@ -83,6 +87,9 @@ public class TagController extends BaseController {
         }
 
         this.tagManipulationService.edit(editTag, id);
-        return this.redirect(TagConstants.ALL_TAGS_ROUTE);
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(Constants.INFO, TagConstants.TAG_EDITED_MESSAGE);
+        return this.view(TagConstants.EDIT_TAG_TITLE,
+                TagConstants.EDIT_TAG_VIEW, objectByKey);
     }
 }

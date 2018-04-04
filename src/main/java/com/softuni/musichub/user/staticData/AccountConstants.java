@@ -51,8 +51,6 @@ public class AccountConstants {
 
     public static final String USER_LOGIN_VIEW = "user/login";
 
-    public static final String REGISTER_USER = "registerUser";
-
     public static final String USERNAME = "username";
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
@@ -61,7 +59,8 @@ public class AccountConstants {
 
     public static final String ROLE_USER = "ROLE_USER";
 
-    public static final String USERS_LOGIN_ROUTE = "/users/login";
+    public static final String REGISTERED_USER_MESSAGE =
+            "You registered successfully! Please login in";
 
-    public static final String USERS_REGISTER_ROUTE = "/users/register";
+    public static final String USER_LOGIN_ROUTE = "/users/login";
 }

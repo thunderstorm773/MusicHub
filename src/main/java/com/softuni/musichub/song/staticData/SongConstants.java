@@ -54,4 +54,7 @@ public class SongConstants {
     public static final String SONG_UPLOAD_ROUTE = "/songs/upload";
 
     public static final String EDIT_SONG_BASE_ROUTE = "/songs/edit/";
+	
+	public static final String SONG_EDITED_MESSAGE =
+            "Song edited successfully";
 }

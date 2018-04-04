@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,14 +45,17 @@ public class CategoryController extends BaseController {
 
     @PostMapping("/categories/add")
     public ModelAndView addCategory(@Valid @ModelAttribute AddCategory addCategory,
-                                    BindingResult bindingResult) {
+                                    BindingResult bindingResult,
+                                    RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return this.view(CategoryConstants.ADD_CATEGORY_TITLE,
                     CategoryConstants.ADD_CATEGORY_VIEW);
         }
 
         this.categoryManipulationService.addCategory(addCategory);
-        return this.redirect(CategoryConstants.ALL_CATEGORIES_ROUTE);
+        redirectAttributes.addFlashAttribute(Constants.INFO,
+                CategoryConstants.CATEGORY_CREATED_MESSAGE);
+        return this.redirect(CategoryConstants.ADD_CATEGORY_ROUTE);
     }
 
     @GetMapping("/categories/all")
@@ -105,6 +110,9 @@ public class CategoryController extends BaseController {
         }
 
         this.categoryManipulationService.edit(editCategory, id);
-        return this.redirect(CategoryConstants.ALL_CATEGORIES_ROUTE);
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(Constants.INFO, CategoryConstants.CATEGORY_EDITED_MESSAGE);
+        return this.view(CategoryConstants.EDIT_CATEGORY_TITLE,
+                CategoryConstants.EDIT_CATEGORY_VIEW, objectByKey);
     }
 }

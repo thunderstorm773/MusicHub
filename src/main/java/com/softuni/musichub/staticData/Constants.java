@@ -13,8 +13,6 @@ public class Constants {
 
     public static final String INFO = "info";
 
-    public static final String SUCCESS = "success";
-
     public static final String ROOT_PATH = System.getProperty("user.dir");
 
     public static final String PAGE = "page";

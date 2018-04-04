@@ -1,6 +1,7 @@
 <div class="text-danger h5" th:if="${error} != null" th:text="${error}">
     Invalid username or password
 </div>
+<div th:replace="~{fragments/info-message}"></div>
 <form th:method="post">
     <fieldset>
         <legend>Login</legend>

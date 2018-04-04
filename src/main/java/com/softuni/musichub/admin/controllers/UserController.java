@@ -119,6 +119,7 @@ public class UserController extends BaseController {
         }
 
         this.userManipulationService.edit(editUser, username);
-        return this.redirect(AdminConstants.ALL_USERS_ROUTE);
+        redirectAttributes.addFlashAttribute(Constants.INFO, AdminConstants.USER_EDITED_MESSAGE);
+        return this.redirect(AdminConstants.EDIT_USER_BASE_ROUTE + username);
     }
 }

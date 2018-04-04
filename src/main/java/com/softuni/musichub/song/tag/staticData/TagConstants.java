@@ -29,4 +29,10 @@ public class TagConstants {
     public static final String EDIT_TAG_TITLE = "Edit tag";
 
     public static final String EDIT_TAG_VIEW = "song/tag/edit";
+
+    public static final String TAG_ADDED_MESSAGE = "Tag successfully added!";
+
+    public static final String TAG_EDITED_MESSAGE = "Tag successfully edited!";
+
+    public static final String ADD_TAG_ROUTE = "/tags/add";
 }

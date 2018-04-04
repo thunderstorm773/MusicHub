@@ -8,6 +8,8 @@ public class SongView {
 
     private String title;
 
+    private String categoryName;
+
     private String uploaderUsername;
 
     private Date uploadedOn;
@@ -29,6 +31,14 @@ public class SongView {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getUploaderUsername() {
