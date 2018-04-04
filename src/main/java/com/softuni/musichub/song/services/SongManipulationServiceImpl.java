@@ -13,6 +13,7 @@ import com.softuni.musichub.song.tag.models.bindingModels.AddTag;
 import com.softuni.musichub.song.tag.models.viewModels.TagView;
 import com.softuni.musichub.song.tag.services.TagExtractionService;
 import com.softuni.musichub.song.tag.services.TagManipulationService;
+import com.softuni.musichub.song.tag.staticData.TagConstants;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.util.CdnUtil;
 import com.softuni.musichub.util.MapperUtil;
@@ -65,9 +66,13 @@ public class SongManipulationServiceImpl implements SongManipulationService {
 
     private Set<Tag> getTagsByTagNames(String tagsAsString) {
         Set<Tag> tags = new HashSet<>();
-        if (tagsAsString.trim().length() > 0) {
+        if (tagsAsString.trim().length() > 1) {
             String[] tagTokens = tagsAsString.split(",\\s*");
             for (String tagName : tagTokens) {
+                if (tagName.length() < TagConstants.TAG_NAME_MIN_LEN) {
+                    continue;
+                }
+
                 TagView tagView = this.tagExtractionService.findByName(tagName);
                 if (tagView == null) {
                     tagView = this.createTag(tagName);

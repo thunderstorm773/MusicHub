@@ -1,7 +1,6 @@
 package com.softuni.musichub.song.models.viewModels;
 
-import com.softuni.musichub.song.tag.models.viewModels.TagView;
-import java.util.Set;
+import java.util.Date;
 
 public class SongView {
 
@@ -11,9 +10,7 @@ public class SongView {
 
     private String uploaderUsername;
 
-    private String categoryName;
-
-    private Set<TagView> tags;
+    private Date uploadedOn;
 
     public SongView() {
     }
@@ -42,19 +39,11 @@ public class SongView {
         this.uploaderUsername = uploaderUsername;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public Date getUploadedOn() {
+        return uploadedOn;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public Set<TagView> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<TagView> tags) {
-        this.tags = tags;
+    public void setUploadedOn(Date uploadedOn) {
+        this.uploadedOn = uploadedOn;
     }
 }

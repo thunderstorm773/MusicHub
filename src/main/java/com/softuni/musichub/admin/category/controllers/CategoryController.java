@@ -6,7 +6,6 @@ import com.softuni.musichub.admin.category.models.views.CategoryView;
 import com.softuni.musichub.admin.category.services.CategoryExtractionService;
 import com.softuni.musichub.admin.category.services.CategoryManipulationService;
 import com.softuni.musichub.admin.category.staticData.CategoryConstants;
-import com.softuni.musichub.admin.staticData.AdminConstants;
 import com.softuni.musichub.controller.BaseController;
 import com.softuni.musichub.staticData.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,26 +36,17 @@ public class CategoryController extends BaseController {
     }
 
     @GetMapping("/categories/add")
-    public ModelAndView getAddCategoryPage(Model model) {
-        Map<String, Object> objectByKey = new HashMap<>();
-        if (!model.asMap().containsKey(CategoryConstants.ADD_CATEGORY)) {
-            objectByKey.put(CategoryConstants.ADD_CATEGORY, new AddCategory());
-        }
-
+    public ModelAndView getAddCategoryPage(@ModelAttribute AddCategory addCategory) {
         return this.view(CategoryConstants.ADD_CATEGORY_TITLE,
-                CategoryConstants.ADD_CATEGORY_VIEW, objectByKey);
+                CategoryConstants.ADD_CATEGORY_VIEW);
     }
 
     @PostMapping("/categories/add")
     public ModelAndView addCategory(@Valid @ModelAttribute AddCategory addCategory,
-                                    BindingResult bindingResult,
-                                    RedirectAttributes redirectAttributes) {
+                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute(CategoryConstants.ADD_CATEGORY, addCategory);
-            String bindingResultKey = Constants.BINDING_RESULT_PACKAGE
-                    + CategoryConstants.ADD_CATEGORY;
-            redirectAttributes.addFlashAttribute(bindingResultKey, bindingResult);
-            return this.redirect(CategoryConstants.ADD_CATEGORY_ROUTE);
+            return this.view(CategoryConstants.ADD_CATEGORY_TITLE,
+                    CategoryConstants.ADD_CATEGORY_VIEW);
         }
 
         this.categoryManipulationService.addCategory(addCategory);
@@ -69,7 +57,7 @@ public class CategoryController extends BaseController {
     public ModelAndView getAllCategoriesPage(@PageableDefault(CategoryConstants.CATEGORIES_PER_PAGE) Pageable pageable) {
         Page<CategoryView> categories = this.categoryExtractionService.findAll(pageable);
         Map<String, Object> objectByKey = new HashMap<>();
-        objectByKey.put(AdminConstants.TABLE_ACTIONS_STYLE_ENABLED, "");
+        objectByKey.put(Constants.TABLE_ACTIONS_STYLE_ENABLED, "");
         objectByKey.put(Constants.PAGE, categories);
         return this.view(CategoryConstants.ALL_CATEGORIES_TITLE,
                 CategoryConstants.ALL_CATEGORIES_VIEW, objectByKey);

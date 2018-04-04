@@ -5,15 +5,11 @@ import com.softuni.musichub.song.tag.validations.Tag;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class AddTag {
+public class EditTag {
 
     private String name;
 
-    public AddTag() {
-    }
-
-    public AddTag(String name) {
-        this.name = name;
+    public EditTag() {
     }
 
     @NotBlank(message = TagConstants.TAG_NAME_BLANK_MESSAGE)

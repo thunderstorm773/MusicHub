@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div>
+    <div class="text-center">
+        <h4 th:text="|Username &dash; ${profile.username}|"></h4>
+    </div>
+    <div class="text-center justify-content-center"
+         th:if="${#lists.isEmpty(profile.songs)}">
+        <h5>No songs available</h5>
+    </div>
+    <div class="text-center justify-content-center"
+         th:if="${!#lists.isEmpty(profile.songs)}">
+        <h5>All songs</h5>
+    </div>
+    <table class="table table-hover table-bordered" th:if="${!#lists.isEmpty(profile.songs)}">
+        <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Uploaded On</th>
+            <th scope="col">Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="table-active" th:each="song : ${profile.songs}"
+                th:object="${song}">
+            <td>
+                <img class="float-left mr-2" th:src="@{/images/music-icon.png}" alt="music-icon">
+                <h6 th:text="*{title}"></h6>
+            </td>
+            <td th:text="*{#dates.format(uploadedOn, 'dd/MM/yyyy')}"></td>
+            <td>
+                <a th:href="@{/songs/details/{id} (id=*{id})}" class="show">Show</a>
+            </td>
+        </tr>
+    </table>
+</div>

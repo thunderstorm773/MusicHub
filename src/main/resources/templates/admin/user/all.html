@@ -29,7 +29,7 @@
         <td>
             <a th:href="@{/admin/users/edit/{id} (id=*{username})}" class="edit mr-2">Edit</a>
             <a th:href="@{/admin/users/delete/{id} (id=*{username})}" class="delete mr-2">Delete</a>
-            <a th:href="@{/users/show/{id} (id=*{username})}" class="show">Show</a>
+            <a th:href="@{/users/profile/{username} (username=*{username})}" class="show">Show</a>
         </td>
     </tr>
 </table>

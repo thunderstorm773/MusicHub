@@ -2,6 +2,7 @@ package com.softuni.musichub.song.tag.services;
 
 import com.softuni.musichub.song.tag.entities.Tag;
 import com.softuni.musichub.song.tag.models.bindingModels.AddTag;
+import com.softuni.musichub.song.tag.models.bindingModels.EditTag;
 import com.softuni.musichub.song.tag.models.viewModels.TagView;
 import com.softuni.musichub.song.tag.repositories.TagRepository;
 import com.softuni.musichub.util.MapperUtil;
@@ -29,5 +30,19 @@ public class TagManipulationServiceImpl implements TagManipulationService{
         Tag tag = this.mapperUtil.getModelMapper().map(addTag, Tag.class);
         Tag savedTag = this.tagRepository.save(tag);
         return this.mapperUtil.getModelMapper().map(savedTag, TagView.class);
+    }
+
+    @Override
+    public void edit(EditTag editTag, Long id) {
+        boolean isTagExists = this.tagRepository.existsById(id);
+        if (!isTagExists) {
+            return;
+        }
+
+        Tag tag = this.mapperUtil.getModelMapper().map(editTag, Tag.class);
+        tag.setId(id);
+        String newName = editTag.getName();
+        tag.setName(newName);
+        this.tagRepository.save(tag);
     }
 }

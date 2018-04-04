@@ -1,8 +1,7 @@
 package com.softuni.musichub.user.services;
 
 import com.softuni.musichub.user.exceptions.UserNotFoundException;
-import com.softuni.musichub.user.models.bindingModels.EditUser;
-import com.softuni.musichub.user.models.bindingModels.RegisterUser;
+import com.softuni.musichub.user.models.viewModels.ProfileView;
 import com.softuni.musichub.user.models.viewModels.UserView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,4 +16,6 @@ public interface UserExtractionService extends UserDetailsService {
     Page<UserView> findAll(Pageable pageable);
 
     boolean isUserHasAnyRole(String username, String... roleNames);
+
+    ProfileView getUserProfileByUsername(String username) throws UserNotFoundException;
 }

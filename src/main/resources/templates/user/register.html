@@ -1,4 +1,10 @@
 <!--/*@thymesVar id="registerUser" type="com.softuni.musichub.user.models.bindingModels.RegisterUser"*/-->
+<div class="row justify-content-center" th:if="${success} != null">
+    <div class="alert alert-success alert-dismissible col-md-4">
+        <th:block th:text="${success}">Message</th:block>
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+</div>
 <form th:object="${registerUser}" th:method="post">
     <fieldset>
         <legend>Register</legend>

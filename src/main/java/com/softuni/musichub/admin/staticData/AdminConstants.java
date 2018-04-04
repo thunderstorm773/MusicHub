@@ -29,8 +29,6 @@ public class AdminConstants {
     public static final String NOT_SELECTED_ROLES_MESSAGE =
             "You must select at least 1 role";
 
-    public static final String TABLE_ACTIONS_STYLE_ENABLED = "tableActionsStyleEnabled";
-
     public static final String ALL_USERS_ROUTE = "/admin/users/all";
 
     public static final String DELETE_USER_BASE_ROUTE = "/admin/users/delete/";

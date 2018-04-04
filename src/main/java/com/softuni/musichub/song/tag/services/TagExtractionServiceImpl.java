@@ -1,10 +1,13 @@
 package com.softuni.musichub.song.tag.services;
 
 import com.softuni.musichub.song.tag.entities.Tag;
+import com.softuni.musichub.song.tag.models.bindingModels.EditTag;
 import com.softuni.musichub.song.tag.models.viewModels.TagView;
 import com.softuni.musichub.song.tag.repositories.TagRepository;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
@@ -31,5 +34,21 @@ public class TagExtractionServiceImpl implements TagExtractionService {
         }
 
         return this.mapperUtil.getModelMapper().map(tag, TagView.class);
+    }
+
+    @Override
+    public Page<TagView> findAll(Pageable pageable) {
+        Page<Tag> tagPage = this.tagRepository.findAll(pageable);
+        return this.mapperUtil.convertToPage(pageable, tagPage, TagView.class);
+    }
+
+    @Override
+    public EditTag findById(Long id) {
+        Tag tag = this.tagRepository.findById(id).orElse(null);
+        if (tag == null) {
+            return null;
+        }
+
+        return this.mapperUtil.getModelMapper().map(tag, EditTag.class);
     }
 }

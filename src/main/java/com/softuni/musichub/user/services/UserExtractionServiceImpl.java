@@ -1,8 +1,10 @@
 package com.softuni.musichub.user.services;
 
+import com.softuni.musichub.song.models.viewModels.SongView;
 import com.softuni.musichub.user.entities.Role;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.user.exceptions.UserNotFoundException;
+import com.softuni.musichub.user.models.viewModels.ProfileView;
 import com.softuni.musichub.user.models.viewModels.UserView;
 import com.softuni.musichub.user.repositories.UserRepository;
 import com.softuni.musichub.user.staticData.AccountConstants;
@@ -15,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,6 +41,15 @@ public class UserExtractionServiceImpl implements UserExtractionService {
         Set<String> roleNames = roles.stream().map(Role::getAuthority)
                 .collect(Collectors.toSet());
         userView.setRoleNames(roleNames);
+    }
+
+    private void sortProfileSongs(ProfileView profileView) {
+        List<SongView> songViews = profileView.getSongs();
+        Comparator<SongView> uploadedOnDesc = (s1, s2) ->
+                s2.getUploadedOn().compareTo(s1.getUploadedOn());
+        songViews = songViews.stream().sorted(uploadedOnDesc)
+                .collect(Collectors.toList());
+        profileView.setSongs(songViews);
     }
 
     @Override
@@ -68,6 +81,19 @@ public class UserExtractionServiceImpl implements UserExtractionService {
     public boolean isUserHasAnyRole(String username, String... roleNames) {
         BigInteger result = (BigInteger) this.userRepository.isUserHasAnyRole(username, roleNames);
         return result.equals(new BigInteger("1"));
+    }
+
+    @Override
+    public ProfileView getUserProfileByUsername(String username) throws UserNotFoundException{
+        User user = this.userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+
+        ProfileView profileView = this.mapperUtil.getModelMapper()
+                .map(user, ProfileView.class);
+        this.sortProfileSongs(profileView);
+        return profileView;
     }
 
     @Override

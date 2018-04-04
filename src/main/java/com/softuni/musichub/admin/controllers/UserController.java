@@ -4,7 +4,6 @@ import com.softuni.musichub.admin.staticData.AdminConstants;
 import com.softuni.musichub.controller.BaseController;
 import com.softuni.musichub.error.staticData.ErrorConstants;
 import com.softuni.musichub.staticData.Constants;
-import com.softuni.musichub.user.exceptions.UserNotFoundException;
 import com.softuni.musichub.user.models.bindingModels.EditUser;
 import com.softuni.musichub.user.models.viewModels.RoleView;
 import com.softuni.musichub.user.models.viewModels.UserView;
@@ -49,11 +48,6 @@ public class UserController extends BaseController {
         this.roleService = roleService;
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ModelAndView handleUserNotFoundException() {
-        return this.redirect(AdminConstants.ALL_USERS_ROUTE);
-    }
-
     @GetMapping("/users/all")
     public ModelAndView getAllUsersPage(@PageableDefault(AdminConstants.USERS_PER_PAGE) Pageable pageable,
                                         @RequestParam(value = AccountConstants.USERNAME, required = false) String username) {
@@ -65,7 +59,7 @@ public class UserController extends BaseController {
         }
 
         Map<String, Object> objectByKey = new HashMap<>();
-        objectByKey.put(AdminConstants.TABLE_ACTIONS_STYLE_ENABLED, "");
+        objectByKey.put(Constants.TABLE_ACTIONS_STYLE_ENABLED, "");
         objectByKey.put(Constants.PAGE, usersViewPage);
         return this.view(AdminConstants.ALL_USERS_TITLE,
                 AdminConstants.ALL_USERS_VIEW, objectByKey);

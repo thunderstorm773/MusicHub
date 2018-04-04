@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/comments/approve/{id}", "/comments/reject/{id}", "/comments/pending")
                 .hasAnyRole("ADMIN", "MODERATOR")
+                .antMatchers("/tags/**").hasAnyRole("ADMIN", "MODERATOR")
                 .antMatchers("/songs/upload", "/comments/post").authenticated()
                 .anyRequest().permitAll()
                 .and().exceptionHandling().accessDeniedPage("/")
