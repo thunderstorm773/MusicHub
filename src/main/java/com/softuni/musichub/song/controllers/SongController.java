@@ -160,7 +160,7 @@ public class SongController extends BaseController {
         }
 
         this.songManipulationService.edit(editSong, id);
-		redirectAttributes.addFlashAttribute(Constants.INFO, SongConstants.SONG_EDITED_MESSAGE);
+        redirectAttributes.addFlashAttribute(Constants.INFO, SongConstants.SONG_EDITED_MESSAGE);
         return this.redirect(SongConstants.EDIT_SONG_BASE_ROUTE + id);
     }
 }

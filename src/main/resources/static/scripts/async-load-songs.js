@@ -57,7 +57,6 @@ $('.page-link').on('click', function (e) {
     function renderSongs(songsAsJson) {
         let songsContainer = $('#songsContainer');
         let paginationList = $('.pagination');
-        //songsContainer.css('display', 'none');
         songsContainer.empty();
         if (songsAsJson.length === 0) {
             let noSongsAvailable = $('<div><h3>No songs available</h3></div>');

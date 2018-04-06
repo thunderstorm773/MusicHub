@@ -8,9 +8,11 @@ import com.softuni.musichub.song.models.viewModels.SongDetailsView;
 import com.softuni.musichub.song.models.viewModels.SongView;
 import com.softuni.musichub.song.repositories.SongRepository;
 import com.softuni.musichub.song.tag.entities.Tag;
+import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.util.CdnUtil;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,7 +46,7 @@ public class SongExtractionServiceImpl implements SongExtractionService {
     private void sortCommentsByPublishedDateDesc(SongDetailsView songDetailsView) {
         List<CommentView> commentViews = songDetailsView.getComments();
         Comparator<CommentView> publishedDateComparator = (c1, c2) ->
-            c2.getPublishedOn().compareTo(c1.getPublishedOn());
+                c2.getPublishedOn().compareTo(c1.getPublishedOn());
 
         List<CommentView> sortedComments = commentViews.stream().sorted(publishedDateComparator)
                 .collect(Collectors.toList());
@@ -63,6 +65,7 @@ public class SongExtractionServiceImpl implements SongExtractionService {
         return this.mapperUtil.convertToPage(pageable, songPage, SongView.class);
     }
 
+    @Cacheable(value = Constants.SONGS_CACHE_NAME, key = "#songId")
     @Override
     public SongDetailsView getDetailsById(Long songId) throws Exception {
         Song song = this.songRepository.findById(songId).orElse(null);

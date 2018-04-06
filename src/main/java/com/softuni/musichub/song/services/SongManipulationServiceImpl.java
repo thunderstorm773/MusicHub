@@ -14,10 +14,12 @@ import com.softuni.musichub.song.tag.models.viewModels.TagView;
 import com.softuni.musichub.song.tag.services.TagExtractionService;
 import com.softuni.musichub.song.tag.services.TagManipulationService;
 import com.softuni.musichub.song.tag.staticData.TagConstants;
+import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.util.CdnUtil;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -130,6 +132,7 @@ public class SongManipulationServiceImpl implements SongManipulationService {
         this.songRepository.save(song);
     }
 
+    @CacheEvict(value = Constants.SONGS_CACHE_NAME, key = "#songId")
     @Override
     public void deleteById(Long songId) throws Exception {
         Song song = this.songRepository.findById(songId).orElse(null);
@@ -144,6 +147,7 @@ public class SongManipulationServiceImpl implements SongManipulationService {
     }
 
     @Override
+    @CacheEvict(value = Constants.SONGS_CACHE_NAME, key = "#songId")
     public void edit(EditSong editSong, Long songId) throws SongNotFoundException {
         Song song = this.songRepository.findById(songId).orElse(null);
         if (song == null) {

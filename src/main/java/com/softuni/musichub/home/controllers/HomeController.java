@@ -77,8 +77,7 @@ public class HomeController extends BaseController {
 
     @GetMapping("/about-us")
     public ModelAndView getAboutUsPage() {
-        return this.view(HomeConstants.ABOUT_US_TITLE,
-                HomeConstants.ABOUT_US_VIEW);
+        return this.view(HomeConstants.ABOUT_US_TITLE, HomeConstants.ABOUT_US_VIEW);
     }
 
     @GetMapping("/index")
