@@ -8,13 +8,13 @@ import com.softuni.musichub.song.exceptions.SongNotFoundException;
 import com.softuni.musichub.song.models.bindingModels.EditSong;
 import com.softuni.musichub.song.models.bindingModels.UploadSong;
 import com.softuni.musichub.song.repositories.SongRepository;
+import com.softuni.musichub.song.staticData.SongConstants;
 import com.softuni.musichub.song.tag.entities.Tag;
 import com.softuni.musichub.song.tag.models.bindingModels.AddTag;
 import com.softuni.musichub.song.tag.models.viewModels.TagView;
 import com.softuni.musichub.song.tag.services.TagExtractionService;
 import com.softuni.musichub.song.tag.services.TagManipulationService;
 import com.softuni.musichub.song.tag.staticData.TagConstants;
-import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.util.CdnUtil;
 import com.softuni.musichub.util.MapperUtil;
@@ -132,7 +132,7 @@ public class SongManipulationServiceImpl implements SongManipulationService {
         this.songRepository.save(song);
     }
 
-    @CacheEvict(value = Constants.SONGS_CACHE_NAME, key = "#songId")
+    @CacheEvict(value = SongConstants.SONGS_CACHE_NAME, key = "#songId")
     @Override
     public void deleteById(Long songId) throws Exception {
         Song song = this.songRepository.findById(songId).orElse(null);
@@ -147,7 +147,7 @@ public class SongManipulationServiceImpl implements SongManipulationService {
     }
 
     @Override
-    @CacheEvict(value = Constants.SONGS_CACHE_NAME, key = "#songId")
+    @CacheEvict(value = SongConstants.SONGS_CACHE_NAME, key = "#songId")
     public void edit(EditSong editSong, Long songId) throws SongNotFoundException {
         Song song = this.songRepository.findById(songId).orElse(null);
         if (song == null) {

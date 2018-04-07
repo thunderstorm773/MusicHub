@@ -7,8 +7,8 @@ import com.softuni.musichub.song.models.bindingModels.EditSong;
 import com.softuni.musichub.song.models.viewModels.SongDetailsView;
 import com.softuni.musichub.song.models.viewModels.SongView;
 import com.softuni.musichub.song.repositories.SongRepository;
+import com.softuni.musichub.song.staticData.SongConstants;
 import com.softuni.musichub.song.tag.entities.Tag;
-import com.softuni.musichub.staticData.Constants;
 import com.softuni.musichub.util.CdnUtil;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +65,7 @@ public class SongExtractionServiceImpl implements SongExtractionService {
         return this.mapperUtil.convertToPage(pageable, songPage, SongView.class);
     }
 
-    @Cacheable(value = Constants.SONGS_CACHE_NAME, key = "#songId")
+    @Cacheable(value = SongConstants.SONGS_CACHE_NAME, key = "#songId")
     @Override
     public SongDetailsView getDetailsById(Long songId) throws Exception {
         Song song = this.songRepository.findById(songId).orElse(null);

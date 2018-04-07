@@ -3,19 +3,19 @@
                 and page.getTotalPages() > 1}"
         th:with="hasPrevious=${page.hasPrevious()}, hasNext=${page.hasNext()},
         previousPageable=${page.previousPageable()}, nextPageable=${page.nextPageable()}">
-        <!--<li class="page-item" th:classappend="${!hasPrevious} ? 'disabled'">-->
-        <!--<a class="page-link"-->
-        <!--th:href="${hasPrevious} ? @{${pageBaseUrl}(page=${previousPageable.getPageNumber()})}">&laquo;</a>-->
-        <!--</li>-->
-        <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, page.getTotalPages())}"
-            th:with="index=${pageNum} - 1"
-            th:classappend="${page.getNumber() == index} ? 'active'">
-            <a class="page-link" th:href="@{${pageBaseUrl}(page=${index})}"
-               th:text="${pageNum}"></a>
+        <li class="page-item prev" th:classappend="${!hasPrevious} ? 'disabled'">
+            <a class="page-link prev"
+               th:href="${hasPrevious} ? @{${pageBaseUrl}(page=${previousPageable.getPageNumber()})}">Prev</a>
         </li>
-        <!--<li class="page-item" th:classappend="${!hasNext} ? 'disabled'">-->
-        <!--<a class="page-link"-->
-        <!--th:href="${hasNext} ? @{${pageBaseUrl}(page=${nextPageable.getPageNumber()})}">&raquo;</a>-->
+        <!--<li class="page-item" th:each="pageNum : ${#numbers.sequence(1, page.getTotalPages())}"-->
+        <!--th:with="index=${pageNum} - 1"-->
+        <!--th:classappend="${page.getNumber() == index} ? 'active'">-->
+        <!--<a class="page-link" th:href="@{${pageBaseUrl}(page=${index})}"-->
+        <!--th:text="${pageNum}"></a>-->
         <!--</li>-->
+        <li class="page-item next" th:classappend="${!hasNext} ? 'disabled'">
+            <a class="page-link next"
+               th:href="${hasNext} ? @{${pageBaseUrl}(page=${nextPageable.getPageNumber()})}">Next</a>
+        </li>
     </ul>
 </div>

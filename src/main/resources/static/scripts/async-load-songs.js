@@ -33,11 +33,6 @@ $('.page-link').on('click', function (e) {
         }
     }
 
-    function markSelectedPage() {
-        $('.page-item').removeClass('active');
-        $(e.currentTarget).parent().addClass('active');
-    }
-
     function abbreviate(text) {
         const maxLen = 20;
         if (text.length > maxLen) {
@@ -47,11 +42,48 @@ $('.page-link').on('click', function (e) {
         return text;
     }
 
+    function renderPagination(totalSongs, pageable) {
+        const paginationBaseRoute = '/songs/browse/js?page=';
+        const totalPages = Math.ceil(totalSongs / pageable['size']);
+
+        let paginationList = $('.pagination');
+        paginationList.css('display', 'none');
+        let pageIndex = pageable['page'];
+        let prevPageIndex = pageIndex - 1;
+        let nextPageIndex = pageIndex + 1;
+        let prevPageRoute = paginationBaseRoute + prevPageIndex;
+        let nextPageRoute = paginationBaseRoute + nextPageIndex;
+
+        let prevPageLink = $('.page-link.prev');
+        let nextPageLink = $('.page-link.next');
+        let prevPageItem = $('.page-item.prev');
+        let nextPageItem = $('.page-item.next');
+        if (prevPageIndex < 0) {
+            prevPageItem.addClass('disabled');
+            prevPageLink.attr('href', '#');
+        } else {
+            prevPageItem.removeClass('disabled');
+            prevPageLink.attr('href', prevPageRoute);
+        }
+
+        if ((nextPageIndex + 1) > totalPages) {
+            nextPageItem.addClass('disabled');
+            nextPageLink.attr('href', '#');
+        } else {
+            nextPageItem.removeClass('disabled');
+            nextPageLink.attr('href', nextPageRoute);
+        }
+
+        paginationList.css('display', 'flex');
+    }
+
     function ajaxSuccess(result) {
         let jsonResult = JSON.parse(result);
         let songsAsJson = jsonResult['content'];
         renderSongs(songsAsJson);
-        markSelectedPage();
+        let totalSongs = jsonResult['total'];
+        let pageable = jsonResult['pageable'];
+        renderPagination(totalSongs, pageable);
     }
 
     function renderSongs(songsAsJson) {

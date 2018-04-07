@@ -57,4 +57,6 @@ public class SongConstants {
 	
 	public static final String SONG_EDITED_MESSAGE =
             "Song edited successfully";
+
+    public static final String SONGS_CACHE_NAME = "songs";
 }
