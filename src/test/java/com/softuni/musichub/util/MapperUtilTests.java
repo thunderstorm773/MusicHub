@@ -18,6 +18,7 @@ public class MapperUtilTests {
 
     private static final String EXPECTED_ROLE_ID = "1a75e378-7fd3-22c4-12cd-2369b7d7e1ee";
     private static final String EXPECTED_ROLE_NAME = "ROLE_MODERATOR";
+    private static final int EXPECTED_ROLES_SIZE = 1;
 
     @Autowired
     private MapperUtil mapperUtil;
@@ -43,6 +44,7 @@ public class MapperUtilTests {
         List<RoleView> roleViews = this.mapperUtil.convertAll(this.testRoles, RoleView.class);
         RoleView roleView = roleViews.get(0);
 
+        Assert.assertEquals(roleViews.size(), EXPECTED_ROLES_SIZE);
         Assert.assertEquals(roleView.getId(), EXPECTED_ROLE_ID);
         Assert.assertEquals(roleView.getAuthority(), EXPECTED_ROLE_NAME);
     }

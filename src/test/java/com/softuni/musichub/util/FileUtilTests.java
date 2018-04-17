@@ -17,12 +17,9 @@ import java.io.IOException;
 public class FileUtilTests {
 
     private static final String TEST_FILE_NAME = "test.mp3";
-
     private static final String TEST_FOLDER_NAME = "temp";
-
     private static final String TEST_FILE_PATH = Constants.ROOT_PATH +
             File.separator + TEST_FILE_NAME;
-
     private static final String TEST_FOLDER_PATH = Constants.ROOT_PATH +
             File.separator + TEST_FOLDER_NAME;
 

@@ -79,8 +79,7 @@ public class UserExtractionServiceImpl implements UserExtractionService {
 
     @Override
     public boolean isUserHasAnyRole(String username, String... roleNames) {
-        BigInteger result = (BigInteger) this.userRepository.isUserHasAnyRole(username, roleNames);
-        return result.equals(new BigInteger("1"));
+        return this.userRepository.isUserHasAnyRole(username, roleNames);
     }
 
     @Override

@@ -15,10 +15,9 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
 
     Page<User> findAllByUsernameContains(String username, Pageable pageable);
 
-    @Query(value = "SELECT IF((SELECT COUNT(*) FROM users AS u INNER JOIN users_roles AS ur " +
-            "ON u.id = ur.user_id " +
-            "INNER JOIN roles AS r " +
-            "ON ur.role_id = r.id " +
-            "WHERE u.username = :username AND r.name IN :roleNames), true, false)", nativeQuery = true)
-    Object isUserHasAnyRole(@Param("username") String username, @Param("roleNames") String... roleNames);
+    @Query(value = "SELECT CASE WHEN (SELECT COUNT(u) FROM User AS u " +
+            "INNER JOIN u.authorities AS r WHERE " +
+            "u.username = :username AND r.authority IN :roleNames) > 0 " +
+            "THEN true ELSE false END FROM User")
+    boolean isUserHasAnyRole(@Param("username") String username, @Param("roleNames") String... roleNames);
 }
