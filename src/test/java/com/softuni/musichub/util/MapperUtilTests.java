@@ -40,11 +40,17 @@ public class MapperUtilTests {
     }
 
     @Test
-    public void testConvertAll_withSourceAndDestination_returnsMappedSourceAsDestination() {
+    public void testConvertAll_withSource_returnsExpectedMappedEntitiesSize() {
+        List<RoleView> roleViews = this.mapperUtil.convertAll(this.testRoles, RoleView.class);
+
+        Assert.assertEquals(roleViews.size(), EXPECTED_ROLES_SIZE);
+    }
+
+    @Test
+    public void testConvertAll_withSource_returnsCorrectlyMappedSource() {
         List<RoleView> roleViews = this.mapperUtil.convertAll(this.testRoles, RoleView.class);
         RoleView roleView = roleViews.get(0);
 
-        Assert.assertEquals(roleViews.size(), EXPECTED_ROLES_SIZE);
         Assert.assertEquals(roleView.getId(), EXPECTED_ROLE_ID);
         Assert.assertEquals(roleView.getAuthority(), EXPECTED_ROLE_NAME);
     }

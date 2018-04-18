@@ -3,6 +3,7 @@ package com.softuni.musichub.admin.category.services;
 import com.softuni.musichub.admin.category.entities.Category;
 import com.softuni.musichub.admin.category.models.bindingModels.AddCategory;
 import com.softuni.musichub.admin.category.models.bindingModels.EditCategory;
+import com.softuni.musichub.admin.category.models.views.CategoryView;
 import com.softuni.musichub.admin.category.repositories.CategoryRepository;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,32 +26,37 @@ public class CategoryManipulationServiceImpl implements CategoryManipulationServ
     }
 
     @Override
-    public void addCategory(AddCategory addCategory) {
+    public CategoryView addCategory(AddCategory addCategory) {
         Category category = this.mapperUtil.getModelMapper()
                 .map(addCategory, Category.class);
-        this.categoryRepository.save(category);
+        Category savedCategory = this.categoryRepository.save(category);
+        return this.mapperUtil.getModelMapper()
+                .map(savedCategory, CategoryView.class);
     }
 
     @Override
-    public void deleteById(Long categoryId) {
+    public boolean deleteById(Long categoryId) {
         boolean isCategoryExists = this.categoryRepository.existsById(categoryId);
         if (!isCategoryExists) {
-            return;
+            return false;
         }
 
         this.categoryRepository.deleteById(categoryId);
+        return true;
     }
 
     @Override
-    public void edit(EditCategory editCategory, Long id) {
+    public CategoryView edit(EditCategory editCategory, Long id) {
         boolean isCategoryExists = this.categoryRepository.existsById(id);
         if (!isCategoryExists) {
-            return;
+            return null;
         }
 
         Category category = this.mapperUtil.getModelMapper()
                 .map(editCategory, Category.class);
         category.setId(id);
-        this.categoryRepository.save(category);
+        Category editedCategory = this.categoryRepository.save(category);
+        return this.mapperUtil.getModelMapper()
+                .map(editedCategory, CategoryView.class);
     }
 }

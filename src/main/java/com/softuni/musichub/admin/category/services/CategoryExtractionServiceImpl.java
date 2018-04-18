@@ -50,8 +50,7 @@ public class CategoryExtractionServiceImpl implements CategoryExtractionService 
 
     @Override
     public CategoryView findById(Long categoryId) {
-        Category category = this.categoryRepository
-                .findById(categoryId).orElse(null);
+        Category category = this.categoryRepository.findById(categoryId).orElse(null);
         if (category == null) {
             return null;
         }
