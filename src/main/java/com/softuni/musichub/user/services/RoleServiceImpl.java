@@ -27,6 +27,10 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public RoleView findByName(String roleName) {
         Role role = this.roleRepository.findByAuthority(roleName);
+        if (role == null) {
+            return null;
+        }
+
         return this.mapperUtil.getModelMapper().map(role, RoleView.class);
     }
 
