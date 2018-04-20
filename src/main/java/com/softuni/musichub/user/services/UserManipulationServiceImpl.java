@@ -54,7 +54,7 @@ public class UserManipulationServiceImpl implements UserManipulationService {
     }
 
     @Override
-    public void registerUser(RegisterUser registerUser) {
+    public User registerUser(RegisterUser registerUser) {
         User user = this.mapperUtil.getModelMapper().map(registerUser, User.class);
         String password = user.getPassword();
         String hashedPassword = this.passwordEncoder.encode(password);
@@ -68,34 +68,37 @@ public class UserManipulationServiceImpl implements UserManipulationService {
         RoleView roleView = this.roleService.findByName(AccountConstants.ROLE_USER);
         Role role = this.mapperUtil.getModelMapper().map(roleView, Role.class);
         user.getAuthorities().add(role);
-        this.userRepository.save(user);
+        User savedUser = this.userRepository.save(user);
+        return this.mapperUtil.getModelMapper().map(savedUser, User.class);
     }
 
     @Override
-    public void edit(EditUser editUser, String username) {
+    public User edit(EditUser editUser, String username) {
         User user = this.userRepository.findByUsername(username);
         if (user == null) {
-            return;
+            return null;
         }
 
         Set<String> roleNames = editUser.getRoleNames();
         Set<RoleView> roleViews = this.getRolesByNames(roleNames);
         if (roleViews.isEmpty()) {
-            return;
+            return null;
         }
 
         List<Role> roleList = this.mapperUtil.convertAll(roleViews, Role.class);
         Set<Role> newRoles = new HashSet<>(roleList);
         user.setAuthorities(newRoles);
+        return this.mapperUtil.getModelMapper().map(user, User.class);
     }
 
     @Override
-    public void deleteByUsername(String username) {
+    public boolean deleteByUsername(String username) {
         User user = this.userRepository.findByUsername(username);
         if (user == null) {
-            return;
+            return false;
         }
 
         this.userRepository.delete(user);
+        return true;
     }
 }

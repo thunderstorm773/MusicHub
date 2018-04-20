@@ -1,13 +1,15 @@
 package com.softuni.musichub.user.services;
 
+import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.user.models.bindingModels.EditUser;
 import com.softuni.musichub.user.models.bindingModels.RegisterUser;
+import com.softuni.musichub.user.models.viewModels.UserView;
 
 public interface UserManipulationService {
 
-    void registerUser(RegisterUser registerUser);
+    User registerUser(RegisterUser registerUser);
 
-    void deleteByUsername(String username);
+    boolean deleteByUsername(String username);
 
-    void edit(EditUser editUser, String username);
+    User edit(EditUser editUser, String username);
 }
