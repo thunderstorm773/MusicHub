@@ -9,11 +9,13 @@ import com.softuni.musichub.song.comment.staticData.CommentConstants;
 import com.softuni.musichub.song.entities.Song;
 import com.softuni.musichub.song.models.viewModels.SongView;
 import com.softuni.musichub.song.services.SongExtractionService;
+import com.softuni.musichub.song.staticData.SongConstants;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.user.models.viewModels.UserView;
 import com.softuni.musichub.user.services.UserExtractionService;
 import com.softuni.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.Principal;
@@ -51,6 +53,8 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
         return new Comment(commentContent, user, defaultStatus, song);
     }
 
+    @CacheEvict(cacheNames = SongConstants.SONGS_CACHE_NAME,
+            key = "#postComment.songId")
     @Override
     public CommentView postComment(PostComment postComment, Principal principal) {
         Comment comment = this.constructComment(postComment, principal);
@@ -58,6 +62,7 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
         return this.mapperUtil.getModelMapper().map(postedComment, CommentView.class);
     }
 
+    @CacheEvict(cacheNames = SongConstants.SONGS_CACHE_NAME, allEntries = true)
     @Override
     public void approve(Long id) {
         Comment comment = this.commentRepository.findById(id).orElse(null);
@@ -68,6 +73,7 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
         comment.setStatus(CommentStatus.APPROVED);
     }
 
+    @CacheEvict(cacheNames = SongConstants.SONGS_CACHE_NAME, allEntries = true)
     @Override
     public void reject(Long id) {
         Comment comment = this.commentRepository.findById(id).orElse(null);
@@ -78,6 +84,7 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
         comment.setStatus(CommentStatus.REJECTED);
     }
 
+    @CacheEvict(cacheNames = SongConstants.SONGS_CACHE_NAME, allEntries = true)
     @Override
     public void deleteAllRejectedComments() {
         this.commentRepository.deleteAllRejectedComments();
