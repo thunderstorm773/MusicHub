@@ -24,27 +24,27 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
 
     private final CommentRepository commentRepository;
 
-    private final SongExtractionService songService;
+    private final SongExtractionService songExtractionService;
 
-    private final UserExtractionService userService;
+    private final UserExtractionService userExtractionService;
 
     private final MapperUtil mapperUtil;
 
     @Autowired
     public CommentManipulationServiceImpl(CommentRepository commentRepository,
-                                          SongExtractionService songService,
-                                          UserExtractionService userService, MapperUtil mapperUtil) {
+                                          SongExtractionService songExtractionService,
+                                          UserExtractionService userExtractionService, MapperUtil mapperUtil) {
         this.commentRepository = commentRepository;
-        this.songService = songService;
-        this.userService = userService;
+        this.songExtractionService = songExtractionService;
+        this.userExtractionService = userExtractionService;
         this.mapperUtil = mapperUtil;
     }
 
     private Comment constructComment(PostComment postComment, Principal principal) {
         Long songId = postComment.getSongId();
-        SongView songView = this.songService.findById(songId);
+        SongView songView = this.songExtractionService.findById(songId);
         Song song = this.mapperUtil.getModelMapper().map(songView, Song.class);
-        UserView userView = this.userService.findByUsername(principal.getName());
+        UserView userView = this.userExtractionService.findByUsername(principal.getName());
         User user = this.mapperUtil.getModelMapper().map(userView, User.class);
         CommentStatus defaultStatus = CommentStatus.PENDING;
         String commentContent = postComment.getContent();
