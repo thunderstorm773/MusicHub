@@ -2,7 +2,7 @@ package com.softuni.musichub.song.repositories;
 
 import com.softuni.musichub.song.entities.Song;
 import com.softuni.musichub.song.tag.entities.Tag;
-import com.softuni.musichub.staticData.Constants;
+import com.softuni.musichub.staticData.TestConstants;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DataJpaTest
-@ActiveProfiles(Constants.TEST_PROFILE)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 public class SongRepositoryTests {
 
     private static final String TEST_SONG_TITLE = "li";

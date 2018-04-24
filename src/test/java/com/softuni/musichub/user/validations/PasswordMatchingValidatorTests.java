@@ -1,5 +1,6 @@
 package com.softuni.musichub.user.validations;
 
+import com.softuni.musichub.staticData.TestConstants;
 import com.softuni.musichub.user.models.bindingModels.RegisterUser;
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,9 +9,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
 import javax.validation.ConstraintValidatorContext;
 
 @RunWith(MockitoJUnitRunner.class)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class PasswordMatchingValidatorTests {
 

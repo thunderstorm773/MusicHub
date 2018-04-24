@@ -1,6 +1,7 @@
 package com.softuni.musichub.util;
 
 import com.softuni.musichub.staticData.Constants;
+import com.softuni.musichub.staticData.TestConstants;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -9,10 +10,13 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
 import java.io.File;
 import java.io.IOException;
 
 @RunWith(MockitoJUnitRunner.class)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class FileUtilTests {
 

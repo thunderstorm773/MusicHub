@@ -2,7 +2,7 @@ package com.softuni.musichub.admin.category.validations;
 
 import com.softuni.musichub.admin.category.models.views.CategoryView;
 import com.softuni.musichub.admin.category.services.CategoryExtractionService;
-import com.softuni.musichub.staticData.Constants;
+import com.softuni.musichub.staticData.TestConstants;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.validation.ConstraintValidatorContext;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles(Constants.TEST_PROFILE)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class CategoryValidatorTests {
 

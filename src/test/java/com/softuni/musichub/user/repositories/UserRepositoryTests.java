@@ -1,6 +1,6 @@
 package com.softuni.musichub.user.repositories;
 
-import com.softuni.musichub.staticData.Constants;
+import com.softuni.musichub.staticData.TestConstants;
 import com.softuni.musichub.user.entities.Role;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.user.staticData.AccountConstants;
@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles(Constants.TEST_PROFILE)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 @DataJpaTest
 public class UserRepositoryTests {
 

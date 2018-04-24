@@ -1,5 +1,6 @@
 package com.softuni.musichub.user.services;
 
+import com.softuni.musichub.staticData.TestConstants;
 import com.softuni.musichub.user.entities.Role;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.user.models.bindingModels.EditUser;
@@ -19,12 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class UserManipulationServiceImplTests {
 

@@ -18,6 +18,4 @@ public class Constants {
     public static final String PAGE = "page";
 
     public static final String TABLE_ACTIONS_STYLE_ENABLED = "tableActionsStyleEnabled";
-
-    public static final String TEST_PROFILE = "test";
 }

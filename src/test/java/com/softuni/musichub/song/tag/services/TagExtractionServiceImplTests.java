@@ -4,6 +4,7 @@ import com.softuni.musichub.song.tag.entities.Tag;
 import com.softuni.musichub.song.tag.models.bindingModels.EditTag;
 import com.softuni.musichub.song.tag.models.viewModels.TagView;
 import com.softuni.musichub.song.tag.repositories.TagRepository;
+import com.softuni.musichub.staticData.TestConstants;
 import com.softuni.musichub.util.MapperUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,12 +17,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class TagExtractionServiceImplTests {
 

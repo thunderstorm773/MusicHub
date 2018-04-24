@@ -3,7 +3,7 @@ package com.softuni.musichub.admin.category.services;
 import com.softuni.musichub.admin.category.entities.Category;
 import com.softuni.musichub.admin.category.models.views.CategoryView;
 import com.softuni.musichub.admin.category.repositories.CategoryRepository;
-import com.softuni.musichub.staticData.Constants;
+import com.softuni.musichub.staticData.TestConstants;
 import com.softuni.musichub.util.MapperUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,13 +19,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles(Constants.TEST_PROFILE)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class CategoryExtractionServiceImplTests {
 

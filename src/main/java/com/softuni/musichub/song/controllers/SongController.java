@@ -104,7 +104,7 @@ public class SongController extends BaseController {
     }
 
     @GetMapping("/details/{id}")
-    public ModelAndView getSongDetailsPage(@PathVariable Long id) throws Exception {
+    public ModelAndView getSongDetailsPage(@PathVariable Long id) throws SongNotFoundException {
         SongDetailsView songDetailsView = this.songExtractionService.getDetailsById(id);
         Map<String, Object> objectByKey = new HashMap<>();
         objectByKey.put(SongConstants.AUDIO_JS_STYLE_ENABLED, "");

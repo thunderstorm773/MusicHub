@@ -13,7 +13,7 @@ public interface SongExtractionService {
 
     Page<SongView> findAllByTitle(String songTitle, Pageable pageable);
 
-    SongDetailsView getDetailsById(Long songId) throws Exception;
+    SongDetailsView getDetailsById(Long songId) throws SongNotFoundException;
 
     Page<SongView> findAllByCategoryName(String categoryName, Pageable pageable);
 

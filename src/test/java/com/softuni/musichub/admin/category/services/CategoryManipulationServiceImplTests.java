@@ -5,7 +5,7 @@ import com.softuni.musichub.admin.category.models.bindingModels.AddCategory;
 import com.softuni.musichub.admin.category.models.bindingModels.EditCategory;
 import com.softuni.musichub.admin.category.models.views.CategoryView;
 import com.softuni.musichub.admin.category.repositories.CategoryRepository;
-import com.softuni.musichub.staticData.Constants;
+import com.softuni.musichub.staticData.TestConstants;
 import com.softuni.musichub.util.MapperUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,8 +21,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
-@ActiveProfiles(Constants.TEST_PROFILE)
 public class CategoryManipulationServiceImplTests {
 
     private static final String TEST_CATEGORY_NAME = "Pop";

@@ -7,6 +7,7 @@ import com.softuni.musichub.song.comment.models.viewModels.CommentView;
 import com.softuni.musichub.song.comment.repositories.CommentRepository;
 import com.softuni.musichub.song.models.viewModels.SongView;
 import com.softuni.musichub.song.services.SongExtractionService;
+import com.softuni.musichub.staticData.TestConstants;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.user.models.viewModels.UserView;
 import com.softuni.musichub.user.services.UserExtractionService;
@@ -22,6 +23,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.security.Principal;
@@ -29,6 +31,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class CommentManipulationServiceImplTests {
 

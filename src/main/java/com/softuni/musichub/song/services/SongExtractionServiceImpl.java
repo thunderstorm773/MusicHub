@@ -67,7 +67,7 @@ public class SongExtractionServiceImpl implements SongExtractionService {
 
     @Cacheable(value = SongConstants.SONGS_CACHE_NAME, key = "#songId")
     @Override
-    public SongDetailsView getDetailsById(Long songId) throws Exception {
+    public SongDetailsView getDetailsById(Long songId) throws SongNotFoundException {
         Song song = this.songRepository.findById(songId).orElse(null);
         if (song == null) {
             throw new SongNotFoundException();

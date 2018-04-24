@@ -1,5 +1,6 @@
 package com.softuni.musichub.user.services;
 
+import com.softuni.musichub.staticData.TestConstants;
 import com.softuni.musichub.user.entities.Role;
 import com.softuni.musichub.user.entities.User;
 import com.softuni.musichub.user.exceptions.UserNotFoundException;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class UserExtractionServiceImplTests {
 

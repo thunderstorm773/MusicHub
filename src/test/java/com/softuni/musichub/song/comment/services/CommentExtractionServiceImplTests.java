@@ -1,6 +1,7 @@
 package com.softuni.musichub.song.comment.services;
 
 import com.softuni.musichub.song.comment.repositories.CommentRepository;
+import com.softuni.musichub.staticData.TestConstants;
 import com.softuni.musichub.util.MapperUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,11 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class CommentExtractionServiceImplTests {
 
