@@ -8,13 +8,15 @@
 <table class="table table-hover table-bordered" th:if="${!#lists.isEmpty(page.getContent())}">
     <thead>
     <tr>
+        <th scope="col">№</th>
         <th scope="col">Name</th>
         <th scope="col">Actions</th>
     </tr>
     </thead>
     <tbody>
-    <tr class="table-active" th:each="tag : ${page}"
+    <tr class="table-active" th:each="tag, iter : ${page}"
         th:object="${tag}">
+        <td th:text="${iter.index + 1}"></td>
         <td th:text="*{name}"></td>
         <td>
             <a th:href="@{/tags/{id}/edit (id=*{id})}" class="edit mr-2">Edit</a>

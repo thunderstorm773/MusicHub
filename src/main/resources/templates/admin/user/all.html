@@ -15,6 +15,7 @@
 <table class="table table-hover table-bordered">
     <thead>
     <tr>
+        <th scope="col">№</th>
         <th scope="col">Id</th>
         <th scope="col">Username</th>
         <th scope="col">Email</th>
@@ -22,7 +23,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr class="table-active" th:each="user : ${page}" th:object="${user}">
+    <tr class="table-active" th:each="user, iter : ${page}" th:object="${user}">
+        <td th:text="${iter.index + 1}"></td>
         <td th:text="*{id}">Id</td>
         <td th:text="*{username}">Username</td>
         <td th:text="*{email}">Email</td>
