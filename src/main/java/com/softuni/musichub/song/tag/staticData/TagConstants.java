@@ -2,7 +2,7 @@ package com.softuni.musichub.song.tag.staticData;
 
 public class TagConstants {
 
-    public static final int TAGS_PER_PAGE = 20;
+    public static final int TAGS_PER_PAGE = 10;
 
     public static final String ALL_TAGS_TITLE = "All tags";
 

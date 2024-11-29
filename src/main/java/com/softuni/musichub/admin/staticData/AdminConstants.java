@@ -22,7 +22,7 @@ public class AdminConstants {
             "You cannot delete yourself, to delete this account please log in " +
                     "with different admin account!";
 
-    public static final int USERS_PER_PAGE = 20;
+    public static final int USERS_PER_PAGE = 10;
 
     public static final int MIN_ROLES_COUNT = 1;
 

@@ -34,7 +34,7 @@ public class CategoryConstants {
 
     public static final String CATEGORY = "category";
 
-    public static final int CATEGORIES_PER_PAGE = 20;
+    public static final int CATEGORIES_PER_PAGE = 10;
 
     public static final String ALL_CATEGORIES_ROUTE = "/admin/categories/all";
 
