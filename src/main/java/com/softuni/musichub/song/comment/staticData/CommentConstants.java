@@ -4,7 +4,7 @@ public class CommentConstants {
 
     public static final int COMMENT_MIN_LEN = 10;
 
-    public static final int COMMENTS_PER_PAGE = 5;
+    public static final int COMMENTS_PER_PAGE = 4;
 
     public static final String PENDING_COMMENTS_TITLE = "Pending comments";
 
