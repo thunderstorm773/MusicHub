@@ -5,6 +5,7 @@ import com.cloudinary.Transformation;
 import com.cloudinary.Url;
 import com.cloudinary.utils.ObjectUtils;
 import com.tu.musichub.config.CdnConfigData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import java.io.File;
@@ -28,17 +29,21 @@ public class CdnUtil {
 
     private static final String ATTACHMENT_FLAG = "attachment";
 
+    private final CdnConfigData configData;
+
     private Cloudinary cloudinary;
 
-    public CdnUtil() {
+    @Autowired
+    public CdnUtil(CdnConfigData configData) {
+        this.configData = configData;
         this.configCloudinary();
     }
 
     private void configCloudinary() {
         Map configMap = ObjectUtils.asMap(
-                CdnConfigData.CLOUD_NAME_KEY, CdnConfigData.CLOUD_NAME_VALUE,
-                CdnConfigData.API_KEY, CdnConfigData.API_KEY_VALUE,
-                CdnConfigData.API_SECRET_KEY, CdnConfigData.API_SECRET_VALUE
+                CdnConfigData.CLOUD_NAME_KEY, configData.getCloudName(),
+                CdnConfigData.API_KEY, configData.getApiKey(),
+                CdnConfigData.API_SECRET_KEY, configData.getApiSecret()
         );
 
         this.cloudinary = new Cloudinary(configMap);
