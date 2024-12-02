@@ -28,6 +28,8 @@ public class User implements UserDetails {
 
     private boolean isEnabled;
 
+    private String provider;
+
     private Set<Song> songs;
 
     private Set<Role> authorities;
@@ -65,7 +67,7 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -112,6 +114,15 @@ public class User implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    @Column(name = "provider", nullable = false)
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
     @OneToMany(mappedBy = "uploader", cascade = CascadeType.REMOVE)

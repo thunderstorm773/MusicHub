@@ -19,11 +19,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
+    private final GoogleOAuth2SuccessHandler googleOAuth2SuccessHandler;
+
     @Autowired
     public SecurityConfig(UserExtractionService userExtractionService,
-                          BCryptPasswordEncoder passwordEncoder) {
+                          BCryptPasswordEncoder passwordEncoder,
+                          GoogleOAuth2SuccessHandler googleOAuth2SuccessHandler) {
         this.passwordEncoder = passwordEncoder;
         this.userExtractionService = userExtractionService;
+        this.googleOAuth2SuccessHandler = googleOAuth2SuccessHandler;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/bootstrap-4.0.0/**", "/css/**",
                         "/font-awesome/**", "/images/**",
                         "/jquery/**", "/theme/**", "/scripts/**", "/audiojs/**").permitAll()
-                .antMatchers("/users/login", "/users/register").anonymous()
+                .antMatchers("/users/login", "/users/register", "/oauth2/authorization/google").anonymous()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/comments/approve/{id}", "/comments/reject/{id}", "/comments/pending")
                 .hasAnyRole("ADMIN", "MODERATOR")
@@ -45,7 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().rememberMe()
                 .rememberMeParameter("rememberMe")
                 .tokenValiditySeconds(TOKEN_VALIDITY_SECONDS)
-                .and().logout().logoutUrl("/users/logout");
+                .and().logout().logoutUrl("/users/logout")
+                .and().oauth2Login()
+                            .loginPage("/oauth2/authorization/google")
+                            .successHandler(this.googleOAuth2SuccessHandler);
     }
 
     @Override

@@ -7,13 +7,17 @@ import com.tu.musichub.user.models.bindingModels.RegisterUser;
 import com.tu.musichub.user.models.viewModels.RoleView;
 import com.tu.musichub.user.repositories.UserRepository;
 import com.tu.musichub.user.staticData.AccountConstants;
+import com.tu.musichub.user.staticData.UserProviders;
 import com.tu.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -64,12 +68,42 @@ public class UserManipulationServiceImpl implements UserManipulationService {
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
         user.setEnabled(true);
+        user.setProvider(UserProviders.MUSIC_HUB.getProviderName());
 
         RoleView roleView = this.roleService.findByName(AccountConstants.ROLE_USER);
         Role role = this.mapperUtil.getModelMapper().map(roleView, Role.class);
         user.getAuthorities().add(role);
         User savedUser = this.userRepository.save(user);
         return this.mapperUtil.getModelMapper().map(savedUser, User.class);
+    }
+
+    @Override
+    public User loginGoogleUser(Authentication authentication) {
+        DefaultOAuth2User oAuthUser = (DefaultOAuth2User) authentication.getPrincipal();
+        Map<String, Object> attributes = oAuthUser.getAttributes();
+
+        String name = (String) attributes.get("name");
+        String email = (String) attributes.get("email");
+
+        User user = this.userRepository.findByUsername(name);
+        if (user == null) {
+            user = new User();
+            user.setUsername(name);
+            user.setEmail(email);
+            user.setAccountNonExpired(true);
+            user.setAccountNonLocked(true);
+            user.setCredentialsNonExpired(true);
+            user.setEnabled(true);
+            user.setProvider(UserProviders.GOOGLE.getProviderName());
+
+            RoleView roleView = this.roleService.findByName(AccountConstants.ROLE_USER);
+            Role role = this.mapperUtil.getModelMapper().map(roleView, Role.class);
+            user.getAuthorities().add(role);
+            User savedUser = this.userRepository.save(user);
+            return this.mapperUtil.getModelMapper().map(savedUser, User.class);
+        }
+
+        return this.mapperUtil.getModelMapper().map(user, User.class);
     }
 
     @Override
