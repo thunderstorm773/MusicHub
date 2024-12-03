@@ -31,3 +31,5 @@ MusicHub is site for sharing of music. It is created for Technical University So
 - Admin can manage all data in application
 - Moderator can manage only tags and approve/reject comments 
 
+Public codesandbox link:
+https://githubbox.com/thunderstorm773/MusicHub
