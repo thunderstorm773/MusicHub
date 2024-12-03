@@ -13,6 +13,8 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
 
     User findByUsername(String username);
 
+    User findByUsernameOrEmail(String username, String email);
+
     User findByEmail(String email);
 
     Page<User> findAllByUsernameContains(String username, Pageable pageable);

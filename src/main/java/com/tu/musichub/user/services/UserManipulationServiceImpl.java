@@ -85,7 +85,7 @@ public class UserManipulationServiceImpl implements UserManipulationService {
         String name = (String) attributes.get("name");
         String email = (String) attributes.get("email");
 
-        User user = this.userRepository.findByUsername(name);
+        User user = this.userRepository.findByUsernameOrEmail(name, email);
         if (user == null) {
             user = new User();
             user.setUsername(name);
