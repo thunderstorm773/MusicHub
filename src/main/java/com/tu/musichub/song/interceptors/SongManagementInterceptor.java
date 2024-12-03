@@ -6,6 +6,7 @@ import com.tu.musichub.song.services.SongExtractionService;
 import com.tu.musichub.song.staticData.SongConstants;
 import com.tu.musichub.user.services.UserExtractionService;
 import com.tu.musichub.user.staticData.AccountConstants;
+import com.tu.musichub.user.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,7 +63,7 @@ public class SongManagementInterceptor extends HandlerInterceptorAdapter {
 
         Long songId = Long.valueOf(songIdStr);
         Authentication authentication = this.getAuthentication();
-        String principalName = authentication.getName();
+        String principalName = UserUtils.getUsername(authentication);
         boolean isPrincipalUploader = this.isPrincipalUploader(songId, principalName);
         boolean isUserHasAnyRole = this.userService.isUserHasAnyRole(principalName,
                 AccountConstants.ROLE_ADMIN, AccountConstants.ROLE_MODERATOR);

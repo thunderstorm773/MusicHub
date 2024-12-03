@@ -5,7 +5,7 @@
         <h6>Added on <span th:text="*{#dates.format(uploadedOn, 'dd/MM/yyyy')}"></span>
             by <span class="badge badge-primary" th:text="*{uploaderUsername}">Uploader</span></h6>
         <div class="form-group">
-            <th:block th:if="${#authentication.name} eq *{uploaderUsername} or
+            <th:block th:if="${@userUtils.getUsername(#authentication)} eq *{uploaderUsername} or
                     ${#authorization.expr('hasAnyRole(''ADMIN'', ''MODERATOR'')')}">
                 <a th:href="@{/songs/edit/{songId} (songId=*{id})}" class="btn btn-warning">Edit</a>
                 <a th:href="@{/songs/delete/{songId} (songId=*{id})}" class="btn btn-danger">Delete</a>
