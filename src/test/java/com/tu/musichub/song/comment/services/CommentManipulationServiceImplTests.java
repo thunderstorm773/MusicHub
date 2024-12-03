@@ -7,7 +7,6 @@ import com.tu.musichub.song.comment.models.viewModels.CommentView;
 import com.tu.musichub.song.comment.repositories.CommentRepository;
 import com.tu.musichub.song.models.viewModels.SongView;
 import com.tu.musichub.song.services.SongExtractionService;
-import com.tu.musichub.staticData.TestConstants;
 import com.tu.musichub.user.entities.User;
 import com.tu.musichub.user.models.viewModels.UserView;
 import com.tu.musichub.user.services.UserExtractionService;
@@ -24,14 +23,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.Authentication;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class CommentManipulationServiceImplTests {
 
@@ -52,6 +50,7 @@ public class CommentManipulationServiceImplTests {
     private SongView testSongView;
     private UserView testUserView;
     private Comment testComment;
+    private User testUser;
 
     @Mock
     private Authentication authentication;
@@ -64,6 +63,9 @@ public class CommentManipulationServiceImplTests {
 
     @MockBean
     private UserExtractionService userExtractionService;
+
+    @MockBean
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
     private MapperUtil mapperUtil;
@@ -107,12 +109,19 @@ public class CommentManipulationServiceImplTests {
         this.testComment.setPublishedOn(EXPECTED_COMMENT_PUBLISHED_ON);
     }
 
+    private void fillTestAuthentication() {
+        this.testUser = new User();
+        this.testUser.setUsername(EXPECTED_USERNAME);
+    }
+
     @Before
     public void setUp() {
         this.fillTestPostComment();
         this.fillTestSongView();
         this.fillTestUserView();
         this.fillTestComment();
+        this.fillTestAuthentication();
+
         Mockito.when(this.authentication.getName())
                 .thenReturn(EXPECTED_USERNAME);
 
@@ -127,6 +136,9 @@ public class CommentManipulationServiceImplTests {
 
         Mockito.when(this.commentRepository.findById(EXISTENCE_COMMENT_ID))
                 .thenReturn(Optional.of(this.testComment));
+
+        Mockito.when(authentication.getPrincipal())
+                .thenReturn(this.testUser);
     }
 
     @Test

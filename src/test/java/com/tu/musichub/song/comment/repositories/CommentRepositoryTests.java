@@ -20,9 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles(TestConstants.TEST_PROFILE)
 @DataJpaTest
-@SpringBootTest
 public class CommentRepositoryTests {
 
     private static final int EXPECTED_PENDING_COMMENTS_COUNT = 2;
