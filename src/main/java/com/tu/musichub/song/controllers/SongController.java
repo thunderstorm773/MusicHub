@@ -18,6 +18,7 @@ import com.tu.musichub.staticData.Constants;
 import com.tu.musichub.user.entities.User;
 import com.tu.musichub.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,7 +86,7 @@ public class SongController extends BaseController {
     public ModelAndView uploadSong(@Valid @ModelAttribute UploadSong uploadSong,
                                    BindingResult bindingResult,
                                    RedirectAttributes redirectAttributes,
-                                   @AuthenticationPrincipal User user,
+                                   Authentication authentication,
                                    FileUtil fileUtil) throws IOException {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute(SongConstants.UPLOAD_SONG, uploadSong);
@@ -98,7 +99,7 @@ public class SongController extends BaseController {
         // Create persisted file to upload in CDN
         // and then set this file as field in uploadSong
         this.saveSongInFileSystem(uploadSong, fileUtil);
-        this.songManipulationService.upload(uploadSong, user);
+        this.songManipulationService.upload(uploadSong, authentication);
         redirectAttributes.addFlashAttribute(Constants.INFO, SongConstants.UPLOAD_SONG_SOON);
         return this.redirect(SongConstants.SONG_UPLOAD_ROUTE);
     }

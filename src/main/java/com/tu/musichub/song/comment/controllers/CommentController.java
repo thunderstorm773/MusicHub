@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -55,13 +56,13 @@ public class CommentController extends BaseController {
     @PostMapping("/post")
     @ResponseBody
     public String postComment(String commentContent, Long songId,
-                              Principal principal) {
+                              Authentication authentication) {
         if (!isCommentValid(commentContent, songId)) {
             return null;
         }
 
         PostComment postComment = new PostComment(commentContent, songId);
-        CommentView commentView = this.commentManipulationService.postComment(postComment, principal);
+        CommentView commentView = this.commentManipulationService.postComment(postComment, authentication);
         return this.gson.toJson(commentView);
     }
 

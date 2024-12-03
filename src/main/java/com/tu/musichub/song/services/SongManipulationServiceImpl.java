@@ -16,11 +16,14 @@ import com.tu.musichub.song.tag.services.TagExtractionService;
 import com.tu.musichub.song.tag.services.TagManipulationService;
 import com.tu.musichub.song.tag.staticData.TagConstants;
 import com.tu.musichub.user.entities.User;
+import com.tu.musichub.user.repositories.UserRepository;
+import com.tu.musichub.user.utils.UserUtils;
 import com.tu.musichub.util.CdnUtil;
 import com.tu.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.File;
@@ -37,6 +40,8 @@ public class SongManipulationServiceImpl implements SongManipulationService {
 
     private final SongRepository songRepository;
 
+    private final UserRepository userRepository;
+
     private final CdnUtil cdnUtil;
 
     private final MapperUtil mapperUtil;
@@ -49,11 +54,13 @@ public class SongManipulationServiceImpl implements SongManipulationService {
 
     @Autowired
     public SongManipulationServiceImpl(SongRepository songRepository,
+                                       UserRepository userRepository,
                                        CdnUtil cdnUtil,
                                        MapperUtil mapperUtil,
                                        CategoryExtractionService categoryExtractionService,
                                        TagExtractionService tagExtractionService, TagManipulationService tagManipulationService) {
         this.songRepository = songRepository;
+        this.userRepository = userRepository;
         this.cdnUtil = cdnUtil;
         this.mapperUtil = mapperUtil;
         this.categoryExtractionService = categoryExtractionService;
@@ -105,7 +112,7 @@ public class SongManipulationServiceImpl implements SongManipulationService {
 
     @Async
     @Override
-    public void upload(UploadSong uploadSong, User user) throws IOException {
+    public void upload(UploadSong uploadSong, Authentication authentication) throws IOException {
         Song song = this.mapperUtil.getModelMapper().map(uploadSong, Song.class);
         song.setId(null);
         Long categoryId = uploadSong.getCategoryId();
@@ -121,6 +128,9 @@ public class SongManipulationServiceImpl implements SongManipulationService {
             Set<Tag> tags = this.getTagsByTagNames(tagsAsString);
             song.setTags(tags);
         }
+
+        String username = UserUtils.getUsername(authentication);
+        User user = this.userRepository.findByUsername(username);
 
         song.setUploader(user);
         File songFile = uploadSong.getPersistedFile();

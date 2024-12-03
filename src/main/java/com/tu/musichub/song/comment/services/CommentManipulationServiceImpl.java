@@ -13,9 +13,11 @@ import com.tu.musichub.song.staticData.SongConstants;
 import com.tu.musichub.user.entities.User;
 import com.tu.musichub.user.models.viewModels.UserView;
 import com.tu.musichub.user.services.UserExtractionService;
+import com.tu.musichub.user.utils.UserUtils;
 import com.tu.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.Principal;
@@ -42,11 +44,14 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
         this.mapperUtil = mapperUtil;
     }
 
-    private Comment constructComment(PostComment postComment, Principal principal) {
+    private Comment constructComment(PostComment postComment, Authentication authentication) {
         Long songId = postComment.getSongId();
         SongView songView = this.songExtractionService.findById(songId);
         Song song = this.mapperUtil.getModelMapper().map(songView, Song.class);
-        UserView userView = this.userExtractionService.findByUsername(principal.getName());
+
+        String username = UserUtils.getUsername(authentication);
+        UserView userView = this.userExtractionService.findByUsername(username);
+
         User user = this.mapperUtil.getModelMapper().map(userView, User.class);
         CommentStatus defaultStatus = CommentStatus.PENDING;
         String commentContent = postComment.getContent();
@@ -56,8 +61,8 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
     @CacheEvict(cacheNames = SongConstants.SONGS_CACHE_NAME,
             key = "#postComment.songId")
     @Override
-    public CommentView postComment(PostComment postComment, Principal principal) {
-        Comment comment = this.constructComment(postComment, principal);
+    public CommentView postComment(PostComment postComment, Authentication authentication) {
+        Comment comment = this.constructComment(postComment, authentication);
         Comment postedComment = this.commentRepository.save(comment);
         return this.mapperUtil.getModelMapper().map(postedComment, CommentView.class);
     }

@@ -23,10 +23,10 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.security.Principal;
 import java.util.Date;
 import java.util.Optional;
 
@@ -54,7 +54,7 @@ public class CommentManipulationServiceImplTests {
     private Comment testComment;
 
     @Mock
-    private Principal testPrincipal;
+    private Authentication authentication;
 
     @MockBean
     private CommentRepository commentRepository;
@@ -113,7 +113,7 @@ public class CommentManipulationServiceImplTests {
         this.fillTestSongView();
         this.fillTestUserView();
         this.fillTestComment();
-        Mockito.when(this.testPrincipal.getName())
+        Mockito.when(this.authentication.getName())
                 .thenReturn(EXPECTED_USERNAME);
 
         Mockito.when(this.songExtractionService.findById(EXPECTED_SONG_ID))
@@ -131,14 +131,14 @@ public class CommentManipulationServiceImplTests {
 
     @Test
     public void testPostComment_shouldInvokesSongExtractionServiceFindById() {
-        this.commentManipulationService.postComment(this.testPostComment, this.testPrincipal);
+        this.commentManipulationService.postComment(this.testPostComment, this.authentication);
         Mockito.verify(this.songExtractionService, Mockito.times(1))
                 .findById(EXPECTED_SONG_ID);
     }
 
     @Test
     public void testPostComment_shouldInvokesUserExtractionServiceFindByUsername() {
-        this.commentManipulationService.postComment(this.testPostComment, this.testPrincipal);
+        this.commentManipulationService.postComment(this.testPostComment, this.authentication);
         Mockito.verify(this.userExtractionService, Mockito.times(1))
                 .findByUsername(EXPECTED_USERNAME);
 
@@ -146,7 +146,7 @@ public class CommentManipulationServiceImplTests {
 
     @Test
     public void testPostComment_shouldInvokesCommentRepositorySave() {
-        this.commentManipulationService.postComment(this.testPostComment, this.testPrincipal);
+        this.commentManipulationService.postComment(this.testPostComment, this.authentication);
         Mockito.verify(this.commentRepository, Mockito.times(1))
                 .save(this.commentArgumentCaptor.capture());
     }
@@ -154,7 +154,7 @@ public class CommentManipulationServiceImplTests {
     @Test
     public void testPostComment_returnsCorrectlyMappedCommentView() {
         CommentView commentView = this.commentManipulationService
-                .postComment(this.testPostComment, this.testPrincipal);
+                .postComment(this.testPostComment, this.authentication);
 
         Assert.assertEquals(EXPECTED_COMMENT_ID, commentView.getId());
         Assert.assertEquals(EXPECTED_CONTENT, commentView.getContent());
