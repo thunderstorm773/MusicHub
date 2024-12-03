@@ -13,6 +13,8 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
 
     User findByUsername(String username);
 
+    User findByEmail(String email);
+
     Page<User> findAllByUsernameContains(String username, Pageable pageable);
 
     @Query(value = "SELECT CASE WHEN (SELECT COUNT(u) FROM User AS u " +

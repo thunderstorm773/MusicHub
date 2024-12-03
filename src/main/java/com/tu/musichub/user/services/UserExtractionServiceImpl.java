@@ -64,6 +64,18 @@ public class UserExtractionServiceImpl implements UserExtractionService {
         return userView;
     }
 
+    public UserView findByEmail(String email) throws UserNotFoundException {
+        User user = this.userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+
+        Set<Role> roles = user.getAuthorities();
+        UserView userView = this.mapperUtil.getModelMapper().map(user, UserView.class);
+        this.setRoleNames(userView, roles);
+        return userView;
+    }
+
     @Override
     public Page<UserView> findAllByUsernameContains(String username, Pageable pageable) {
         Page<User> userPage = this.userRepository.findAllByUsernameContains(username, pageable);

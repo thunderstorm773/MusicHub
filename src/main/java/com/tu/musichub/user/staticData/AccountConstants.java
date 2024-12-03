@@ -15,6 +15,9 @@ public class AccountConstants {
     public static final String USERNAME_EXISTS_MESSAGE =
             "Username already exists";
 
+    public static final String EMAIL_EXISTS_MESSAGE =
+            "Email already exists";
+
     public static final String INCORRECT_EMAIL_FORMAT_MESSAGE =
             "Incorrect email format";
 

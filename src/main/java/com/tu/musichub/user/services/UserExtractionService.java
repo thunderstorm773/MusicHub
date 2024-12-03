@@ -11,6 +11,8 @@ public interface UserExtractionService extends UserDetailsService {
 
     UserView findByUsername(String username) throws UserNotFoundException;
 
+    UserView findByEmail(String email) throws UserNotFoundException;
+
     Page<UserView> findAllByUsernameContains(String username, Pageable pageable);
 
     Page<UserView> findAll(Pageable pageable);

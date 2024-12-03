@@ -1,6 +1,7 @@
 package com.tu.musichub.user.models.bindingModels;
 
 import com.tu.musichub.user.staticData.AccountConstants;
+import com.tu.musichub.user.validations.Email;
 import com.tu.musichub.user.validations.PasswordMatching;
 import com.tu.musichub.user.validations.Username;
 import javax.validation.constraints.NotBlank;
@@ -37,6 +38,7 @@ public class RegisterUser {
     @NotBlank(message = AccountConstants.EMAIL_BLANK_MESSAGE)
     @Pattern(regexp = AccountConstants.EMAIL_PATTERN,
             message = AccountConstants.INCORRECT_EMAIL_FORMAT_MESSAGE)
+    @Email
     public String getEmail() {
         return email;
     }
