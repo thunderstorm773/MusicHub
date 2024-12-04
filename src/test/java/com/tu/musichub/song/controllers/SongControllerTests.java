@@ -3,6 +3,7 @@ package com.tu.musichub.song.controllers;
 import com.tu.musichub.admin.category.models.views.CategoryView;
 import com.tu.musichub.admin.category.services.CategoryExtractionService;
 import com.tu.musichub.admin.category.staticData.CategoryConstants;
+import com.tu.musichub.config.BeanConfig;
 import com.tu.musichub.config.InterceptorConfig;
 import com.tu.musichub.home.staticData.HomeConstants;
 import com.tu.musichub.song.comment.staticData.CommentConstants;
@@ -17,6 +18,8 @@ import com.tu.musichub.song.staticData.SongConstants;
 import com.tu.musichub.song.staticData.SongTestData;
 import com.tu.musichub.staticData.Constants;
 import com.tu.musichub.staticData.TestConstants;
+import com.tu.musichub.user.configs.GoogleOAuth2SuccessHandler;
+import com.tu.musichub.user.services.UserExtractionService;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,8 +32,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -47,6 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(value = SongController.class,
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = InterceptorConfig.class)})
 @WithMockUser(username = TestConstants.USER_USERNAME, password = TestConstants.USER_PASSWORD)
+@Import(BeanConfig.class)
 public class SongControllerTests {
 
     @Autowired
@@ -60,6 +66,18 @@ public class SongControllerTests {
 
     @MockBean
     private SongExtractionService songExtractionService;
+
+    @MockBean
+    private UserExtractionService userExtractionService;
+
+    @MockBean
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @MockBean
+    private GoogleOAuth2SuccessHandler googleOAuth2SuccessHandler;
+
+    @MockBean
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     @Captor
     private ArgumentCaptor<EditSong> editSongArgumentCaptor;
