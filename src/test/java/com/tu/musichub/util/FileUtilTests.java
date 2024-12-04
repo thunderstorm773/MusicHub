@@ -1,7 +1,6 @@
 package com.tu.musichub.util;
 
 import com.tu.musichub.staticData.Constants;
-import com.tu.musichub.staticData.TestConstants;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,13 +9,11 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
 import java.io.IOException;
 
 @RunWith(MockitoJUnitRunner.class)
-@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class FileUtilTests {
 
@@ -58,7 +55,7 @@ public class FileUtilTests {
             throws IOException {
         File file = this.fileUtil.createFile(this.testFileContent, TEST_FILE_PATH);
 
-        Assert.assertEquals(file.getName(), TEST_FILE_NAME);
+        Assert.assertEquals(TEST_FILE_NAME, file.getName());
     }
 
     @Test
@@ -66,6 +63,6 @@ public class FileUtilTests {
             throws IOException {
         File file = this.fileUtil.createFile(this.testFileContent, TEST_FILE_NAME);
 
-        Assert.assertEquals(file.getName(), TEST_FILE_NAME);
+        Assert.assertEquals(TEST_FILE_NAME, file.getName());
     }
 }

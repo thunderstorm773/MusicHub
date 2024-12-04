@@ -1,6 +1,5 @@
 package com.tu.musichub.util;
 
-import com.tu.musichub.staticData.TestConstants;
 import com.tu.musichub.user.entities.Role;
 import com.tu.musichub.user.models.viewModels.RoleView;
 import org.junit.Assert;
@@ -9,13 +8,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class MapperUtilTests {
 
@@ -25,6 +24,9 @@ public class MapperUtilTests {
 
     @Autowired
     private MapperUtil mapperUtil;
+
+    @MockBean
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     private List<Role> testRoles;
 
@@ -46,7 +48,7 @@ public class MapperUtilTests {
     public void testConvertAll_withSource_returnsExpectedMappedEntitiesSize() {
         List<RoleView> roleViews = this.mapperUtil.convertAll(this.testRoles, RoleView.class);
 
-        Assert.assertEquals(roleViews.size(), EXPECTED_ROLES_SIZE);
+        Assert.assertEquals(EXPECTED_ROLES_SIZE, roleViews.size());
     }
 
     @Test
@@ -54,7 +56,7 @@ public class MapperUtilTests {
         List<RoleView> roleViews = this.mapperUtil.convertAll(this.testRoles, RoleView.class);
         RoleView roleView = roleViews.get(0);
 
-        Assert.assertEquals(roleView.getId(), EXPECTED_ROLE_ID);
-        Assert.assertEquals(roleView.getAuthority(), EXPECTED_ROLE_NAME);
+        Assert.assertEquals(EXPECTED_ROLE_ID, roleView.getId());
+        Assert.assertEquals(EXPECTED_ROLE_NAME, roleView.getAuthority());
     }
 }

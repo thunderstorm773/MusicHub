@@ -1,6 +1,5 @@
 package com.tu.musichub.user.services;
 
-import com.tu.musichub.staticData.TestConstants;
 import com.tu.musichub.user.entities.Role;
 import com.tu.musichub.user.entities.User;
 import com.tu.musichub.user.exceptions.UserNotFoundException;
@@ -21,7 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -30,7 +29,6 @@ import java.util.Set;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class UserExtractionServiceImplTests {
 
@@ -49,6 +47,9 @@ public class UserExtractionServiceImplTests {
 
     @MockBean
     private UserRepository userRepository;
+
+    @MockBean
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     @Mock
     private Pageable pageable;
@@ -198,6 +199,4 @@ public class UserExtractionServiceImplTests {
                 .getUserProfileByUsername(EXPECTED_USER_USERNAME);
         Assert.assertEquals(EXPECTED_USER_USERNAME, profileView.getUsername());
     }
-
-    //TODO To tests if songs are correctly sorted descending by published date
 }

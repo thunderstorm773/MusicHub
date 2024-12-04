@@ -2,7 +2,6 @@ package com.tu.musichub.admin.category.validations;
 
 import com.tu.musichub.admin.category.models.views.CategoryView;
 import com.tu.musichub.admin.category.services.CategoryExtractionService;
-import com.tu.musichub.staticData.TestConstants;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,13 +11,12 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintValidatorContext;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class CategoryValidatorTests {
 
@@ -27,6 +25,9 @@ public class CategoryValidatorTests {
 
     @MockBean
     private CategoryExtractionService categoryExtractionService;
+
+    @MockBean
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
     private CategoryValidator categoryValidator;

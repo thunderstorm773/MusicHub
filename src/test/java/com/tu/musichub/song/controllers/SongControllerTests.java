@@ -46,7 +46,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = SongController.class,
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = InterceptorConfig.class)})
-@ActiveProfiles(TestConstants.TEST_PROFILE)
 @WithMockUser(username = TestConstants.USER_USERNAME, password = TestConstants.USER_PASSWORD)
 public class SongControllerTests {
 

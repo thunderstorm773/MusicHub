@@ -1,6 +1,5 @@
 package com.tu.musichub.user.services;
 
-import com.tu.musichub.staticData.TestConstants;
 import com.tu.musichub.user.entities.Role;
 import com.tu.musichub.user.models.viewModels.RoleView;
 import com.tu.musichub.user.repositories.RoleRepository;
@@ -13,13 +12,12 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class RoleServiceImplTests {
 
@@ -30,6 +28,9 @@ public class RoleServiceImplTests {
 
     @MockBean
     private RoleRepository roleRepository;
+
+    @MockBean
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
     private MapperUtil mapperUtil;

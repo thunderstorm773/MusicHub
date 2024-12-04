@@ -1,6 +1,5 @@
 package com.tu.musichub.user.repositories;
 
-import com.tu.musichub.staticData.TestConstants;
 import com.tu.musichub.user.entities.Role;
 import com.tu.musichub.user.entities.User;
 import com.tu.musichub.user.staticData.AccountConstants;
@@ -11,13 +10,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
-@ActiveProfiles(TestConstants.TEST_PROFILE)
 @DataJpaTest
 public class UserRepositoryTests {
 

@@ -1,6 +1,5 @@
 package com.tu.musichub.user.validations;
 
-import com.tu.musichub.staticData.TestConstants;
 import com.tu.musichub.user.exceptions.UserNotFoundException;
 import com.tu.musichub.user.models.viewModels.UserView;
 import com.tu.musichub.user.services.UserExtractionService;
@@ -13,13 +12,12 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintValidatorContext;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles(TestConstants.TEST_PROFILE)
 @SpringBootTest
 public class UsernameValidatorTests {
 
@@ -29,6 +27,9 @@ public class UsernameValidatorTests {
 
     @MockBean
     private UserExtractionService userExtractionService;
+
+    @MockBean
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
     private UsernameValidator usernameValidator;
