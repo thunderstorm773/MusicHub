@@ -2,25 +2,20 @@ package com.tu.musichub.song.repositories;
 
 import com.tu.musichub.song.entities.Song;
 import com.tu.musichub.song.tag.entities.Tag;
-import com.tu.musichub.staticData.TestConstants;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 @DataJpaTest
-@ActiveProfiles(TestConstants.TEST_PROFILE)
 public class SongRepositoryTests {
 
     private static final String TEST_SONG_TITLE = "li";

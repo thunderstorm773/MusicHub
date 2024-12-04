@@ -3,9 +3,9 @@ VALUES
 (1, 'name');
 
 INSERT INTO users(`id`, `is_account_non_expired`, `is_account_non_locked`,
-`is_credentials_non_expired`, `is_enabled`, `username`, `email`, `password`)
+`is_credentials_non_expired`, `is_enabled`, `username`, `email`, `password`, `provider`)
 VALUES
-('786a5aeb-1c12-4552-8d98-e576071d02c8', true, true, true, true, 'thunder', 'test@abv.bg', 'password');
+('786a5aeb-1c12-4552-8d98-e576071d02c8', true, true, true, true, 'thunder', 'test@abv.bg', 'password', 'MusicHub');
 
 INSERT INTO songs(`id`, `title`, `song_partial_url`, `uploaded_on`,
 `category_id`, `uploader`)
