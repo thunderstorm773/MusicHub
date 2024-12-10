@@ -56,6 +56,7 @@ public class AccountController extends BaseController {
            objectByKey.put(ErrorConstants.ERROR, AccountConstants.INVALID_CREDENTIALS_MESSAGE);
         }
 
+        objectByKey.put(AccountConstants.LOGIN_STYLE_ENABLED, "");
         return this.view(AccountConstants.USER_LOGIN_TITLE,
                 AccountConstants.USER_LOGIN_VIEW, objectByKey);
     }

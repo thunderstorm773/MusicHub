@@ -1,0 +1,9 @@
+.forgot-password-link {
+    font-size: 13px;
+    border-bottom: 1px solid #2A9FD6;
+}
+
+.forgot-password-link:hover {
+    text-decoration: none;
+    border-color:#2180ac
+}

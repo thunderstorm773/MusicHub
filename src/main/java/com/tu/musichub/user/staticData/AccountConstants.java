@@ -66,4 +66,7 @@ public class AccountConstants {
             "You registered successfully! Please login in";
 
     public static final String USER_LOGIN_ROUTE = "/users/login";
+
+    public static final String LOGIN_STYLE_ENABLED = "loginStyleEnabled";
+
 }
