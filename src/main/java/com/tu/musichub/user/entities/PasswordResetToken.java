@@ -1,6 +1,7 @@
 package com.tu.musichub.user.entities;
 
 import com.tu.musichub.user.entityListeners.PasswordResetTokenListener;
+import org.apache.commons.lang3.time.DateUtils;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Date;
 @Table(name = "password_reset_tokens")
 public class PasswordResetToken {
 
-    private static final int EXPIRATION_TIME_HOURS = 2;
+    private static final int EXPIRATION_TIME_HOURS = 1;
 
     private String id;
 
@@ -27,6 +28,7 @@ public class PasswordResetToken {
 
     public PasswordResetToken(final String token, final User user) {
         this.createDate = new Date();
+        this.expiryDate = this.calculateExpiryDate();
         this.token = token;
         this.user = user;
     }
@@ -76,5 +78,9 @@ public class PasswordResetToken {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    private Date calculateExpiryDate() {
+        return DateUtils.addHours(this.createDate, EXPIRATION_TIME_HOURS);
     }
 }

@@ -42,7 +42,7 @@ public class AccountConstants {
             "Password and confirm password not matching";
 
     public static final String INVALID_CREDENTIALS_MESSAGE =
-            "Invalid credentials";
+            "Invalid credentials.";
 
     public static final String ROLES = "roles";
 
@@ -67,9 +67,14 @@ public class AccountConstants {
     public static final String ROLE_USER = "ROLE_USER";
 
     public static final String REGISTERED_USER_MESSAGE =
-            "You registered successfully! Please login in";
+            "You registered successfully! Please login in.";
+
+    public static final String SENT_FORGOT_PASSWORD_EMAIL_MESSAGE =
+            "We will send a reset password link to your email!";
 
     public static final String USER_LOGIN_ROUTE = "/users/login";
+
+    public static final String RESET_PASSWORD_ROUTE = "/users/reset-password";
 
     public static final String LOGIN_STYLE_ENABLED = "loginStyleEnabled";
 
