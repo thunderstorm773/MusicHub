@@ -54,6 +54,10 @@ public class AccountConstants {
 
     public static final String USER_LOGIN_VIEW = "user/login";
 
+    public static final String FORGOT_PASSWORD_TITLE = "Forgot Password";
+
+    public static final String FORGOT_PASSWORD_VIEW = "user/forgot-password";
+
     public static final String USERNAME = "username";
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";

@@ -3,6 +3,7 @@ package com.tu.musichub.user.controllers;
 import com.tu.musichub.controller.BaseController;
 import com.tu.musichub.error.staticData.ErrorConstants;
 import com.tu.musichub.staticData.Constants;
+import com.tu.musichub.user.models.bindingModels.ForgotPassword;
 import com.tu.musichub.user.models.bindingModels.RegisterUser;
 import com.tu.musichub.user.services.UserManipulationService;
 import com.tu.musichub.user.staticData.AccountConstants;
@@ -32,6 +33,12 @@ public class AccountController extends BaseController {
     public ModelAndView getRegisterUserPage(@ModelAttribute RegisterUser registerUser) {
         return this.view(AccountConstants.USER_REGISTER_TITLE,
                 AccountConstants.USER_REGISTER_VIEW);
+    }
+
+    @GetMapping("/forgot-password")
+    public ModelAndView getForgotPasswordPage(@ModelAttribute ForgotPassword forgotPassword) {
+        return this.view(AccountConstants.FORGOT_PASSWORD_TITLE,
+                AccountConstants.FORGOT_PASSWORD_VIEW);
     }
 
     @PostMapping("/register")

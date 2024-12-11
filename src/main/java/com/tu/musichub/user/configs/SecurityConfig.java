@@ -36,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/bootstrap-4.0.0/**", "/css/**",
                         "/font-awesome/**", "/images/**",
                         "/jquery/**", "/theme/**", "/scripts/**", "/audiojs/**").permitAll()
-                .antMatchers("/users/login", "/users/register", "/oauth2/authorization/google").anonymous()
+                .antMatchers("/users/login", "/users/register", "/oauth2/authorization/google",
+                        "/users/forgot-password").anonymous()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/comments/approve/{id}", "/comments/reject/{id}", "/comments/pending")
                 .hasAnyRole("ADMIN", "MODERATOR")
