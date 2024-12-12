@@ -10,8 +10,6 @@ public class PasswordResetTokenView {
 
     private Date expiryDate;
 
-    private UserView user;
-
     public PasswordResetTokenView() {
     }
 
@@ -37,13 +35,5 @@ public class PasswordResetTokenView {
 
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
-    }
-
-    public UserView getUser() {
-        return user;
-    }
-
-    public void setUser(UserView user) {
-        this.user = user;
     }
 }

@@ -1,16 +1,16 @@
 package com.tu.musichub.user.validations;
 
-import com.tu.musichub.user.models.bindingModels.RegisterUser;
+import com.tu.musichub.user.models.bindingModels.ConfirmPassword;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class PasswordMatchingValidator implements ConstraintValidator<PasswordMatching, RegisterUser> {
+public class PasswordMatchingValidator implements ConstraintValidator<PasswordMatching, ConfirmPassword> {
 
 
     @Override
-    public boolean isValid(RegisterUser registerUser, ConstraintValidatorContext constraintValidatorContext) {
-        String password = registerUser.getPassword();
-        String confirmPassword = registerUser.getConfirmPassword();
+    public boolean isValid(ConfirmPassword baseConfirmPassword, ConstraintValidatorContext constraintValidatorContext) {
+        String password = baseConfirmPassword.getPassword();
+        String confirmPassword = baseConfirmPassword.getConfirmPassword();
         if (password == null || confirmPassword == null) {
             return false;
         }

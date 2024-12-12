@@ -4,8 +4,11 @@ import com.tu.musichub.controller.BaseController;
 import com.tu.musichub.error.staticData.ErrorConstants;
 import com.tu.musichub.staticData.Constants;
 import com.tu.musichub.user.entities.PasswordResetToken;
+import com.tu.musichub.user.exceptions.PasswordResetTokenNotFoundException;
 import com.tu.musichub.user.models.bindingModels.ForgotPassword;
 import com.tu.musichub.user.models.bindingModels.RegisterUser;
+import com.tu.musichub.user.models.bindingModels.ResetPassword;
+import com.tu.musichub.user.models.viewModels.PasswordResetTokenView;
 import com.tu.musichub.user.services.PasswordResetTokenService;
 import com.tu.musichub.user.services.UserManipulationService;
 import com.tu.musichub.user.staticData.AccountConstants;
@@ -23,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,7 +106,7 @@ public class AccountController extends BaseController {
         PasswordResetToken passwordResetToken = this.passwordResetTokenService.createForgotPasswordToken(forgotPassword);
         if(passwordResetToken != null) {
             try {
-                MimeMessage mailMessage = EmailUtils.createResetTokenEmail(request, passwordResetToken.getPlainToken(),
+                MimeMessage mailMessage = EmailUtils.createResetTokenEmail(request, passwordResetToken.getToken(),
                         forgotPassword.getEmail(), this.environment, this.mailSender);
                 this.mailSender.send(mailMessage);
             } catch (Exception e) {
@@ -113,6 +117,22 @@ public class AccountController extends BaseController {
         redirectAttributes.addFlashAttribute(Constants.INFO,
                 AccountConstants.SENT_FORGOT_PASSWORD_EMAIL_MESSAGE);
         return this.redirect(AccountConstants.USER_LOGIN_ROUTE);
+    }
+
+
+    @GetMapping("/reset-password")
+    public ModelAndView getResetPasswordPage(@RequestParam(value = AccountConstants.TOKEN) String token,
+                                             @ModelAttribute ResetPassword resetPassword) {
+        Date now = new Date();
+        PasswordResetTokenView passwordResetToken = this.passwordResetTokenService
+                .findByTokenAndExpiryDateAfter(token, now);
+        if(passwordResetToken == null) {
+            throw new PasswordResetTokenNotFoundException();
+        }
+
+        resetPassword.setToken(token);
+        return this.view(AccountConstants.RESET_PASSWORD_TITLE,
+                AccountConstants.REST_PASSWORD_VIEW);
     }
 
 

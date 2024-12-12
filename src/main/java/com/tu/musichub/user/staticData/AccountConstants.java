@@ -58,6 +58,10 @@ public class AccountConstants {
 
     public static final String FORGOT_PASSWORD_VIEW = "user/forgot-password";
 
+    public static final String RESET_PASSWORD_TITLE = "Reset Password";
+
+    public static final String REST_PASSWORD_VIEW = "user/reset-password";
+
     public static final String USERNAME = "username";
 
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
@@ -77,5 +81,7 @@ public class AccountConstants {
     public static final String RESET_PASSWORD_ROUTE = "/users/reset-password";
 
     public static final String LOGIN_STYLE_ENABLED = "loginStyleEnabled";
+
+    public static final String TOKEN = "token";
 
 }

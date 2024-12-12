@@ -23,15 +23,12 @@ public class PasswordResetToken {
 
     private User user;
 
-    private String plainToken;
-
     public PasswordResetToken() {
     }
 
-    public PasswordResetToken(final String plainToken, final String token, final User user) {
+    public PasswordResetToken(final String token, final User user) {
         this.createDate = new Date();
         this.expiryDate = this.calculateExpiryDate();
-        this.plainToken = plainToken;
         this.token = token;
         this.user = user;
     }
@@ -81,15 +78,6 @@ public class PasswordResetToken {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    @Transient
-    public String getPlainToken() {
-        return plainToken;
-    }
-
-    public void setPlainToken(String plainToken) {
-        this.plainToken = plainToken;
     }
 
     private Date calculateExpiryDate() {
