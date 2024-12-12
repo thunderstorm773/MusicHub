@@ -6,6 +6,8 @@ public class EmailConstants {
 
     public static final String RESET_PASSWORD_EMAIL_SUBJECT = "Reset Password";
 
+    public static final String RESET_PASSWORD_EMAIL_FROM = "MusicHub Support";
+
     public static final String RESET_PASSWORD_EMAIL_BODY = "<p>Hello,</p>"
             + "<p>You have requested to reset your password.</p>"
             + "<p>Click the link below to change your password:</p>"

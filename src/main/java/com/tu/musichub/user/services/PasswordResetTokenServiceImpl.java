@@ -53,7 +53,7 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
         String token = UUIDUtil.getRandomUUID();
         String hashedToken = this.passwordEncoder.encode(token);
 
-        PasswordResetToken passwordResetToken = new PasswordResetToken(hashedToken, user);
+        PasswordResetToken passwordResetToken = new PasswordResetToken(token, hashedToken, user);
         passwordResetTokenRepository.save(passwordResetToken);
         return this.mapperUtil.getModelMapper().map(passwordResetToken, PasswordResetToken.class);
     }

@@ -9,6 +9,9 @@ public class ForgotPassword {
 
     private String email;
 
+    public ForgotPassword() {
+    }
+
     @NotBlank(message = AccountConstants.EMAIL_BLANK_MESSAGE)
     @Email(regexp = AccountConstants.EMAIL_PATTERN, message = AccountConstants.INCORRECT_EMAIL_FORMAT_MESSAGE)
     public String getEmail() {

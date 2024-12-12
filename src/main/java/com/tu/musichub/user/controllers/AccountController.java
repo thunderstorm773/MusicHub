@@ -10,9 +10,9 @@ import com.tu.musichub.user.services.PasswordResetTokenService;
 import com.tu.musichub.user.services.UserManipulationService;
 import com.tu.musichub.user.staticData.AccountConstants;
 import com.tu.musichub.user.utils.EmailUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/users")
+@Slf4j
 public class AccountController extends BaseController {
 
     private final UserManipulationService userManipulationService;
@@ -89,9 +91,9 @@ public class AccountController extends BaseController {
 
     @PostMapping("/forgot-password")
     public ModelAndView createForgotPasswordToken(@Valid @ModelAttribute ForgotPassword forgotPassword,
-                                                  HttpServletRequest request,
                                                   BindingResult bindingResult,
-                                                  RedirectAttributes redirectAttributes) {
+                                                  RedirectAttributes redirectAttributes,
+                                                  HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return this.view(AccountConstants.FORGOT_PASSWORD_TITLE,
                     AccountConstants.FORGOT_PASSWORD_VIEW);
@@ -99,9 +101,13 @@ public class AccountController extends BaseController {
 
         PasswordResetToken passwordResetToken = this.passwordResetTokenService.createForgotPasswordToken(forgotPassword);
         if(passwordResetToken != null) {
-            SimpleMailMessage mailMessage = EmailUtils.createResetTokenEmail(request, passwordResetToken.getToken(),
-                    forgotPassword.getEmail(), this.environment);
-            this.mailSender.send(mailMessage);
+            try {
+                MimeMessage mailMessage = EmailUtils.createResetTokenEmail(request, passwordResetToken.getPlainToken(),
+                        forgotPassword.getEmail(), this.environment, this.mailSender);
+                this.mailSender.send(mailMessage);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
         }
 
         redirectAttributes.addFlashAttribute(Constants.INFO,
