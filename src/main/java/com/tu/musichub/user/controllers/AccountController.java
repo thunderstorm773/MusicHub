@@ -13,17 +13,12 @@ import com.tu.musichub.user.services.PasswordResetTokenService;
 import com.tu.musichub.user.services.UserManipulationService;
 import com.tu.musichub.user.staticData.AccountConstants;
 import com.tu.musichub.user.utils.EmailUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
@@ -32,26 +27,21 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/users")
-@Slf4j
 public class AccountController extends BaseController {
 
     private final UserManipulationService userManipulationService;
 
     private final PasswordResetTokenService passwordResetTokenService;
 
-    private final JavaMailSender mailSender;
-
-    private final Environment environment;
+    private final EmailUtils emailUtils;
 
     @Autowired
     public AccountController(UserManipulationService userManipulationService,
                              PasswordResetTokenService passwordResetTokenService,
-                             JavaMailSender mailSender,
-                             Environment environment) {
+                             EmailUtils emailUtils) {
         this.userManipulationService = userManipulationService;
         this.passwordResetTokenService = passwordResetTokenService;
-        this.mailSender = mailSender;
-        this.environment = environment;
+        this.emailUtils = emailUtils;
     }
 
     @GetMapping("/register")
@@ -105,13 +95,7 @@ public class AccountController extends BaseController {
 
         PasswordResetToken passwordResetToken = this.passwordResetTokenService.createForgotPasswordToken(forgotPassword);
         if(passwordResetToken != null) {
-            try {
-                MimeMessage mailMessage = EmailUtils.createResetTokenEmail(request, passwordResetToken.getToken(),
-                        forgotPassword.getEmail(), this.environment, this.mailSender);
-                this.mailSender.send(mailMessage);
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
+            this.emailUtils.sendEmail(request, passwordResetToken.getToken(), forgotPassword.getEmail());
         }
 
         redirectAttributes.addFlashAttribute(Constants.INFO,

@@ -12,7 +12,7 @@ public class AsyncConfig {
 
     private static final String THREAD_NAME_PREFIX = "Upload";
 
-    @Bean
+    @Bean(name = "taskExecutor")
     public Executor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(2);
