@@ -76,6 +76,9 @@ public class AccountConstants {
     public static final String SENT_FORGOT_PASSWORD_EMAIL_MESSAGE =
             "We will send a reset password link to your email!";
 
+    public static final String RESET_PASSWORD_MESSAGE =
+            "You successfully reset your password.";
+
     public static final String USER_LOGIN_ROUTE = "/users/login";
 
     public static final String RESET_PASSWORD_ROUTE = "/users/reset-password";

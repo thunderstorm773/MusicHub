@@ -135,5 +135,18 @@ public class AccountController extends BaseController {
                 AccountConstants.REST_PASSWORD_VIEW);
     }
 
+    @PostMapping("/reset-password")
+    public ModelAndView resetPassword(@Valid @ModelAttribute ResetPassword resetPassword,
+                                      BindingResult bindingResult,
+                                      RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return this.view(AccountConstants.RESET_PASSWORD_TITLE,
+                    AccountConstants.REST_PASSWORD_VIEW);
+        }
 
+        this.userManipulationService.resetPassword(resetPassword);
+        redirectAttributes.addFlashAttribute(Constants.INFO,
+                AccountConstants.RESET_PASSWORD_MESSAGE);
+        return this.redirect(AccountConstants.USER_LOGIN_ROUTE);
+    }
 }

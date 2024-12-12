@@ -3,6 +3,7 @@ package com.tu.musichub.user.services;
 import com.tu.musichub.user.entities.User;
 import com.tu.musichub.user.models.bindingModels.EditUser;
 import com.tu.musichub.user.models.bindingModels.RegisterUser;
+import com.tu.musichub.user.models.bindingModels.ResetPassword;
 import org.springframework.security.core.Authentication;
 
 public interface UserManipulationService {
@@ -14,4 +15,6 @@ public interface UserManipulationService {
     boolean deleteByUsername(String username);
 
     User edit(EditUser editUser, String username);
+
+    void resetPassword(ResetPassword resetPassword);
 }

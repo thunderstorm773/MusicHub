@@ -61,7 +61,7 @@ public class PasswordResetToken {
         this.createDate = createDate;
     }
 
-    @Column(name = "expiry_date", nullable = false, updatable = false)
+    @Column(name = "expiry_date", nullable = false)
     public Date getExpiryDate() {
         return expiryDate;
     }

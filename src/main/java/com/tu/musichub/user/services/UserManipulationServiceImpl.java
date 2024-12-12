@@ -1,10 +1,14 @@
 package com.tu.musichub.user.services;
 
+import com.tu.musichub.user.entities.PasswordResetToken;
 import com.tu.musichub.user.entities.Role;
 import com.tu.musichub.user.entities.User;
+import com.tu.musichub.user.exceptions.PasswordResetTokenNotFoundException;
 import com.tu.musichub.user.models.bindingModels.EditUser;
 import com.tu.musichub.user.models.bindingModels.RegisterUser;
+import com.tu.musichub.user.models.bindingModels.ResetPassword;
 import com.tu.musichub.user.models.viewModels.RoleView;
+import com.tu.musichub.user.repositories.PasswordResetTokenRepository;
 import com.tu.musichub.user.repositories.UserRepository;
 import com.tu.musichub.user.staticData.AccountConstants;
 import com.tu.musichub.user.staticData.UserProviders;
@@ -15,10 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -32,13 +33,17 @@ public class UserManipulationServiceImpl implements UserManipulationService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
+
     @Autowired
     public UserManipulationServiceImpl(UserRepository userRepository,
                                        RoleService roleService,
+                                       PasswordResetTokenRepository passwordResetTokenRepository,
                                        MapperUtil mapperUtil,
                                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.mapperUtil = mapperUtil;
         this.passwordEncoder = passwordEncoder;
     }
@@ -134,5 +139,36 @@ public class UserManipulationServiceImpl implements UserManipulationService {
 
         this.userRepository.delete(user);
         return true;
+    }
+
+    @Override
+    public void resetPassword(ResetPassword resetPassword) {
+        Date now = new Date();
+        PasswordResetToken passwordResetToken = this.passwordResetTokenRepository
+                .findByTokenAndExpiryDateAfter(resetPassword.getToken(), now);
+
+        if(passwordResetToken == null) {
+            throw new PasswordResetTokenNotFoundException();
+        }
+
+        User user = passwordResetToken.getUser();
+        String hashedPassword = this.passwordEncoder.encode(resetPassword.getPassword());
+        user.setPassword(hashedPassword);
+
+        Date expiredDate = this.createExpiredDate();
+        passwordResetToken.setExpiryDate(expiredDate);
+    }
+
+    private Date createExpiredDate() {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.YEAR, 1970);
+        calendar.set(Calendar.MONTH, Calendar.JANUARY);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        return calendar.getTime();
     }
 }
