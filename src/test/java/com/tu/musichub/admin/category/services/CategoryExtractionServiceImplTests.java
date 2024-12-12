@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ public class CategoryExtractionServiceImplTests {
 
     @MockBean
     private ClientRegistrationRepository clientRegistrationRepository;
+
+    @MockBean
+    private JavaMailSender mailSender;
 
     @Autowired
     private MapperUtil mapperUtil;

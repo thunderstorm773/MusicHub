@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -32,6 +33,9 @@ public class CommentExtractionServiceImplTests {
 
     @MockBean
     private ClientRegistrationRepository clientRegistrationRepository;
+
+    @MockBean
+    private JavaMailSender mailSender;
 
     @Mock
     private Pageable pageable;
