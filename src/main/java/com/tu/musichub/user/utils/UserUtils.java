@@ -4,12 +4,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+@Component
 public class UserUtils {
 
-    public static String getUsername(Authentication authentication) {
+    public String getUsername(Authentication authentication) {
         Object principal = authentication.getPrincipal();
 
         if (principal instanceof OAuth2User) {

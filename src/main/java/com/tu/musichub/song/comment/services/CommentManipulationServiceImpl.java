@@ -20,7 +20,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.security.Principal;
 
 @Service
 @Transactional
@@ -34,14 +33,19 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
 
     private final MapperUtil mapperUtil;
 
+    private final UserUtils userUtils;
+
     @Autowired
     public CommentManipulationServiceImpl(CommentRepository commentRepository,
                                           SongExtractionService songExtractionService,
-                                          UserExtractionService userExtractionService, MapperUtil mapperUtil) {
+                                          UserExtractionService userExtractionService,
+                                          MapperUtil mapperUtil,
+                                          UserUtils userUtils) {
         this.commentRepository = commentRepository;
         this.songExtractionService = songExtractionService;
         this.userExtractionService = userExtractionService;
         this.mapperUtil = mapperUtil;
+        this.userUtils = userUtils;
     }
 
     private Comment constructComment(PostComment postComment, Authentication authentication) {
@@ -49,7 +53,7 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
         SongView songView = this.songExtractionService.findById(songId);
         Song song = this.mapperUtil.getModelMapper().map(songView, Song.class);
 
-        String username = UserUtils.getUsername(authentication);
+        String username = this.userUtils.getUsername(authentication);
         UserView userView = this.userExtractionService.findByUsername(username);
 
         User user = this.mapperUtil.getModelMapper().map(userView, User.class);

@@ -24,11 +24,15 @@ public class SongManagementInterceptor extends HandlerInterceptorAdapter {
 
     private final UserExtractionService userService;
 
+    private final UserUtils userUtils;
+
     @Autowired
     public SongManagementInterceptor(SongExtractionService songExtractionService,
-                                     UserExtractionService userService) {
+                                     UserExtractionService userService,
+                                     UserUtils userUtils) {
         this.songExtractionService = songExtractionService;
         this.userService = userService;
+        this.userUtils = userUtils;
     }
 
     private Authentication getAuthentication() {
@@ -63,7 +67,7 @@ public class SongManagementInterceptor extends HandlerInterceptorAdapter {
 
         Long songId = Long.valueOf(songIdStr);
         Authentication authentication = this.getAuthentication();
-        String principalName = UserUtils.getUsername(authentication);
+        String principalName = this.userUtils.getUsername(authentication);
         boolean isPrincipalUploader = this.isPrincipalUploader(songId, principalName);
         boolean isUserHasAnyRole = this.userService.isUserHasAnyRole(principalName,
                 AccountConstants.ROLE_ADMIN, AccountConstants.ROLE_MODERATOR);

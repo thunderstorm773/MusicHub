@@ -46,6 +46,8 @@ public class SongManipulationServiceImpl implements SongManipulationService {
 
     private final MapperUtil mapperUtil;
 
+    private final UserUtils userUtils;
+
     private final CategoryExtractionService categoryExtractionService;
 
     private final TagExtractionService tagExtractionService;
@@ -57,12 +59,14 @@ public class SongManipulationServiceImpl implements SongManipulationService {
                                        UserRepository userRepository,
                                        CdnUtil cdnUtil,
                                        MapperUtil mapperUtil,
+                                       UserUtils userUtils,
                                        CategoryExtractionService categoryExtractionService,
                                        TagExtractionService tagExtractionService, TagManipulationService tagManipulationService) {
         this.songRepository = songRepository;
         this.userRepository = userRepository;
         this.cdnUtil = cdnUtil;
         this.mapperUtil = mapperUtil;
+        this.userUtils = userUtils;
         this.categoryExtractionService = categoryExtractionService;
         this.tagExtractionService = tagExtractionService;
         this.tagManipulationService = tagManipulationService;
@@ -129,7 +133,7 @@ public class SongManipulationServiceImpl implements SongManipulationService {
             song.setTags(tags);
         }
 
-        String username = UserUtils.getUsername(authentication);
+        String username = this.userUtils.getUsername(authentication);
         User user = this.userRepository.findByUsername(username);
 
         song.setUploader(user);
