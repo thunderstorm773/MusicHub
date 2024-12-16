@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class TagExtractionServiceImpl implements TagExtractionService {
+public class TagExtractionServiceImpl {
 
     private final TagRepository tagRepository;
 
@@ -26,7 +26,6 @@ public class TagExtractionServiceImpl implements TagExtractionService {
         this.mapperUtil = mapperUtil;
     }
 
-    @Override
     public TagView findByName(String tagName) {
         Tag tag = this.tagRepository.findByName(tagName);
         if (tag == null) {
@@ -36,13 +35,11 @@ public class TagExtractionServiceImpl implements TagExtractionService {
         return this.mapperUtil.getModelMapper().map(tag, TagView.class);
     }
 
-    @Override
     public Page<TagView> findAll(Pageable pageable) {
         Page<Tag> tagPage = this.tagRepository.findAll(pageable);
         return this.mapperUtil.convertToPage(pageable, tagPage, TagView.class);
     }
 
-    @Override
     public EditTag findById(Long id) {
         Tag tag = this.tagRepository.findById(id).orElse(null);
         if (tag == null) {

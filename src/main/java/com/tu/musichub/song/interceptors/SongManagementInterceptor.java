@@ -2,7 +2,7 @@ package com.tu.musichub.song.interceptors;
 
 import com.tu.musichub.home.staticData.HomeConstants;
 import com.tu.musichub.song.models.viewModels.SongView;
-import com.tu.musichub.song.services.SongExtractionService;
+import com.tu.musichub.song.services.SongExtractionServiceImpl;
 import com.tu.musichub.song.staticData.SongConstants;
 import com.tu.musichub.user.services.UserExtractionService;
 import com.tu.musichub.user.staticData.AccountConstants;
@@ -20,14 +20,14 @@ import java.util.Map;
 @Component
 public class SongManagementInterceptor extends HandlerInterceptorAdapter {
 
-    private final SongExtractionService songExtractionService;
+    private final SongExtractionServiceImpl songExtractionService;
 
     private final UserExtractionService userService;
 
     private final UserUtils userUtils;
 
     @Autowired
-    public SongManagementInterceptor(SongExtractionService songExtractionService,
+    public SongManagementInterceptor(SongExtractionServiceImpl songExtractionService,
                                      UserExtractionService userService,
                                      UserUtils userUtils) {
         this.songExtractionService = songExtractionService;

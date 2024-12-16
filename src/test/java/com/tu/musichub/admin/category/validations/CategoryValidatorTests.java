@@ -1,7 +1,7 @@
 package com.tu.musichub.admin.category.validations;
 
 import com.tu.musichub.admin.category.models.views.CategoryView;
-import com.tu.musichub.admin.category.services.CategoryExtractionService;
+import com.tu.musichub.admin.category.services.CategoryExtractionServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class CategoryValidatorTests {
     private static final String EXISTENT_CATEGORY_NAME = "Pop";
 
     @MockBean
-    private CategoryExtractionService categoryExtractionService;
+    private CategoryExtractionServiceImpl categoryExtractionService;
 
     @MockBean
     private ClientRegistrationRepository clientRegistrationRepository;

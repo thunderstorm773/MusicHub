@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CategoryExtractionServiceImpl implements CategoryExtractionService {
+public class CategoryExtractionServiceImpl {
 
     private final CategoryRepository categoryRepository;
 
@@ -26,7 +26,6 @@ public class CategoryExtractionServiceImpl implements CategoryExtractionService 
         this.mapperUtil = mapperUtil;
     }
 
-    @Override
     public CategoryView findByName(String categoryName) {
         Category category = this.categoryRepository.findByName(categoryName);
         if (category == null) {
@@ -36,19 +35,16 @@ public class CategoryExtractionServiceImpl implements CategoryExtractionService 
         return this.mapperUtil.getModelMapper().map(category, CategoryView.class);
     }
 
-    @Override
     public Page<CategoryView> findAll(Pageable pageable) {
         Page<Category> categoryPage = this.categoryRepository.findAll(pageable);
         return this.mapperUtil.convertToPage(pageable, categoryPage, CategoryView.class);
     }
 
-    @Override
     public List<CategoryView> findAll() {
         Iterable<Category> categories = this.categoryRepository.findAll();
         return this.mapperUtil.convertAll(categories, CategoryView.class);
     }
 
-    @Override
     public CategoryView findById(Long categoryId) {
         Category category = this.categoryRepository.findById(categoryId).orElse(null);
         if (category == null) {

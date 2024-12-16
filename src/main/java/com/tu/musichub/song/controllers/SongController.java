@@ -1,7 +1,7 @@
 package com.tu.musichub.song.controllers;
 
 import com.tu.musichub.admin.category.models.views.CategoryView;
-import com.tu.musichub.admin.category.services.CategoryExtractionService;
+import com.tu.musichub.admin.category.services.CategoryExtractionServiceImpl;
 import com.tu.musichub.admin.category.staticData.CategoryConstants;
 import com.tu.musichub.controller.BaseController;
 import com.tu.musichub.home.staticData.HomeConstants;
@@ -11,15 +11,13 @@ import com.tu.musichub.song.models.bindingModels.EditSong;
 import com.tu.musichub.song.models.bindingModels.UploadSong;
 import com.tu.musichub.song.models.viewModels.SongDetailsView;
 import com.tu.musichub.song.models.viewModels.SongView;
-import com.tu.musichub.song.services.SongExtractionService;
-import com.tu.musichub.song.services.SongManipulationService;
+import com.tu.musichub.song.services.SongExtractionServiceImpl;
+import com.tu.musichub.song.services.SongManipulationServiceImpl;
 import com.tu.musichub.song.staticData.SongConstants;
 import com.tu.musichub.staticData.Constants;
-import com.tu.musichub.user.entities.User;
 import com.tu.musichub.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,16 +36,16 @@ import java.util.Map;
 @RequestMapping("/songs")
 public class SongController extends BaseController {
 
-    private final CategoryExtractionService categoryExtractionService;
+    private final CategoryExtractionServiceImpl categoryExtractionService;
 
-    private final SongManipulationService songManipulationService;
+    private final SongManipulationServiceImpl songManipulationService;
 
-    private final SongExtractionService songExtractionService;
+    private final SongExtractionServiceImpl songExtractionService;
 
     @Autowired
-    public SongController(CategoryExtractionService categoryExtractionService,
-                          SongManipulationService songManipulationService,
-                          SongExtractionService songExtractionService) {
+    public SongController(CategoryExtractionServiceImpl categoryExtractionService,
+                          SongManipulationServiceImpl songManipulationService,
+                          SongExtractionServiceImpl songExtractionService) {
         this.categoryExtractionService = categoryExtractionService;
         this.songManipulationService = songManipulationService;
         this.songExtractionService = songExtractionService;

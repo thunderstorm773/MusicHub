@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class CategoryManipulationServiceImpl implements CategoryManipulationService {
+public class CategoryManipulationServiceImpl {
 
     private final CategoryRepository categoryRepository;
 
@@ -25,7 +25,6 @@ public class CategoryManipulationServiceImpl implements CategoryManipulationServ
         this.mapperUtil = mapperUtil;
     }
 
-    @Override
     public CategoryView addCategory(AddCategory addCategory) {
         Category category = this.mapperUtil.getModelMapper()
                 .map(addCategory, Category.class);
@@ -34,7 +33,6 @@ public class CategoryManipulationServiceImpl implements CategoryManipulationServ
                 .map(savedCategory, CategoryView.class);
     }
 
-    @Override
     public boolean deleteById(Long categoryId) {
         boolean isCategoryExists = this.categoryRepository.existsById(categoryId);
         if (!isCategoryExists) {
@@ -45,7 +43,6 @@ public class CategoryManipulationServiceImpl implements CategoryManipulationServ
         return true;
     }
 
-    @Override
     public CategoryView edit(EditCategory editCategory, Long id) {
         boolean isCategoryExists = this.categoryRepository.existsById(id);
         if (!isCategoryExists) {

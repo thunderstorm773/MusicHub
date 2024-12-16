@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.tu.musichub.controller.BaseController;
 import com.tu.musichub.home.staticData.HomeConstants;
 import com.tu.musichub.song.models.viewModels.SongView;
-import com.tu.musichub.song.services.SongExtractionService;
+import com.tu.musichub.song.services.SongExtractionServiceImpl;
 import com.tu.musichub.staticData.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,12 +22,12 @@ import java.util.Map;
 @Controller
 public class HomeController extends BaseController {
 
-    private final SongExtractionService songExtractionService;
+    private final SongExtractionServiceImpl songExtractionService;
 
     private final Gson gson;
 
     @Autowired
-    public HomeController(SongExtractionService songExtractionService, Gson gson) {
+    public HomeController(SongExtractionServiceImpl songExtractionService, Gson gson) {
         this.songExtractionService = songExtractionService;
         this.gson = gson;
     }

@@ -3,8 +3,8 @@ package com.tu.musichub.admin.category.controllers;
 import com.tu.musichub.admin.category.models.bindingModels.AddCategory;
 import com.tu.musichub.admin.category.models.bindingModels.EditCategory;
 import com.tu.musichub.admin.category.models.views.CategoryView;
-import com.tu.musichub.admin.category.services.CategoryExtractionService;
-import com.tu.musichub.admin.category.services.CategoryManipulationService;
+import com.tu.musichub.admin.category.services.CategoryExtractionServiceImpl;
+import com.tu.musichub.admin.category.services.CategoryManipulationServiceImpl;
 import com.tu.musichub.admin.category.staticData.CategoryConstants;
 import com.tu.musichub.controller.BaseController;
 import com.tu.musichub.staticData.Constants;
@@ -25,13 +25,13 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class CategoryController extends BaseController {
 
-    private final CategoryManipulationService categoryManipulationService;
+    private final CategoryManipulationServiceImpl categoryManipulationService;
 
-    private final CategoryExtractionService categoryExtractionService;
+    private final CategoryExtractionServiceImpl categoryExtractionService;
 
     @Autowired
-    public CategoryController(CategoryManipulationService categoryManipulationService,
-                              CategoryExtractionService categoryExtractionService) {
+    public CategoryController(CategoryManipulationServiceImpl categoryManipulationService,
+                              CategoryExtractionServiceImpl categoryExtractionService) {
         this.categoryManipulationService = categoryManipulationService;
         this.categoryExtractionService = categoryExtractionService;
     }

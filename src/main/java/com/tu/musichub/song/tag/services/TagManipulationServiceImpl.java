@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class TagManipulationServiceImpl implements TagManipulationService{
+public class TagManipulationServiceImpl {
 
     private final TagRepository tagRepository;
 
@@ -25,14 +25,12 @@ public class TagManipulationServiceImpl implements TagManipulationService{
         this.mapperUtil = mapperUtil;
     }
 
-    @Override
     public TagView save(AddTag addTag) {
         Tag tag = this.mapperUtil.getModelMapper().map(addTag, Tag.class);
         Tag savedTag = this.tagRepository.save(tag);
         return this.mapperUtil.getModelMapper().map(savedTag, TagView.class);
     }
 
-    @Override
     public void edit(EditTag editTag, Long id) {
         boolean isTagExists = this.tagRepository.existsById(id);
         if (!isTagExists) {

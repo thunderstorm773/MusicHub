@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class CommentExtractionServiceImpl implements CommentExtractionService{
+public class CommentExtractionServiceImpl {
 
     private final CommentRepository commentRepository;
 
@@ -25,7 +25,6 @@ public class CommentExtractionServiceImpl implements CommentExtractionService{
         this.mapperUtil = mapperUtil;
     }
 
-    @Override
     public Page<CommentView> findPendingComments(Pageable pageable) {
         Page<Comment> commentPage = this.commentRepository.findPendingComments(pageable);
         return this.mapperUtil.convertToPage(pageable, commentPage, CommentView.class);

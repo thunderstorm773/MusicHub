@@ -4,8 +4,8 @@ import com.tu.musichub.controller.BaseController;
 import com.tu.musichub.song.tag.models.bindingModels.AddTag;
 import com.tu.musichub.song.tag.models.bindingModels.EditTag;
 import com.tu.musichub.song.tag.models.viewModels.TagView;
-import com.tu.musichub.song.tag.services.TagExtractionService;
-import com.tu.musichub.song.tag.services.TagManipulationService;
+import com.tu.musichub.song.tag.services.TagExtractionServiceImpl;
+import com.tu.musichub.song.tag.services.TagManipulationServiceImpl;
 import com.tu.musichub.song.tag.staticData.TagConstants;
 import com.tu.musichub.staticData.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +26,13 @@ import java.util.Map;
 @RequestMapping("/tags")
 public class TagController extends BaseController {
 
-    private final TagExtractionService tagExtractionService;
+    private final TagExtractionServiceImpl tagExtractionService;
 
-    private final TagManipulationService tagManipulationService;
+    private final TagManipulationServiceImpl tagManipulationService;
 
     @Autowired
-    public TagController(TagExtractionService tagExtractionService,
-                         TagManipulationService tagManipulationService) {
+    public TagController(TagExtractionServiceImpl tagExtractionService,
+                         TagManipulationServiceImpl tagManipulationService) {
         this.tagExtractionService = tagExtractionService;
         this.tagManipulationService = tagManipulationService;
     }

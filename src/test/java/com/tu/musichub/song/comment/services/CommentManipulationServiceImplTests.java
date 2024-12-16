@@ -6,7 +6,7 @@ import com.tu.musichub.song.comment.models.bindingModels.PostComment;
 import com.tu.musichub.song.comment.models.viewModels.CommentView;
 import com.tu.musichub.song.comment.repositories.CommentRepository;
 import com.tu.musichub.song.models.viewModels.SongView;
-import com.tu.musichub.song.services.SongExtractionService;
+import com.tu.musichub.song.services.SongExtractionServiceImpl;
 import com.tu.musichub.user.entities.User;
 import com.tu.musichub.user.models.viewModels.UserView;
 import com.tu.musichub.user.services.UserExtractionService;
@@ -60,7 +60,7 @@ public class CommentManipulationServiceImplTests {
     private CommentRepository commentRepository;
 
     @MockBean
-    private SongExtractionService songExtractionService;
+    private SongExtractionServiceImpl songExtractionService;
 
     @MockBean
     private UserExtractionService userExtractionService;
@@ -75,7 +75,7 @@ public class CommentManipulationServiceImplTests {
     private MapperUtil mapperUtil;
 
     @Autowired
-    private CommentManipulationService commentManipulationService;
+    private CommentManipulationServiceImpl commentManipulationService;
 
     @Captor
     private ArgumentCaptor<Comment> commentArgumentCaptor;

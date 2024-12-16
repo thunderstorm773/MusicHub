@@ -1,6 +1,6 @@
 package com.tu.musichub.config;
 
-import com.tu.musichub.song.comment.services.CommentManipulationService;
+import com.tu.musichub.song.comment.services.CommentManipulationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -10,10 +10,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class SchedulerTaskConfig {
 
-    private final CommentManipulationService commentService;
+    private final CommentManipulationServiceImpl commentService;
 
     @Autowired
-    public SchedulerTaskConfig(CommentManipulationService commentService) {
+    public SchedulerTaskConfig(CommentManipulationServiceImpl commentService) {
         this.commentService = commentService;
     }
 

@@ -1,7 +1,7 @@
 package com.tu.musichub.song.tag.validations;
 
 import com.tu.musichub.song.tag.models.viewModels.TagView;
-import com.tu.musichub.song.tag.services.TagExtractionService;
+import com.tu.musichub.song.tag.services.TagExtractionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import javax.validation.ConstraintValidator;
@@ -10,10 +10,10 @@ import javax.validation.ConstraintValidatorContext;
 @Component
 public class TagValidator implements ConstraintValidator<Tag, String> {
 
-    private final TagExtractionService tagExtractionService;
+    private final TagExtractionServiceImpl tagExtractionService;
 
     @Autowired
-    public TagValidator(TagExtractionService tagExtractionService) {
+    public TagValidator(TagExtractionServiceImpl tagExtractionService) {
         this.tagExtractionService = tagExtractionService;
     }
 

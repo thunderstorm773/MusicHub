@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class SongExtractionServiceImpl implements SongExtractionService {
+public class SongExtractionServiceImpl  {
 
     private final SongRepository songRepository;
 
@@ -53,20 +53,17 @@ public class SongExtractionServiceImpl implements SongExtractionService {
         songDetailsView.setComments(sortedComments);
     }
 
-    @Override
     public Page<SongView> findAll(Pageable pageable) {
         Page<Song> songPage = this.songRepository.findAll(pageable);
         return this.mapperUtil.convertToPage(pageable, songPage, SongView.class);
     }
 
-    @Override
     public Page<SongView> findAllByTitle(String songTitle, Pageable pageable) {
         Page<Song> songPage = this.songRepository.findAllByTitle(songTitle, pageable);
         return this.mapperUtil.convertToPage(pageable, songPage, SongView.class);
     }
 
     @Cacheable(value = SongConstants.SONGS_CACHE_NAME, key = "#songId")
-    @Override
     public SongDetailsView getDetailsById(Long songId) throws SongNotFoundException {
         Song song = this.songRepository.findById(songId).orElse(null);
         if (song == null) {
@@ -86,19 +83,16 @@ public class SongExtractionServiceImpl implements SongExtractionService {
         return songDetailsView;
     }
 
-    @Override
     public Page<SongView> findAllByCategoryName(String categoryName, Pageable pageable) {
         Page<Song> songPage = this.songRepository.findAllByCategoryName(categoryName, pageable);
         return this.mapperUtil.convertToPage(pageable, songPage, SongView.class);
     }
 
-    @Override
     public Page<SongView> findAllByTagName(String tagName, Pageable pageable) {
         Page<Song> songPage = this.songRepository.findAllByTagName(tagName, pageable);
         return this.mapperUtil.convertToPage(pageable, songPage, SongView.class);
     }
 
-    @Override
     public SongView findById(Long id) throws SongNotFoundException {
         Song song = this.songRepository.findById(id).orElse(null);
         if (song == null) {
@@ -108,7 +102,6 @@ public class SongExtractionServiceImpl implements SongExtractionService {
         return this.mapperUtil.getModelMapper().map(song, SongView.class);
     }
 
-    @Override
     public EditSong getEditSongById(Long songId) throws SongNotFoundException {
         Song song = this.songRepository.findById(songId).orElse(null);
         if (song == null) {
@@ -123,7 +116,6 @@ public class SongExtractionServiceImpl implements SongExtractionService {
         return editSong;
     }
 
-    @Override
     public boolean isSongExists(Long songId) {
         return this.songRepository.existsById(songId);
     }

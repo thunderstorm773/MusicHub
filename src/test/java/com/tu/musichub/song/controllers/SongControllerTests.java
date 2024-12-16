@@ -1,7 +1,7 @@
 package com.tu.musichub.song.controllers;
 
 import com.tu.musichub.admin.category.models.views.CategoryView;
-import com.tu.musichub.admin.category.services.CategoryExtractionService;
+import com.tu.musichub.admin.category.services.CategoryExtractionServiceImpl;
 import com.tu.musichub.admin.category.staticData.CategoryConstants;
 import com.tu.musichub.config.BeanConfig;
 import com.tu.musichub.config.InterceptorConfig;
@@ -12,8 +12,8 @@ import com.tu.musichub.song.models.bindingModels.EditSong;
 import com.tu.musichub.song.models.bindingModels.UploadSong;
 import com.tu.musichub.song.models.viewModels.SongDetailsView;
 import com.tu.musichub.song.models.viewModels.SongView;
-import com.tu.musichub.song.services.SongExtractionService;
-import com.tu.musichub.song.services.SongManipulationService;
+import com.tu.musichub.song.services.SongExtractionServiceImpl;
+import com.tu.musichub.song.services.SongManipulationServiceImpl;
 import com.tu.musichub.song.staticData.SongConstants;
 import com.tu.musichub.song.staticData.SongTestData;
 import com.tu.musichub.staticData.Constants;
@@ -59,13 +59,13 @@ public class SongControllerTests {
     private MockMvc mockMvc;
 
     @MockBean
-    private CategoryExtractionService categoryExtractionService;
+    private CategoryExtractionServiceImpl categoryExtractionService;
 
     @MockBean
-    private SongManipulationService songManipulationService;
+    private SongManipulationServiceImpl songManipulationService;
 
     @MockBean
-    private SongExtractionService songExtractionService;
+    private SongExtractionServiceImpl songExtractionService;
 
     @MockBean
     private UserExtractionService userExtractionService;

@@ -8,7 +8,7 @@ import com.tu.musichub.song.comment.repositories.CommentRepository;
 import com.tu.musichub.song.comment.staticData.CommentConstants;
 import com.tu.musichub.song.entities.Song;
 import com.tu.musichub.song.models.viewModels.SongView;
-import com.tu.musichub.song.services.SongExtractionService;
+import com.tu.musichub.song.services.SongExtractionServiceImpl;
 import com.tu.musichub.song.staticData.SongConstants;
 import com.tu.musichub.user.entities.User;
 import com.tu.musichub.user.models.viewModels.UserView;
@@ -23,11 +23,11 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class CommentManipulationServiceImpl implements CommentManipulationService {
+public class CommentManipulationServiceImpl {
 
     private final CommentRepository commentRepository;
 
-    private final SongExtractionService songExtractionService;
+    private final SongExtractionServiceImpl songExtractionService;
 
     private final UserExtractionService userExtractionService;
 
@@ -37,7 +37,7 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
 
     @Autowired
     public CommentManipulationServiceImpl(CommentRepository commentRepository,
-                                          SongExtractionService songExtractionService,
+                                          SongExtractionServiceImpl songExtractionService,
                                           UserExtractionService userExtractionService,
                                           MapperUtil mapperUtil,
                                           UserUtils userUtils) {
@@ -64,7 +64,6 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
 
     @CacheEvict(cacheNames = SongConstants.SONGS_CACHE_NAME,
             key = "#postComment.songId")
-    @Override
     public CommentView postComment(PostComment postComment, Authentication authentication) {
         Comment comment = this.constructComment(postComment, authentication);
         Comment postedComment = this.commentRepository.save(comment);
@@ -72,7 +71,6 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
     }
 
     @CacheEvict(cacheNames = SongConstants.SONGS_CACHE_NAME, allEntries = true)
-    @Override
     public void approve(Long id) {
         Comment comment = this.commentRepository.findById(id).orElse(null);
         if (comment == null) {
@@ -83,7 +81,6 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
     }
 
     @CacheEvict(cacheNames = SongConstants.SONGS_CACHE_NAME, allEntries = true)
-    @Override
     public void reject(Long id) {
         Comment comment = this.commentRepository.findById(id).orElse(null);
         if (comment == null) {
@@ -94,7 +91,6 @@ public class CommentManipulationServiceImpl implements CommentManipulationServic
     }
 
     @CacheEvict(cacheNames = SongConstants.SONGS_CACHE_NAME, allEntries = true)
-    @Override
     public void deleteAllRejectedComments() {
         this.commentRepository.deleteAllRejectedComments();
         System.out.println(CommentConstants.REJECTED_COMMENTS_DELETED_MESSAGE);

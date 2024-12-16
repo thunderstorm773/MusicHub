@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 import com.tu.musichub.controller.BaseController;
 import com.tu.musichub.song.comment.models.bindingModels.PostComment;
 import com.tu.musichub.song.comment.models.viewModels.CommentView;
-import com.tu.musichub.song.comment.services.CommentExtractionService;
-import com.tu.musichub.song.comment.services.CommentManipulationService;
+import com.tu.musichub.song.comment.services.CommentExtractionServiceImpl;
+import com.tu.musichub.song.comment.services.CommentManipulationServiceImpl;
 import com.tu.musichub.song.comment.staticData.CommentConstants;
-import com.tu.musichub.song.services.SongExtractionService;
+import com.tu.musichub.song.services.SongExtractionServiceImpl;
 import com.tu.musichub.staticData.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import java.security.Principal;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,18 +25,18 @@ import java.util.Map;
 @RequestMapping("/comments")
 public class CommentController extends BaseController {
 
-    private final CommentExtractionService commentExtractionService;
+    private final CommentExtractionServiceImpl commentExtractionService;
 
-    private final CommentManipulationService commentManipulationService;
+    private final CommentManipulationServiceImpl commentManipulationService;
 
-    private final SongExtractionService songExtractionService;
+    private final SongExtractionServiceImpl songExtractionService;
 
     private final Gson gson;
 
     @Autowired
-    public CommentController(CommentExtractionService commentExtractionService,
-                             CommentManipulationService commentManipulationService,
-                             SongExtractionService songExtractionService,
+    public CommentController(CommentExtractionServiceImpl commentExtractionService,
+                             CommentManipulationServiceImpl commentManipulationService,
+                             SongExtractionServiceImpl songExtractionService,
                              Gson gson) {
         this.commentExtractionService = commentExtractionService;
         this.commentManipulationService = commentManipulationService;

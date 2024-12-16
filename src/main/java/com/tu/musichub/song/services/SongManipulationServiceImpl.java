@@ -2,7 +2,7 @@ package com.tu.musichub.song.services;
 
 import com.tu.musichub.admin.category.entities.Category;
 import com.tu.musichub.admin.category.models.views.CategoryView;
-import com.tu.musichub.admin.category.services.CategoryExtractionService;
+import com.tu.musichub.admin.category.services.CategoryExtractionServiceImpl;
 import com.tu.musichub.song.entities.Song;
 import com.tu.musichub.song.exceptions.SongNotFoundException;
 import com.tu.musichub.song.models.bindingModels.EditSong;
@@ -12,8 +12,8 @@ import com.tu.musichub.song.staticData.SongConstants;
 import com.tu.musichub.song.tag.entities.Tag;
 import com.tu.musichub.song.tag.models.bindingModels.AddTag;
 import com.tu.musichub.song.tag.models.viewModels.TagView;
-import com.tu.musichub.song.tag.services.TagExtractionService;
-import com.tu.musichub.song.tag.services.TagManipulationService;
+import com.tu.musichub.song.tag.services.TagExtractionServiceImpl;
+import com.tu.musichub.song.tag.services.TagManipulationServiceImpl;
 import com.tu.musichub.song.tag.staticData.TagConstants;
 import com.tu.musichub.user.entities.User;
 import com.tu.musichub.user.repositories.UserRepository;
@@ -36,7 +36,7 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 @Transactional
-public class SongManipulationServiceImpl implements SongManipulationService {
+public class SongManipulationServiceImpl {
 
     private final SongRepository songRepository;
 
@@ -48,11 +48,11 @@ public class SongManipulationServiceImpl implements SongManipulationService {
 
     private final UserUtils userUtils;
 
-    private final CategoryExtractionService categoryExtractionService;
+    private final CategoryExtractionServiceImpl categoryExtractionService;
 
-    private final TagExtractionService tagExtractionService;
+    private final TagExtractionServiceImpl tagExtractionService;
 
-    private final TagManipulationService tagManipulationService;
+    private final TagManipulationServiceImpl tagManipulationService;
 
     @Autowired
     public SongManipulationServiceImpl(SongRepository songRepository,
@@ -60,8 +60,9 @@ public class SongManipulationServiceImpl implements SongManipulationService {
                                        CdnUtil cdnUtil,
                                        MapperUtil mapperUtil,
                                        UserUtils userUtils,
-                                       CategoryExtractionService categoryExtractionService,
-                                       TagExtractionService tagExtractionService, TagManipulationService tagManipulationService) {
+                                       CategoryExtractionServiceImpl categoryExtractionService,
+                                       TagExtractionServiceImpl tagExtractionService,
+                                       TagManipulationServiceImpl tagManipulationService) {
         this.songRepository = songRepository;
         this.userRepository = userRepository;
         this.cdnUtil = cdnUtil;
@@ -115,7 +116,6 @@ public class SongManipulationServiceImpl implements SongManipulationService {
     }
 
     @Async
-    @Override
     public void upload(UploadSong uploadSong, Authentication authentication) throws IOException {
         Song song = this.mapperUtil.getModelMapper().map(uploadSong, Song.class);
         song.setId(null);
@@ -147,7 +147,6 @@ public class SongManipulationServiceImpl implements SongManipulationService {
     }
 
     @CacheEvict(value = SongConstants.SONGS_CACHE_NAME, key = "#songId")
-    @Override
     public void deleteById(Long songId) throws Exception {
         Song song = this.songRepository.findById(songId).orElse(null);
         if (song == null) {
@@ -160,7 +159,6 @@ public class SongManipulationServiceImpl implements SongManipulationService {
         this.songRepository.delete(song);
     }
 
-    @Override
     @CacheEvict(value = SongConstants.SONGS_CACHE_NAME, key = "#songId")
     public void edit(EditSong editSong, Long songId) throws SongNotFoundException {
         Song song = this.songRepository.findById(songId).orElse(null);
