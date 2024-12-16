@@ -3,7 +3,7 @@ package com.tu.musichub.user.controllers;
 import com.tu.musichub.controller.BaseController;
 import com.tu.musichub.staticData.Constants;
 import com.tu.musichub.user.models.viewModels.ProfileView;
-import com.tu.musichub.user.services.UserExtractionService;
+import com.tu.musichub.user.services.UserExtractionServiceImpl;
 import com.tu.musichub.user.staticData.ProfileConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +16,10 @@ import java.util.Map;
 @Controller
 public class ProfileController extends BaseController {
 
-    private final UserExtractionService userExtractionService;
+    private final UserExtractionServiceImpl userExtractionService;
 
     @Autowired
-    public ProfileController(UserExtractionService userExtractionService) {
+    public ProfileController(UserExtractionServiceImpl userExtractionService) {
         this.userExtractionService = userExtractionService;
     }
 

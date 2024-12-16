@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl {
 
     private final RoleRepository roleRepository;
 
@@ -24,7 +24,6 @@ public class RoleServiceImpl implements RoleService{
         this.mapperUtil = mapperUtil;
     }
 
-    @Override
     public RoleView findByName(String roleName) {
         Role role = this.roleRepository.findByAuthority(roleName);
         if (role == null) {
@@ -34,7 +33,6 @@ public class RoleServiceImpl implements RoleService{
         return this.mapperUtil.getModelMapper().map(role, RoleView.class);
     }
 
-    @Override
     public List<RoleView> findAll() {
         List<Role> roles = this.roleRepository.findAll();
         return this.mapperUtil.convertAll(roles, RoleView.class);

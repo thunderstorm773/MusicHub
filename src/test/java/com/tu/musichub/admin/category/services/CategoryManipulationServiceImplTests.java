@@ -44,7 +44,7 @@ public class CategoryManipulationServiceImplTests {
     private MapperUtil mapperUtil;
 
     @Autowired
-    private CategoryManipulationService categoryManipulationService;
+    private CategoryManipulationServiceImpl categoryManipulationService;
 
     @Captor
     private ArgumentCaptor<Category> categoryArgumentCaptor;

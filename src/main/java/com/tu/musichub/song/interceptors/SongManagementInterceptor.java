@@ -4,7 +4,7 @@ import com.tu.musichub.home.staticData.HomeConstants;
 import com.tu.musichub.song.models.viewModels.SongView;
 import com.tu.musichub.song.services.SongExtractionServiceImpl;
 import com.tu.musichub.song.staticData.SongConstants;
-import com.tu.musichub.user.services.UserExtractionService;
+import com.tu.musichub.user.services.UserExtractionServiceImpl;
 import com.tu.musichub.user.staticData.AccountConstants;
 import com.tu.musichub.user.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +22,13 @@ public class SongManagementInterceptor extends HandlerInterceptorAdapter {
 
     private final SongExtractionServiceImpl songExtractionService;
 
-    private final UserExtractionService userService;
+    private final UserExtractionServiceImpl userService;
 
     private final UserUtils userUtils;
 
     @Autowired
     public SongManagementInterceptor(SongExtractionServiceImpl songExtractionService,
-                                     UserExtractionService userService,
+                                     UserExtractionServiceImpl userService,
                                      UserUtils userUtils) {
         this.songExtractionService = songExtractionService;
         this.userService = userService;

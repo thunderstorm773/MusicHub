@@ -29,7 +29,7 @@ public class CommentExtractionServiceImplTests {
     private MapperUtil mapperUtil;
 
     @Autowired
-    private CommentExtractionService commentExtractionService;
+    private CommentExtractionServiceImpl commentExtractionService;
 
     @MockBean
     private ClientRegistrationRepository clientRegistrationRepository;

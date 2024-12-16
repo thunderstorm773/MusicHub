@@ -7,9 +7,9 @@ import com.tu.musichub.staticData.Constants;
 import com.tu.musichub.user.models.bindingModels.EditUser;
 import com.tu.musichub.user.models.viewModels.RoleView;
 import com.tu.musichub.user.models.viewModels.UserView;
-import com.tu.musichub.user.services.RoleService;
-import com.tu.musichub.user.services.UserExtractionService;
-import com.tu.musichub.user.services.UserManipulationService;
+import com.tu.musichub.user.services.RoleServiceImpl;
+import com.tu.musichub.user.services.UserExtractionServiceImpl;
+import com.tu.musichub.user.services.UserManipulationServiceImpl;
 import com.tu.musichub.user.staticData.AccountConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,16 +33,16 @@ import java.util.Set;
 @RequestMapping("/admin")
 public class UserController extends BaseController {
 
-    private final UserExtractionService userExtractionService;
+    private final UserExtractionServiceImpl userExtractionService;
 
-    private final UserManipulationService userManipulationService;
+    private final UserManipulationServiceImpl userManipulationService;
 
-    private final RoleService roleService;
+    private final RoleServiceImpl roleService;
 
     @Autowired
-    public UserController(UserExtractionService userExtractionService,
-                          UserManipulationService userManipulationService,
-                          RoleService roleService) {
+    public UserController(UserExtractionServiceImpl userExtractionService,
+                          UserManipulationServiceImpl userManipulationService,
+                          RoleServiceImpl roleService) {
         this.userExtractionService = userExtractionService;
         this.userManipulationService = userManipulationService;
         this.roleService = roleService;

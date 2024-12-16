@@ -9,7 +9,7 @@ import com.tu.musichub.song.models.viewModels.SongView;
 import com.tu.musichub.song.services.SongExtractionServiceImpl;
 import com.tu.musichub.user.entities.User;
 import com.tu.musichub.user.models.viewModels.UserView;
-import com.tu.musichub.user.services.UserExtractionService;
+import com.tu.musichub.user.services.UserExtractionServiceImpl;
 import com.tu.musichub.util.MapperUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -63,7 +63,7 @@ public class CommentManipulationServiceImplTests {
     private SongExtractionServiceImpl songExtractionService;
 
     @MockBean
-    private UserExtractionService userExtractionService;
+    private UserExtractionServiceImpl userExtractionService;
 
     @MockBean
     private ClientRegistrationRepository clientRegistrationRepository;

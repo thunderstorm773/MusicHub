@@ -45,7 +45,7 @@ public class CategoryExtractionServiceImplTests {
     private MapperUtil mapperUtil;
 
     @Autowired
-    private CategoryExtractionService categoryExtractionService;
+    private CategoryExtractionServiceImpl categoryExtractionService;
 
     @Mock
     private Pageable pageable;

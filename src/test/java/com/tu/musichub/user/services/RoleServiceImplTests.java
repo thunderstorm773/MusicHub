@@ -40,7 +40,7 @@ public class RoleServiceImplTests {
     private MapperUtil mapperUtil;
 
     @Autowired
-    private RoleService roleService;
+    private RoleServiceImpl roleService;
 
     private Role createTestRole() {
         Role role = new Role();

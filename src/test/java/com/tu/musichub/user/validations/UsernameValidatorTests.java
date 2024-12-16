@@ -2,7 +2,7 @@ package com.tu.musichub.user.validations;
 
 import com.tu.musichub.user.exceptions.UserNotFoundException;
 import com.tu.musichub.user.models.viewModels.UserView;
-import com.tu.musichub.user.services.UserExtractionService;
+import com.tu.musichub.user.services.UserExtractionServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class UsernameValidatorTests {
     private static final String NON_EXISTENCE_USERNAME = "nonUsername";
 
     @MockBean
-    private UserExtractionService userExtractionService;
+    private UserExtractionServiceImpl userExtractionService;
 
     @MockBean
     private ClientRegistrationRepository clientRegistrationRepository;

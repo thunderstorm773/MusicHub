@@ -48,7 +48,7 @@ public class TagManipulationServiceImplTests {
     private MapperUtil mapperUtil;
 
     @Autowired
-    private TagManipulationService tagManipulationService;
+    private TagManipulationServiceImpl tagManipulationService;
 
     @Captor
     private ArgumentCaptor<Tag> tagArgumentCaptor;

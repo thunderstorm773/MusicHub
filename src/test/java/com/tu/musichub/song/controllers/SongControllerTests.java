@@ -19,7 +19,8 @@ import com.tu.musichub.song.staticData.SongTestData;
 import com.tu.musichub.staticData.Constants;
 import com.tu.musichub.staticData.TestConstants;
 import com.tu.musichub.user.configs.GoogleOAuth2SuccessHandler;
-import com.tu.musichub.user.services.UserExtractionService;
+import com.tu.musichub.user.services.UserExtractionServiceImpl;
+import com.tu.musichub.user.utils.UserUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +69,7 @@ public class SongControllerTests {
     private SongExtractionServiceImpl songExtractionService;
 
     @MockBean
-    private UserExtractionService userExtractionService;
+    private UserExtractionServiceImpl userExtractionService;
 
     @MockBean
     private BCryptPasswordEncoder passwordEncoder;
@@ -78,6 +79,9 @@ public class SongControllerTests {
 
     @MockBean
     private ClientRegistrationRepository clientRegistrationRepository;
+
+    @MockBean(name = "userUtils")
+    private UserUtils userUtils;
 
     @Captor
     private ArgumentCaptor<EditSong> editSongArgumentCaptor;

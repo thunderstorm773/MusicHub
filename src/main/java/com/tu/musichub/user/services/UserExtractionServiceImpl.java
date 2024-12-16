@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class UserExtractionServiceImpl implements UserExtractionService {
+public class UserExtractionServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -51,7 +52,6 @@ public class UserExtractionServiceImpl implements UserExtractionService {
         profileView.setSongs(songViews);
     }
 
-    @Override
     public UserView findByUsername(String username) throws UserNotFoundException {
         User user = this.userRepository.findByUsername(username);
         if (user == null) {
@@ -76,24 +76,20 @@ public class UserExtractionServiceImpl implements UserExtractionService {
         return userView;
     }
 
-    @Override
     public Page<UserView> findAllByUsernameContains(String username, Pageable pageable) {
         Page<User> userPage = this.userRepository.findAllByUsernameContains(username, pageable);
         return this.mapperUtil.convertToPage(pageable, userPage, UserView.class);
     }
 
-    @Override
     public Page<UserView> findAll(Pageable pageable) {
         Page<User> userPage = this.userRepository.findAll(pageable);
         return this.mapperUtil.convertToPage(pageable, userPage, UserView.class);
     }
 
-    @Override
     public boolean isUserHasAnyRole(String username, String... roleNames) {
         return this.userRepository.isUserHasAnyRole(username, roleNames);
     }
 
-    @Override
     public ProfileView getUserProfileByUsername(String username) throws UserNotFoundException{
         User user = this.userRepository.findByUsername(username);
         if (user == null) {

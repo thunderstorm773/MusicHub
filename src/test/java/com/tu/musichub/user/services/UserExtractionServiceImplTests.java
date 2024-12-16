@@ -62,7 +62,7 @@ public class UserExtractionServiceImplTests {
     private MapperUtil mapperUtil;
 
     @Autowired
-    private UserExtractionService userExtractionService;
+    private UserExtractionServiceImpl userExtractionService;
 
     private Role createTestRole(String roleName) {
         Role role = new Role();

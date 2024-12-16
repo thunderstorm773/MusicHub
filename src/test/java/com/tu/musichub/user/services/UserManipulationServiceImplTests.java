@@ -48,7 +48,7 @@ public class UserManipulationServiceImplTests {
     private UserRepository userRepository;
 
     @MockBean
-    private RoleService roleService;
+    private RoleServiceImpl roleService;
 
     @MockBean
     private ClientRegistrationRepository clientRegistrationRepository;
@@ -63,7 +63,7 @@ public class UserManipulationServiceImplTests {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserManipulationService userManipulationService;
+    private UserManipulationServiceImpl userManipulationService;
 
     @Captor
     private ArgumentCaptor<User> userArgumentCaptor;

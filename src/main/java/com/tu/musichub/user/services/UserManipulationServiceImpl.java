@@ -23,11 +23,11 @@ import java.util.*;
 
 @Service
 @Transactional
-public class UserManipulationServiceImpl implements UserManipulationService {
+public class UserManipulationServiceImpl {
 
     private final UserRepository userRepository;
 
-    private final RoleService roleService;
+    private final RoleServiceImpl roleService;
 
     private final MapperUtil mapperUtil;
 
@@ -37,7 +37,7 @@ public class UserManipulationServiceImpl implements UserManipulationService {
 
     @Autowired
     public UserManipulationServiceImpl(UserRepository userRepository,
-                                       RoleService roleService,
+                                       RoleServiceImpl roleService,
                                        PasswordResetTokenRepository passwordResetTokenRepository,
                                        MapperUtil mapperUtil,
                                        PasswordEncoder passwordEncoder) {
@@ -62,7 +62,6 @@ public class UserManipulationServiceImpl implements UserManipulationService {
         return roleViews;
     }
 
-    @Override
     public User registerUser(RegisterUser registerUser) {
         User user = this.mapperUtil.getModelMapper().map(registerUser, User.class);
         String password = user.getPassword();
@@ -82,7 +81,7 @@ public class UserManipulationServiceImpl implements UserManipulationService {
         return this.mapperUtil.getModelMapper().map(savedUser, User.class);
     }
 
-    @Override
+
     public User loginGoogleUser(Authentication authentication) {
         DefaultOAuth2User oAuthUser = (DefaultOAuth2User) authentication.getPrincipal();
         Map<String, Object> attributes = oAuthUser.getAttributes();
@@ -111,7 +110,6 @@ public class UserManipulationServiceImpl implements UserManipulationService {
         return this.mapperUtil.getModelMapper().map(user, User.class);
     }
 
-    @Override
     public User edit(EditUser editUser, String username) {
         User user = this.userRepository.findByUsername(username);
         if (user == null) {
@@ -130,7 +128,6 @@ public class UserManipulationServiceImpl implements UserManipulationService {
         return this.mapperUtil.getModelMapper().map(user, User.class);
     }
 
-    @Override
     public boolean deleteByUsername(String username) {
         User user = this.userRepository.findByUsername(username);
         if (user == null) {
@@ -141,7 +138,6 @@ public class UserManipulationServiceImpl implements UserManipulationService {
         return true;
     }
 
-    @Override
     public void resetPassword(ResetPassword resetPassword) {
         Date now = new Date();
         PasswordResetToken passwordResetToken = this.passwordResetTokenRepository

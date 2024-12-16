@@ -12,7 +12,7 @@ import com.tu.musichub.song.services.SongExtractionServiceImpl;
 import com.tu.musichub.song.staticData.SongConstants;
 import com.tu.musichub.user.entities.User;
 import com.tu.musichub.user.models.viewModels.UserView;
-import com.tu.musichub.user.services.UserExtractionService;
+import com.tu.musichub.user.services.UserExtractionServiceImpl;
 import com.tu.musichub.user.utils.UserUtils;
 import com.tu.musichub.util.MapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class CommentManipulationServiceImpl {
 
     private final SongExtractionServiceImpl songExtractionService;
 
-    private final UserExtractionService userExtractionService;
+    private final UserExtractionServiceImpl userExtractionService;
 
     private final MapperUtil mapperUtil;
 
@@ -38,7 +38,7 @@ public class CommentManipulationServiceImpl {
     @Autowired
     public CommentManipulationServiceImpl(CommentRepository commentRepository,
                                           SongExtractionServiceImpl songExtractionService,
-                                          UserExtractionService userExtractionService,
+                                          UserExtractionServiceImpl userExtractionService,
                                           MapperUtil mapperUtil,
                                           UserUtils userUtils) {
         this.commentRepository = commentRepository;

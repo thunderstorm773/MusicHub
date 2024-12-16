@@ -1,6 +1,6 @@
 package com.tu.musichub.user.configs;
 
-import com.tu.musichub.user.services.UserManipulationService;
+import com.tu.musichub.user.services.UserManipulationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -14,10 +14,10 @@ import java.io.IOException;
 @Component
 public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
-    private final UserManipulationService userManipulationService;
+    private final UserManipulationServiceImpl userManipulationService;
 
     @Autowired
-    public GoogleOAuth2SuccessHandler(UserManipulationService userManipulationService) {
+    public GoogleOAuth2SuccessHandler(UserManipulationServiceImpl userManipulationService) {
         this.userManipulationService = userManipulationService;
     }
 

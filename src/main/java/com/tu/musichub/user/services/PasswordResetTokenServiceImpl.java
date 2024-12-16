@@ -16,7 +16,7 @@ import java.util.Date;
 
 @Service
 @Transactional
-public class PasswordResetTokenServiceImpl implements PasswordResetTokenService {
+public class PasswordResetTokenServiceImpl {
 
     private final MapperUtil mapperUtil;
 
@@ -33,7 +33,6 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
         this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
-    @Override
     public PasswordResetTokenView findByTokenAndExpiryDateAfter(String token, Date date) {
         PasswordResetToken passwordResetToken = this.passwordResetTokenRepository.findByTokenAndExpiryDateAfter(token, date);
         if(passwordResetToken != null) {
@@ -43,7 +42,6 @@ public class PasswordResetTokenServiceImpl implements PasswordResetTokenService 
         return null;
     }
 
-    @Override
     public PasswordResetToken createForgotPasswordToken(ForgotPassword forgotPassword) {
         User user = this.userRepository.findByEmail(forgotPassword.getEmail());
         if (user == null) {

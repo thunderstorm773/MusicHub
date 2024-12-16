@@ -9,8 +9,8 @@ import com.tu.musichub.user.models.bindingModels.ForgotPassword;
 import com.tu.musichub.user.models.bindingModels.RegisterUser;
 import com.tu.musichub.user.models.bindingModels.ResetPassword;
 import com.tu.musichub.user.models.viewModels.PasswordResetTokenView;
-import com.tu.musichub.user.services.PasswordResetTokenService;
-import com.tu.musichub.user.services.UserManipulationService;
+import com.tu.musichub.user.services.PasswordResetTokenServiceImpl;
+import com.tu.musichub.user.services.UserManipulationServiceImpl;
 import com.tu.musichub.user.staticData.AccountConstants;
 import com.tu.musichub.user.utils.EmailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +29,15 @@ import java.util.Map;
 @RequestMapping("/users")
 public class AccountController extends BaseController {
 
-    private final UserManipulationService userManipulationService;
+    private final UserManipulationServiceImpl userManipulationService;
 
-    private final PasswordResetTokenService passwordResetTokenService;
+    private final PasswordResetTokenServiceImpl passwordResetTokenService;
 
     private final EmailUtils emailUtils;
 
     @Autowired
-    public AccountController(UserManipulationService userManipulationService,
-                             PasswordResetTokenService passwordResetTokenService,
+    public AccountController(UserManipulationServiceImpl userManipulationService,
+                             PasswordResetTokenServiceImpl passwordResetTokenService,
                              EmailUtils emailUtils) {
         this.userManipulationService = userManipulationService;
         this.passwordResetTokenService = passwordResetTokenService;

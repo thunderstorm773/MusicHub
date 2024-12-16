@@ -51,7 +51,7 @@ public class TagExtractionServiceImplTests {
     private MapperUtil mapperUtil;
 
     @Autowired
-    private TagExtractionService tagExtractionService;
+    private TagExtractionServiceImpl tagExtractionService;
 
     @Mock
     private Pageable pageable;

@@ -1,6 +1,6 @@
 package com.tu.musichub.user.configs;
 
-import com.tu.musichub.user.services.UserExtractionService;
+import com.tu.musichub.user.services.UserExtractionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,14 +15,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final int TOKEN_VALIDITY_SECONDS = 864_000;
 
-    private final UserExtractionService userExtractionService;
+    private final UserExtractionServiceImpl userExtractionService;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
     private final GoogleOAuth2SuccessHandler googleOAuth2SuccessHandler;
 
     @Autowired
-    public SecurityConfig(UserExtractionService userExtractionService,
+    public SecurityConfig(UserExtractionServiceImpl userExtractionService,
                           BCryptPasswordEncoder passwordEncoder,
                           GoogleOAuth2SuccessHandler googleOAuth2SuccessHandler) {
         this.passwordEncoder = passwordEncoder;
