@@ -56,7 +56,9 @@ public class SongConstants {
     public static final String EDIT_SONG_BASE_ROUTE = "/songs/edit/";
 	
 	public static final String SONG_EDITED_MESSAGE =
-            "Song edited successfully";
+            "Song edited successfully!";
 
     public static final String SONGS_CACHE_NAME = "songs";
+
+    public static final String SONG_DELETED_MESSAGE = "Song deleted successfully!";;
 }

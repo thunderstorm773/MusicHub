@@ -44,15 +44,6 @@ public class CommentController extends BaseController {
         this.gson = gson;
     }
 
-    private boolean isCommentValid(String commentContent, Long songId) {
-        if (commentContent == null
-                || commentContent.length() < CommentConstants.COMMENT_MIN_LEN) {
-            return false;
-        }
-
-        return this.songExtractionService.isSongExists(songId);
-    }
-
     @PostMapping("/post")
     @ResponseBody
     public String postComment(String commentContent, Long songId,
@@ -86,5 +77,14 @@ public class CommentController extends BaseController {
     public ModelAndView rejectComment(@PathVariable Long id) {
         this.commentManipulationService.reject(id);
        return this.redirect(CommentConstants.PENDING_COMMENTS_ROUTE);
+    }
+
+    private boolean isCommentValid(String commentContent, Long songId) {
+        if (commentContent == null
+                || commentContent.length() < CommentConstants.COMMENT_MIN_LEN) {
+            return false;
+        }
+
+        return this.songExtractionService.isSongExists(songId);
     }
 }

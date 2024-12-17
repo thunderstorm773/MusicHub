@@ -86,6 +86,7 @@ public class UserController extends BaseController {
         }
 
         this.userManipulationService.deleteByUsername(username);
+        redirectAttributes.addFlashAttribute(Constants.INFO, AdminConstants.USER_DELETED_MESSAGE);
         return this.redirect(AdminConstants.ALL_USERS_ROUTE);
     }
 
@@ -120,6 +121,6 @@ public class UserController extends BaseController {
 
         this.userManipulationService.edit(editUser, username);
         redirectAttributes.addFlashAttribute(Constants.INFO, AdminConstants.USER_EDITED_MESSAGE);
-        return this.redirect(AdminConstants.EDIT_USER_BASE_ROUTE + username);
+        return this.redirect(AdminConstants.ALL_USERS_ROUTE);
     }
 }

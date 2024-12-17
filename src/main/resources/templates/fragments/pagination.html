@@ -7,12 +7,6 @@
             <a class="page-link prev"
                th:href="${hasPrevious} ? @{${pageBaseUrl}(page=${previousPageable.getPageNumber()})}">Prev</a>
         </li>
-        <!--<li class="page-item" th:each="pageNum : ${#numbers.sequence(1, page.getTotalPages())}"-->
-        <!--th:with="index=${pageNum} - 1"-->
-        <!--th:classappend="${page.getNumber() == index} ? 'active'">-->
-        <!--<a class="page-link" th:href="@{${pageBaseUrl}(page=${index})}"-->
-        <!--th:text="${pageNum}"></a>-->
-        <!--</li>-->
         <li class="page-item next" th:classappend="${!hasNext} ? 'disabled'">
             <a class="page-link next"
                th:href="${hasNext} ? @{${pageBaseUrl}(page=${nextPageable.getPageNumber()})}">Next</a>

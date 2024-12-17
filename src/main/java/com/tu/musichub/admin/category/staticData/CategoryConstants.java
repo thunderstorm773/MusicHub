@@ -42,5 +42,7 @@ public class CategoryConstants {
 
     public static final String CATEGORY_EDITED_MESSAGE = "Successfully edited category!";
 
+    public static final String CATEGORY_DELETED_MESSAGE = "Successfully deleted category!";
+
     public static final String ADD_CATEGORY_ROUTE = "/admin/categories/add";
 }

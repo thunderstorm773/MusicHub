@@ -62,7 +62,7 @@ public class TagController extends BaseController {
 
         this.tagManipulationService.save(addTag);
         redirectAttributes.addFlashAttribute(Constants.INFO, TagConstants.TAG_ADDED_MESSAGE);
-        return this.redirect(TagConstants.ADD_TAG_ROUTE);
+        return this.redirect(TagConstants.ALL_TAGS_ROUTE);
     }
 
     @GetMapping("/{id}/edit")
@@ -81,15 +81,14 @@ public class TagController extends BaseController {
     @PostMapping("/{id}/edit")
     public ModelAndView editTag(@PathVariable Long id,
                                 @Valid @ModelAttribute EditTag editTag,
-                                BindingResult bindingResult) {
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return this.view(TagConstants.EDIT_TAG_TITLE, TagConstants.EDIT_TAG_VIEW);
         }
 
         this.tagManipulationService.edit(editTag, id);
-        Map<String, Object> objectByKey = new HashMap<>();
-        objectByKey.put(Constants.INFO, TagConstants.TAG_EDITED_MESSAGE);
-        return this.view(TagConstants.EDIT_TAG_TITLE,
-                TagConstants.EDIT_TAG_VIEW, objectByKey);
+        redirectAttributes.addFlashAttribute(Constants.INFO, TagConstants.TAG_EDITED_MESSAGE);
+        return this.redirect(TagConstants.ALL_TAGS_ROUTE);
     }
 }

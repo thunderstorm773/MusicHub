@@ -232,7 +232,7 @@ public class SongControllerTests {
 
     @Test
     public void testEditSong_withEmptyTitle_shouldRedirectsToSamePage() throws Exception {
-        Integer flashAttributesCount = 2;
+        int flashAttributesCount = 2;
         this.mockMvc.perform(post(SongTestData.EDIT_SONG_PAGE_WITH_EXISTENCE_SONG_ID_URL)
                 .with(csrf())
                 .param(SongTestData.TITLE_KEY, SongTestData.EMPTY_TITLE)
@@ -248,7 +248,7 @@ public class SongControllerTests {
 
     @Test
     public void testEditSong_withNullTitle_shouldRedirectsToSamePage() throws Exception {
-        Integer flashAttributesCount = 2;
+        int flashAttributesCount = 2;
         this.mockMvc.perform(post(SongTestData.EDIT_SONG_PAGE_WITH_EXISTENCE_SONG_ID_URL)
                 .with(csrf())
                 .param(SongTestData.CATEGORY_ID_KEY, SongTestData.VALID_CATEGORY_ID.toString()))
@@ -263,7 +263,7 @@ public class SongControllerTests {
 
     @Test
     public void testEditSong_withInvalidMinSizeTitle_shouldRedirectsToSamePage() throws Exception {
-        Integer flashAttributesCount = 2;
+        int flashAttributesCount = 2;
         this.mockMvc.perform(post(SongTestData.EDIT_SONG_PAGE_WITH_EXISTENCE_SONG_ID_URL)
                 .with(csrf())
                 .param(SongTestData.TITLE_KEY, SongTestData.INVALID_MIN_SIZE_TITLE)
@@ -279,7 +279,7 @@ public class SongControllerTests {
 
     @Test
     public void testEditSong_withNullCategoryId_shouldRedirectsToSamePage() throws Exception {
-        Integer flashAttributesCount = 2;
+        int flashAttributesCount = 2;
         this.mockMvc.perform(post(SongTestData.EDIT_SONG_PAGE_WITH_EXISTENCE_SONG_ID_URL)
                 .with(csrf())
                 .param(SongTestData.TITLE_KEY, SongTestData.VALID_TITLE))
@@ -306,7 +306,7 @@ public class SongControllerTests {
 
     @Test
     public void testEditSong_withValidEditSongModel_shouldRedirectToSamePageWithSuccessfullyMessage() throws Exception {
-        Integer redirectAttributesCount = 1;
+        int redirectAttributesCount = 1;
 
         this.mockMvc.perform(post(SongTestData.EDIT_SONG_PAGE_WITH_EXISTENCE_SONG_ID_URL)
                 .with(csrf())
@@ -315,6 +315,6 @@ public class SongControllerTests {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeCount(redirectAttributesCount))
                 .andExpect(flash().attribute(Constants.INFO, Matchers.equalTo(SongConstants.SONG_EDITED_MESSAGE)))
-                .andExpect(redirectedUrl(SongConstants.EDIT_SONG_BASE_ROUTE + SongTestData.EXISTENCE_SONG_ID));
+                .andExpect(redirectedUrl(SongConstants.SONG_DETAILS_BASE_ROUTE + SongTestData.EXISTENCE_SONG_ID));
     }
 }

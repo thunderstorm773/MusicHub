@@ -1,4 +1,5 @@
 <!--/*@thymesVar id="songDetails" type="com.tu.musichub.song.models.viewModels.SongDetailsView"*/-->
+<div th:replace="~{fragments/info-message}"></div>
 <div class="row" th:object="${songDetails}">
     <div class="col-md-6 text-center">
         <h4 th:text="*{title}">Title</h4>

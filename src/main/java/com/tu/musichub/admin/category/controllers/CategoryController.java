@@ -36,6 +36,16 @@ public class CategoryController extends BaseController {
         this.categoryExtractionService = categoryExtractionService;
     }
 
+    @GetMapping("/categories/all")
+    public ModelAndView getAllCategoriesPage(@PageableDefault(CategoryConstants.CATEGORIES_PER_PAGE) Pageable pageable) {
+        Page<CategoryView> categories = this.categoryExtractionService.findAll(pageable);
+        Map<String, Object> objectByKey = new HashMap<>();
+        objectByKey.put(Constants.TABLE_ACTIONS_STYLE_ENABLED, "");
+        objectByKey.put(Constants.PAGE, categories);
+        return this.view(CategoryConstants.ALL_CATEGORIES_TITLE,
+                CategoryConstants.ALL_CATEGORIES_VIEW, objectByKey);
+    }
+
     @GetMapping("/categories/add")
     public ModelAndView getAddCategoryPage(@ModelAttribute AddCategory addCategory) {
         return this.view(CategoryConstants.ADD_CATEGORY_TITLE,
@@ -54,17 +64,7 @@ public class CategoryController extends BaseController {
         this.categoryManipulationService.addCategory(addCategory);
         redirectAttributes.addFlashAttribute(Constants.INFO,
                 CategoryConstants.CATEGORY_CREATED_MESSAGE);
-        return this.redirect(CategoryConstants.ADD_CATEGORY_ROUTE);
-    }
-
-    @GetMapping("/categories/all")
-    public ModelAndView getAllCategoriesPage(@PageableDefault(CategoryConstants.CATEGORIES_PER_PAGE) Pageable pageable) {
-        Page<CategoryView> categories = this.categoryExtractionService.findAll(pageable);
-        Map<String, Object> objectByKey = new HashMap<>();
-        objectByKey.put(Constants.TABLE_ACTIONS_STYLE_ENABLED, "");
-        objectByKey.put(Constants.PAGE, categories);
-        return this.view(CategoryConstants.ALL_CATEGORIES_TITLE,
-                CategoryConstants.ALL_CATEGORIES_VIEW, objectByKey);
+        return this.redirect(CategoryConstants.ALL_CATEGORIES_ROUTE);
     }
 
     @GetMapping("/categories/{id}/delete")
@@ -81,8 +81,10 @@ public class CategoryController extends BaseController {
     }
 
     @PostMapping("/categories/{id}/delete")
-    public ModelAndView deleteCategory(@PathVariable Long id) {
+    public ModelAndView deleteCategory(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         this.categoryManipulationService.deleteById(id);
+        redirectAttributes.addFlashAttribute(Constants.INFO,
+                CategoryConstants.CATEGORY_DELETED_MESSAGE);
         return this.redirect(CategoryConstants.ALL_CATEGORIES_ROUTE);
     }
 
@@ -102,16 +104,16 @@ public class CategoryController extends BaseController {
     @PostMapping("/categories/{id}/edit")
     public ModelAndView editCategory(@PathVariable Long id,
                                      @Valid @ModelAttribute EditCategory editCategory,
-                                     BindingResult bindingResult) {
+                                     BindingResult bindingResult,
+                                     RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return this.view(CategoryConstants.EDIT_CATEGORY_TITLE,
                     CategoryConstants.EDIT_CATEGORY_VIEW);
         }
 
         this.categoryManipulationService.edit(editCategory, id);
-        Map<String, Object> objectByKey = new HashMap<>();
-        objectByKey.put(Constants.INFO, CategoryConstants.CATEGORY_EDITED_MESSAGE);
-        return this.view(CategoryConstants.EDIT_CATEGORY_TITLE,
-                CategoryConstants.EDIT_CATEGORY_VIEW, objectByKey);
+        redirectAttributes.addFlashAttribute(Constants.INFO,
+                CategoryConstants.CATEGORY_EDITED_MESSAGE);
+        return this.redirect(CategoryConstants.ALL_CATEGORIES_ROUTE);
     }
 }

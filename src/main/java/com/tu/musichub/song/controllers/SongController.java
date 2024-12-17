@@ -51,15 +51,6 @@ public class SongController extends BaseController {
         this.songExtractionService = songExtractionService;
     }
 
-    private void saveSongInFileSystem(UploadSong uploadSong, FileUtil fileUtil)
-            throws IOException {
-        MultipartFile songTempFile = uploadSong.getFile();
-        byte[] songTempFileBytes = songTempFile.getBytes();
-        String songTempFileName = songTempFile.getOriginalFilename();
-        File songPersistedFile = fileUtil.createFile(songTempFileBytes, songTempFileName);
-        uploadSong.setPersistedFile(songPersistedFile);
-    }
-
     @ExceptionHandler(SongNotFoundException.class)
     public ModelAndView handleSongNotFoundException() {
         return this.redirect(HomeConstants.INDEX_ROUTE);
@@ -123,8 +114,9 @@ public class SongController extends BaseController {
     }
 
     @PostMapping("/delete/{id}")
-    public ModelAndView deleteSong(@PathVariable Long id) throws Exception {
+    public ModelAndView deleteSong(@PathVariable Long id, RedirectAttributes redirectAttributes) throws Exception {
         this.songManipulationService.deleteById(id);
+        redirectAttributes.addFlashAttribute(Constants.INFO, SongConstants.SONG_DELETED_MESSAGE);
         return this.redirect(HomeConstants.INDEX_ROUTE);
     }
 
@@ -160,6 +152,15 @@ public class SongController extends BaseController {
 
         this.songManipulationService.edit(editSong, id);
         redirectAttributes.addFlashAttribute(Constants.INFO, SongConstants.SONG_EDITED_MESSAGE);
-        return this.redirect(SongConstants.EDIT_SONG_BASE_ROUTE + id);
+        return this.redirect(SongConstants.SONG_DETAILS_BASE_ROUTE + id);
+    }
+
+    private void saveSongInFileSystem(UploadSong uploadSong, FileUtil fileUtil)
+            throws IOException {
+        MultipartFile songTempFile = uploadSong.getFile();
+        byte[] songTempFileBytes = songTempFile.getBytes();
+        String songTempFileName = songTempFile.getOriginalFilename();
+        File songPersistedFile = fileUtil.createFile(songTempFileBytes, songTempFileName);
+        uploadSong.setPersistedFile(songPersistedFile);
     }
 }
