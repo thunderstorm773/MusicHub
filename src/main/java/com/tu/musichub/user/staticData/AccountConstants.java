@@ -42,7 +42,7 @@ public class AccountConstants {
             "Password and confirm password not matching";
 
     public static final String INVALID_CREDENTIALS_MESSAGE =
-            "Invalid credentials.";
+            "Invalid credentials";
 
     public static final String ROLES = "roles";
 

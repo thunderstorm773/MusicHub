@@ -2,10 +2,17 @@ package com.tu.musichub.song.models.viewModels;
 
 import com.tu.musichub.song.comment.models.viewModels.CommentView;
 import com.tu.musichub.song.tag.models.viewModels.TagView;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+@NoArgsConstructor
+@Getter
+@Setter
 public class SongDetailsView {
 
     private Long id;
@@ -25,79 +32,4 @@ public class SongDetailsView {
     private Set<TagView> tags;
 
     private List<CommentView> comments;
-
-    public SongDetailsView() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getUploaderUsername() {
-        return uploaderUsername;
-    }
-
-    public void setUploaderUsername(String uploaderUsername) {
-        this.uploaderUsername = uploaderUsername;
-    }
-
-    public String getStreamingUrl() {
-        return streamingUrl;
-    }
-
-    public void setStreamingUrl(String streamingUrl) {
-        this.streamingUrl = streamingUrl;
-    }
-
-    public String getDownloadUrl() {
-        return downloadUrl;
-    }
-
-    public void setDownloadUrl(String downloadUrl) {
-        this.downloadUrl = downloadUrl;
-    }
-
-    public Date getUploadedOn() {
-        return uploadedOn;
-    }
-
-    public void setUploadedOn(Date uploadedOn) {
-        this.uploadedOn = uploadedOn;
-    }
-
-    public Set<TagView> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<TagView> tags) {
-        this.tags = tags;
-    }
-
-    public List<CommentView> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentView> comments) {
-        this.comments = comments;
-    }
 }

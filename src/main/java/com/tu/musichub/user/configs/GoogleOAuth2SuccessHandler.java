@@ -1,5 +1,6 @@
 package com.tu.musichub.user.configs;
 
+import com.tu.musichub.home.staticData.HomeConstants;
 import com.tu.musichub.user.services.UserManipulationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,6 @@ public class GoogleOAuth2SuccessHandler implements AuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         this.userManipulationService.loginGoogleUser(authentication);
-        response.sendRedirect("/");
+        response.sendRedirect(HomeConstants.INDEX_ROUTE);
     }
 }

@@ -2,25 +2,21 @@ package com.tu.musichub.song.tag.models.bindingModels;
 
 import com.tu.musichub.song.tag.staticData.TagConstants;
 import com.tu.musichub.song.tag.validations.Tag;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@NoArgsConstructor
+@Getter
+@Setter
 public class EditTag {
-
-    private String name;
-
-    public EditTag() {
-    }
 
     @NotBlank(message = TagConstants.TAG_NAME_BLANK_MESSAGE)
     @Size(min = TagConstants.TAG_NAME_MIN_LEN,
             message = TagConstants.TAG_NAME_MIN_LEN_MESSAGE)
     @Tag
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String name;
 }

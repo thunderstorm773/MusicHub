@@ -4,7 +4,7 @@ public enum CommentStatus {
 
     PENDING("Waiting for review"), APPROVED("Approved"), REJECTED("Rejected");
 
-    String statusValue;
+    final String statusValue;
 
     CommentStatus(String statusValue) {
         this.statusValue = statusValue;

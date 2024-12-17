@@ -1,9 +1,11 @@
 package com.tu.musichub.config;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@Getter
 public class CdnConfigData {
 
     public static final String CLOUD_NAME_KEY = "cloud_name";
@@ -20,16 +22,4 @@ public class CdnConfigData {
 
     @Value("${API_SECRET}")
     private String apiSecret;
-
-    public String getCloudName() {
-        return this.cloudName;
-    }
-
-    public String getApiKey() {
-        return this.apiKey;
-    }
-
-    public String getApiSecret() {
-        return this.apiSecret;
-    }
 }

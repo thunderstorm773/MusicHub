@@ -1,7 +1,14 @@
 package com.tu.musichub.user.models.viewModels;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.Date;
 
+@NoArgsConstructor
+@Getter
+@Setter
 public class PasswordResetTokenView {
 
     private String id;
@@ -9,31 +16,4 @@ public class PasswordResetTokenView {
     private String token;
 
     private Date expiryDate;
-
-    public PasswordResetTokenView() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public Date getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
-    }
 }
