@@ -32,9 +32,8 @@ public class SongRepositoryTests {
         Page<Song> songPage = this.songRepository
                 .findAllByTitle(TEST_SONG_TITLE, this.testPageable);
         List<Song> songs = songPage.getContent();
-        int expectedSongsSize = songs.stream()
-                .filter(s -> s.getTitle().contains(TEST_SONG_TITLE))
-                .collect(Collectors.toList()).size();
+        int expectedSongsSize = (int) songs.stream()
+                .filter(s -> s.getTitle().contains(TEST_SONG_TITLE)).count();
 
         Assert.assertEquals(expectedSongsSize, songs.size());
     }
