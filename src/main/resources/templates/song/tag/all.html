@@ -17,7 +17,7 @@
     <tbody>
     <tr class="table-active" th:each="tag, iter : ${page}"
         th:object="${tag}">
-        <td th:text="${iter.index + 1}"></td>
+        <td th:text="${page.number * page.size + iter.index + 1}"></td>
         <td th:text="*{name}"></td>
         <td>
             <a th:href="@{/tags/{id}/edit (id=*{id})}" class="edit mr-2">Edit</a>

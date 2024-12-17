@@ -25,7 +25,7 @@
     </thead>
     <tbody>
     <tr class="table-active" th:each="user, iter : ${page}" th:object="${user}">
-        <td th:text="${iter.index + 1}"></td>
+        <td th:text="${page.number * page.size + iter.index + 1}"></td>
         <td th:text="*{id}">Id</td>
         <td th:text="*{username}">Username</td>
         <td th:text="*{email}">Email</td>
