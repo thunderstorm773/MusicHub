@@ -12,9 +12,12 @@ MusicHub is site for sharing of music. It is created for Technical University So
 - DB_PASSWORD
 - GOOGLE_CLIENT_ID
 - GOOGLE_SECRET
+- MAIL_USERNAME
+- MAIL_PASSWORD
 3. API_KEY, API_SECRET, CLOUD_NAME are related to Cloudinary CDN which is responsible for saving uploaded music files. This configuration should be obtained from Cloudinary Console.
 4. DB_ADDRESS, DB_USERNAME, DB_PASSWORD are related to database configuration.
 5. GOOGLE_CLIENT_ID, GOOGLE_SECRET should be obtained from Google Cloud Console.
+6. MAIL_USERNAME, MAIL_PASSWORD are related to email client.
 6. After MySQL installation and filled configuration, you can start immediately Spring Boot app.
 7. To create automatically tables in database, should change property value of **spring.jpa.hibernate.ddl-auto** to be **create** in *application.properties* file.
 
@@ -26,8 +29,9 @@ MusicHub is site for sharing of music. It is created for Technical University So
 5. Application supports two type of authentication:
 - Application authentication
 - Google SSO
-6. Every user can edit or delete their own songs.
-7. In application there is administrative part for users with admin or moderator role:
+6. Users can use functionality for password change with email. 
+7. Every user can edit or delete their own songs.
+8. In application there is administrative part for users with admin or moderator role:
 - Admin can manage all data in application
 - Moderator can manage only tags and approve/reject comments 
 
