@@ -18,6 +18,12 @@ public class UserRepositoryTests {
 
     private static final String TEST_USERNAME = "thunder";
 
+    private static final String TEST_USER_ID = "786a5aeb-1c12-4552-8d98-e576071d02c8";
+
+    private static final String TEST_ROLE_ADMIN_ID = "eac5d95c-8876-4b6e-8ca7-7c0824b8ab7d";
+
+    private static final String TEST_ROLE_MODERATOR_ID = "e7b4da2e-c811-492b-b2b7-50fc276e0ab8";
+
     @Autowired
     private UserRepository userRepository;
 
@@ -35,15 +41,12 @@ public class UserRepositoryTests {
     }
 
     private void fillTestUser() {
-        String testUserId = "786a5aeb-1c12-4552-8d98-e576071d02c8";
-        this.testUser = this.em.getEntityManager().find(User.class, testUserId);
+        this.testUser = this.em.getEntityManager().find(User.class, TEST_USER_ID);
     }
 
     private void fillTestRoles() {
-        String roleAdminId = "eac5d95c-8876-4b6e-8ca7-7c0824b8ab7d";
-        String roleModeratorId = "e7b4da2e-c811-492b-b2b7-50fc276e0ab8";
-        this.testRoleAdmin = this.em.getEntityManager().find(Role.class, roleAdminId);
-        this.testRoleModerator = this.em.getEntityManager().find(Role.class, roleModeratorId);
+        this.testRoleAdmin = this.em.getEntityManager().find(Role.class, TEST_ROLE_ADMIN_ID);
+        this.testRoleModerator = this.em.getEntityManager().find(Role.class, TEST_ROLE_MODERATOR_ID);
     }
 
     @Before

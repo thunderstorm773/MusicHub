@@ -5,7 +5,6 @@ import com.tu.musichub.admin.category.models.bindingModels.AddCategory;
 import com.tu.musichub.admin.category.models.bindingModels.EditCategory;
 import com.tu.musichub.admin.category.models.views.CategoryView;
 import com.tu.musichub.admin.category.repositories.CategoryRepository;
-import com.tu.musichub.staticData.TestConstants;
 import com.tu.musichub.util.MapperUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
